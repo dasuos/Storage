@@ -1,0 +1,57 @@
+<?php
+declare(strict_types = 1);
+namespace Dasuos\Storage;
+
+final class StrictFiles implements Files {
+
+	private const MAXIMUM_SIZE = 2000000;
+
+	private $origin;
+	private $path;
+	private $extensions;
+
+	public function __construct(
+		Files $origin,
+		Path $path,
+		Extensions $extensions
+	) {
+		$this->origin = $origin;
+		$this->path = $path;
+		$this->extensions = $extensions;
+	}
+	public function upload(
+		string $name, string $tmp, int $size, int $error
+	): void {
+		if (!$this->valid($this->path->reference($name), $tmp, $size, $error))
+			throw new FileUploadException(
+				'Given file already exists, exceeds maximum size, 
+				has prohibit extension or cannot be uploaded'
+			);
+		$this->origin->upload($name, $tmp, $size, $error);
+	}
+	public function delete(string $name): void {
+		if (!$this->existing($this->path->reference($name)))
+			throw new FileDeletionException(
+				'Given file does not exist and cannot be deleted'
+			);
+		$this->origin->delete($name);
+	}
+	private function valid(
+		string $path, string $tmp, int $size, int $error
+	): bool {
+		return $this->uploaded($error)
+			&& !$this->existing($path)
+			&& !$this->exceeding($size)
+			&& $this->extensions->allowed($tmp);
+	}
+	private function uploaded(int $error): bool {
+		return $error === UPLOAD_ERR_OK;
+	}
+	private function existing(string $path): bool {
+		return file_exists($path);
+	}
+	private function exceeding(int $size): bool {
+		return $size > self::MAXIMUM_SIZE;
+	}
+}
+
