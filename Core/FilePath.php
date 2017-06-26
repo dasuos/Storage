@@ -9,7 +9,8 @@ final class FilePath implements Path {
 	public function __construct(string $directory) {
 		$this->directory = $directory;
 	}
-	public function reference($name) {
+
+	public function reference(string $name): string {
 		return $this->directory . DIRECTORY_SEPARATOR . basename($name);
 	}
 }

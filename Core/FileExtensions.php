@@ -6,10 +6,11 @@ final class FileExtensions implements Extensions {
 
 	private $list;
 
-	public function __construct($list) {
+	public function __construct(array $list) {
 		$this->list = $list;
 	}
-	public function allowed($tmp): bool {
+
+	public function allowed(string $tmp): bool {
 		return in_array(
 			finfo_file(
 				finfo_open(FILEINFO_MIME_TYPE), $tmp

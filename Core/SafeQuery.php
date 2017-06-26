@@ -10,15 +10,19 @@ final class SafeQuery implements Query {
 	public function __construct(DefinedPdo $database) {
 		$this->database = $database;
 	}
+
 	public function row(string $sql, array $placeholders = []): array {
 		return $this->perform($sql, $placeholders)->fetch();
 	}
+
 	public function rows(string $sql, array $placeholders = []): array {
 		return $this->perform($sql, $placeholders)->fetchAll();
 	}
+
 	public function column(string $sql, array $placeholders = []) {
 		return $this->perform($sql, $placeholders)->fetchColumn();
 	}
+
 	public function perform(
 		string $sql, array $placeholders = []
 	): \PDOStatement {
@@ -29,6 +33,7 @@ final class SafeQuery implements Query {
 			throw $this->exception($exception);
 		}
 	}
+
 	private function statement(
 		string $sql, array $placeholders
 	): \PDOStatement {
@@ -36,6 +41,7 @@ final class SafeQuery implements Query {
 		$statement->execute($placeholders);
 		return $statement;
 	}
+
 	private function exception(\Throwable $exception): \Throwable {
 		return $exception->getCode() === self::UNIQUE_CONSTRAINT ?
 			new UniqueConstraintException(

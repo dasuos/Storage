@@ -9,11 +9,13 @@ final class StoredFiles implements Files {
 	public function __construct(Path $path) {
 		$this->path = $path;
 	}
+
 	public function upload(
 		string $name, string $tmp, int $size, int $error
 	): void {
 		move_uploaded_file($tmp, $this->path->reference($name));
 	}
+
 	public function delete(string $name): void {
 		unlink($this->path->reference($name));
 	}

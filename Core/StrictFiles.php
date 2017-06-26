@@ -19,16 +19,20 @@ final class StrictFiles implements Files {
 		$this->path = $path;
 		$this->extensions = $extensions;
 	}
+
 	public function upload(
 		string $name, string $tmp, int $size, int $error
 	): void {
-		if (!$this->valid($this->path->reference($name), $tmp, $size, $error))
+		$path = $this->path->reference($name);
+		if (!$this->valid($path, $tmp, $size, $error))
 			throw new FileUploadException(
 				'Given file already exists, exceeds maximum size, 
 				has prohibit extension or cannot be uploaded'
 			);
 		$this->origin->upload($name, $tmp, $size, $error);
+		$this->permit($path);
 	}
+
 	public function delete(string $name): void {
 		if (!$this->existing($this->path->reference($name)))
 			throw new FileDeletionException(
@@ -36,6 +40,7 @@ final class StrictFiles implements Files {
 			);
 		$this->origin->delete($name);
 	}
+
 	private function valid(
 		string $path, string $tmp, int $size, int $error
 	): bool {
@@ -44,14 +49,21 @@ final class StrictFiles implements Files {
 			&& !$this->exceeding($size)
 			&& $this->extensions->allowed($tmp);
 	}
+
 	private function uploaded(int $error): bool {
 		return $error === UPLOAD_ERR_OK;
 	}
+
 	private function existing(string $path): bool {
 		return file_exists($path);
 	}
+
 	private function exceeding(int $size): bool {
 		return $size > self::MAXIMUM_SIZE;
+	}
+
+	private function permit(string $path): void {
+		@chmod($path, 0666);
 	}
 }
 
