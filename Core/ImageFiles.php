@@ -4,26 +4,26 @@ namespace Dasuos\Storage;
 
 final class ImageFiles implements Files {
 
-	private const EXTENSIONS = ['image/gif', 'image/png', 'image/jpeg'];
-
-	private const MAX_WIDTH = 2000;
-	private const MAX_HEIGHT = 2000;
+	private const WIDTH = 0;
+	private const HEIGHT = 1;
 
 	private $origin;
-	private $extensions;
+	private $width;
+	private $height;
 
-	public function __construct(Files $origin, Extensions $extensions) {
+	public function __construct(Files $origin, $width, $height) {
 		$this->origin = $origin;
-		$this->extensions = $extensions;
+		$this->width = $width;
+		$this->height = $height;
 	}
 
 	public function upload(
 		string $name, string $tmp, int $size, int $error
 	): void {
-		if (!$this->extensions->allowed($tmp, self::EXTENSIONS))
-			throw new FileUploadException('Given file has prohibit extension');
-		if ($this->exceeding($tmp))
-			throw new ImageFileException('Image file exceeds dimensions');
+		if ($this->exceeding($tmp, $this->width, $this->height))
+			throw new ImageUploadException(
+				'Image file exceeds dimensions'
+			);
 		$this->origin->upload($name, $tmp, $size, $error);
 	}
 
@@ -32,17 +32,17 @@ final class ImageFiles implements Files {
 	}
 
 	private function size(string $tmp): array {
-		$size = @getimagesize($tmp);
-		if (!@is_array($size))
-			throw new ImageFileException(
+		$size = getimagesize($tmp);
+		if (!is_array($size))
+			throw new ImageUploadException(
 				'Image file is unreadable or does not have supporting format'
 			);
 		return $size;
 	}
 
-	private function exceeding(string $tmp): bool {
+	private function exceeding(string $tmp, $width, $height): bool {
 		$size = $this->size($tmp);
-		return ($size[0] > self::MAX_WIDTH) || ($size[1] > self::MAX_HEIGHT);
+		return ($size[self::WIDTH] > $width) || ($size[self::HEIGHT] > $height);
 	}
 
 

@@ -10,7 +10,7 @@ final class FilePath implements Path {
 		$this->directory = $directory;
 	}
 
-	public function reference(string $name): string {
-		return $this->directory . DIRECTORY_SEPARATOR . basename($name);
+	public function location(string $file): string {
+		return $this->directory . DIRECTORY_SEPARATOR . basename($file);
 	}
 }
