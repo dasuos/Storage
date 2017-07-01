@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace Dasuos\Storage;
 
 final class SafeQuery implements Query {
@@ -7,7 +8,7 @@ final class SafeQuery implements Query {
 
 	private $database;
 
-	public function __construct(DefinedPdo $database) {
+	public function __construct(\PDO $database) {
 		$this->database = $database;
 	}
 
@@ -48,7 +49,6 @@ final class SafeQuery implements Query {
 				'Duplicate column value violates unique constraint',
 				(int) self::UNIQUE_CONSTRAINT,
 				$exception
-			) :
-			$exception;
+			) : $exception;
 	}
 }

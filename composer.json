@@ -1,5 +1,11 @@
 {
   "autoload": {
     "psr-4": {"Dasuos\\Storage\\": "Core/"}
+  },
+  "require-dev": {
+    "nette/tester": "^1.7"
+  },
+  "autoload-dev": {
+    "psr-4": {"Dasuos\\Tests\\": "Tests/"}
   }
 }

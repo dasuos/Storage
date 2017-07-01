@@ -8,11 +8,13 @@ final class ImageFiles implements Files {
 	private const HEIGHT = 1;
 
 	private $origin;
+	private $path;
 	private $width;
 	private $height;
 
-	public function __construct(Files $origin, $width, $height) {
+	public function __construct(Files $origin, Path $path, $width, $height) {
 		$this->origin = $origin;
+		$this->path = $path;
 		$this->width = $width;
 		$this->height = $height;
 	}
@@ -44,6 +46,4 @@ final class ImageFiles implements Files {
 		$size = $this->size($tmp);
 		return ($size[self::WIDTH] > $width) || ($size[self::HEIGHT] > $height);
 	}
-
-
 }

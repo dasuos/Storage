@@ -10,9 +10,7 @@ final class StrictFiles implements Files {
 	private $path;
 	private $extensions;
 
-	public function __construct(
-		Files $origin, Path $path, array $extensions
-	) {
+	public function __construct(Files $origin, Path $path, array $extensions) {
 		$this->origin = $origin;
 		$this->path = $path;
 		$this->extensions = $extensions;
