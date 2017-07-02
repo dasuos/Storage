@@ -17,18 +17,16 @@ final class SafeQuery extends TestCase {
 	use Database;
 
 	public function testFetchingAllRows() {
-		$this->database->exec("INSERT INTO test_table (id, \"value\") VALUES (1, 'foo')");
-		$this->database->exec("INSERT INTO test_table (id, \"value\") VALUES (2, 'bar')");
+		$this->database->exec(
+			"INSERT INTO test_table (id, test_value) VALUES (1, 'foo')"
+		);
+		$this->database->exec(
+			"INSERT INTO test_table (id, test_value) VALUES (2, 'bar')"
+		);
 		Assert::equal(
 			[
-				[
-					'id' => 1,
-					'value' => 'foo',
-				],
-				[
-					'id' => 2,
-					'value' => 'bar',
-				],
+				['id' => 1, 'test_value' => 'foo',],
+				['id' => 2, 'test_value' => 'bar',],
 			],
 			(new Storage\SafeQuery(
 				$this->database
@@ -37,23 +35,30 @@ final class SafeQuery extends TestCase {
 	}
 
 	public function testThrowingCustomExceptionOnUniqueConstraint() {
-		$this->database->exec("INSERT INTO test_table (id, \"value\") VALUES (1, 'foo')");
+		$this->database->exec(
+			"INSERT INTO test_table (id, test_value) VALUES (1, 'foo')"
+		);
 		$ex = Assert::exception(function() {
-			(new Storage\SafeQuery(
-				$this->database
-			))->rows("INSERT INTO test_table VALUES (2, 'foo')");
-		}, Storage\UniqueConstraintException::class, 'Duplicate column value violates unique constraint', 23505);
+				(new Storage\SafeQuery(
+					$this->database
+				))->rows("INSERT INTO test_table VALUES (2, 'foo')");
+			},
+			Storage\UniqueConstraintException::class,
+			'Duplicate column value violates unique constraint',
+			23505
+		);
 		Assert::type(\PDOException::class, $ex->getPrevious());
 	}
 
 	public function testFetchingSingleRow() {
-		$this->database->exec("INSERT INTO test_table (id, \"value\") VALUES (1, 'foo')");
-		$this->database->exec("INSERT INTO test_table (id, \"value\") VALUES (2, 'bar')");
+		$this->database->exec(
+			"INSERT INTO test_table (id, test_value) VALUES (1, 'foo')"
+		);
+		$this->database->exec(
+			"INSERT INTO test_table (id, test_value) VALUES (2, 'bar')"
+		);
 		Assert::equal(
-			[
-				'id' => 1,
-				'value' => 'foo',
-			],
+			['id' => 1, 'test_value' => 'foo',],
 			(new Storage\SafeQuery(
 				$this->database
 			))->row('SELECT * FROM test_table')
@@ -61,14 +66,15 @@ final class SafeQuery extends TestCase {
 	}
 
 	public function testFetchingWithPositionPlaceholder() {
-		$this->database->exec("INSERT INTO test_table (id, \"value\") VALUES (1, 'foo')");
-		$this->database->exec("INSERT INTO test_table (id, \"value\") VALUES (2, 'bar')");
+		$this->database->exec(
+			"INSERT INTO test_table (id, test_value) VALUES (1, 'foo')"
+		);
+		$this->database->exec(
+			"INSERT INTO test_table (id, test_value) VALUES (2, 'bar')"
+		);
 		Assert::equal(
 			[
-				[
-					'id' => 1,
-					'value' => 'foo',
-				],
+				['id' => 1, 'test_value' => 'foo',],
 			],
 			(new Storage\SafeQuery(
 				$this->database
@@ -77,14 +83,15 @@ final class SafeQuery extends TestCase {
 	}
 
 	public function testFetchingWithNamedPlaceholder() {
-		$this->database->exec("INSERT INTO test_table (id, \"value\") VALUES (1, 'foo')");
-		$this->database->exec("INSERT INTO test_table (id, \"value\") VALUES (2, 'bar')");
+		$this->database->exec(
+			"INSERT INTO test_table (id, test_value) VALUES (1, 'foo')"
+		);
+		$this->database->exec(
+			"INSERT INTO test_table (id, test_value) VALUES (2, 'bar')"
+		);
 		Assert::equal(
 			[
-				[
-					'id' => 1,
-					'value' => 'foo',
-				],
+				['id' => 1, 'test_value' => 'foo',],
 			],
 			(new Storage\SafeQuery(
 				$this->database

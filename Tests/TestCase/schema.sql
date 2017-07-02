@@ -15,14 +15,14 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner:
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner:
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
@@ -83,7 +83,7 @@ SET default_with_oids = false;
 
 CREATE TABLE test_table (
     id integer NOT NULL,
-    value character varying NOT NULL
+    test_value character varying NOT NULL
 );
 
 
@@ -118,11 +118,11 @@ ALTER TABLE ONLY test_table ALTER COLUMN id SET DEFAULT nextval('test_table_id_s
 
 
 --
--- Name: test_table unique_value; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: test_table unique_name; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY test_table
-    ADD CONSTRAINT unique_value UNIQUE (value);
+    ADD CONSTRAINT unique_name UNIQUE (test_value);
 
 
 --
