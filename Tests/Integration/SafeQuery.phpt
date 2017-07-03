@@ -14,6 +14,7 @@ use Dasuos\Storage;
 require __DIR__ . '/../bootstrap.php';
 
 final class SafeQuery extends TestCase {
+
 	use Database;
 
 	public function testFetchingAllRows() {

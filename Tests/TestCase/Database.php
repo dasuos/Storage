@@ -11,7 +11,7 @@ trait Database {
 	 */
 	protected $database;
 
-	public function setUp() {
+	public function setup() {
 		Environment::lock('database', __DIR__ . '/../temp');
 		$credentials = parse_ini_file(
 			__DIR__ . '/../TestCase/database.local.ini'
