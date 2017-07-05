@@ -12,7 +12,9 @@ final class ImageFiles implements Files {
 	private $width;
 	private $height;
 
-	public function __construct(Files $origin, Path $path, $width, $height) {
+	public function __construct(
+		Files $origin, Path $path, int $width, int $height
+	) {
 		$this->origin = $origin;
 		$this->path = $path;
 		$this->width = $width;
@@ -34,7 +36,7 @@ final class ImageFiles implements Files {
 	}
 
 	private function size(string $tmp): array {
-		$size = getimagesize($tmp);
+		$size = @getimagesize($tmp);
 		if (!is_array($size))
 			throw new ImageUploadException(
 				'Image file is unreadable or does not have supporting format'
@@ -42,7 +44,7 @@ final class ImageFiles implements Files {
 		return $size;
 	}
 
-	private function exceeding(string $tmp, $width, $height): bool {
+	private function exceeding(string $tmp, int $width, int $height): bool {
 		$size = $this->size($tmp);
 		return ($size[self::WIDTH] > $width) || ($size[self::HEIGHT] > $height);
 	}

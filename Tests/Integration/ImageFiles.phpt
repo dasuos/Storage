@@ -28,7 +28,9 @@ final class ImageFiles extends TestCase {
 				))->upload(
 					'fakeName', $this->image, 1900000, UPLOAD_ERR_OK
 				);
-			}, Storage\ImageUploadException::class
+			},
+			Storage\ImageUploadException::class,
+			'Image file exceeds dimensions'
 		);
 	}
 
@@ -41,6 +43,20 @@ final class ImageFiles extends TestCase {
 					'fakeName', $this->image, 1900000, UPLOAD_ERR_OK
 				);
 			}
+		);
+	}
+
+	public function testInvalidUploadedImage() {
+		Assert::exception(
+			function() {
+				(new Storage\ImageFiles(
+					new Storage\FakeFiles, new Storage\FakePath, 500, 500
+				))->upload(
+					'fakeName', 'invalidImage', 1900000, UPLOAD_ERR_OK
+				);
+			},
+			Storage\ImageUploadException::class,
+			'Image file is unreadable or does not have supporting format'
 		);
 	}
 }
