@@ -39,7 +39,7 @@ final class SafeQuery extends TestCase {
 		$this->database->exec(
 			"INSERT INTO test_table (id, test_value) VALUES (1, 'foo')"
 		);
-		$ex = Assert::exception(function() {
+		$exception = Assert::exception(function() {
 				(new Storage\SafeQuery(
 					$this->database
 				))->rows("INSERT INTO test_table VALUES (2, 'foo')");
@@ -48,7 +48,7 @@ final class SafeQuery extends TestCase {
 			'Duplicate column value violates unique constraint',
 			23505
 		);
-		Assert::type(\PDOException::class, $ex->getPrevious());
+		Assert::type(\PDOException::class, $exception->getPrevious());
 	}
 
 	public function testFetchingSingleRow() {
