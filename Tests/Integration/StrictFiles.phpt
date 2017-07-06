@@ -27,7 +27,8 @@ final class StrictFiles extends TestCase {
 		Assert::exception(
 			function() {
 				(new Storage\StrictFiles(
-					new Storage\FakeFiles, new Storage\FakePath,
+					new Storage\StoredFiles(new Storage\FakePath),
+					new Storage\FakePath,
 					['image/gif', 'image/png', 'image/jpeg']
 				))->upload(
 					'fakeName',
@@ -44,7 +45,8 @@ final class StrictFiles extends TestCase {
 			function() {
 				$mock = FileMock::create('data', 'txt');
 				(new Storage\StrictFiles(
-					new Storage\FakeFiles, new Storage\FakePath,
+					new Storage\StoredFiles(new Storage\FakePath),
+					new Storage\FakePath,
 					['image/gif', 'image/png', 'image/jpeg']
 				))->upload(
 					$mock, $mock, self::VALID_SIZE, UPLOAD_ERR_OK
@@ -57,7 +59,8 @@ final class StrictFiles extends TestCase {
 		Assert::exception(
 			function() {
 				(new Storage\StrictFiles(
-					new Storage\FakeFiles, new Storage\FakePath,
+					new Storage\StoredFiles(new Storage\FakePath),
+					new Storage\FakePath,
 					['image/gif', 'image/png', 'image/jpeg']
 				))->upload(
 					'fakeName', 'fakeTmp', self::EXCEEDING_SIZE, UPLOAD_ERR_OK
@@ -70,7 +73,8 @@ final class StrictFiles extends TestCase {
 		Assert::exception(
 			function() {
 				(new Storage\StrictFiles(
-					new Storage\FakeFiles, new Storage\FakePath,
+					new Storage\StoredFiles(new Storage\FakePath),
+					new Storage\FakePath,
 					['image/jpeg', 'image/gif']
 				))->upload(
 					'fakeName', $this->image, self::VALID_SIZE, UPLOAD_ERR_OK
@@ -83,7 +87,44 @@ final class StrictFiles extends TestCase {
 		Assert::noError(
 			function() {
 				(new Storage\StrictFiles(
-					new Storage\FakeFiles, new Storage\FakePath,
+					new Storage\StoredFiles(new Storage\FakePath),
+					new Storage\FakePath,
+					['image/png']
+				))->upload(
+					'fakeName', $this->image, self::VALID_SIZE, UPLOAD_ERR_OK
+				);
+			}
+		);
+	}
+
+	public function testImageWithInvalidExtensionInUpload() {
+		Assert::exception(
+			function() {
+				(new Storage\StrictFiles(
+					new Storage\ImageFiles(
+						new Storage\StoredFiles(new Storage\FakePath),
+						new Storage\FakePath,
+						1000, 1000
+					),
+					new Storage\FakePath,
+					['image/jpeg']
+				))->upload(
+					'fakeName', $this->image, self::VALID_SIZE, UPLOAD_ERR_OK
+				);
+			}, Storage\FileUploadException::class
+		);
+	}
+
+	public function testImageWithValidExtensionInUpload() {
+		Assert::noError(
+			function() {
+				(new Storage\StrictFiles(
+					new Storage\ImageFiles(
+						new Storage\StoredFiles(new Storage\FakePath),
+						new Storage\FakePath,
+						1000, 1000
+					),
+					new Storage\FakePath,
 					['image/png']
 				))->upload(
 					'fakeName', $this->image, self::VALID_SIZE, UPLOAD_ERR_OK
@@ -96,7 +137,8 @@ final class StrictFiles extends TestCase {
 		Assert::exception(
 			function() {
 				(new Storage\StrictFiles(
-					new Storage\FakeFiles, new Storage\FakePath,
+					new Storage\StoredFiles(new Storage\FakePath),
+					new Storage\FakePath,
 					['image/jpeg', 'image/gif']
 				))->delete('invalid/path/to/file');
 			}, Storage\FileDeletionException::class

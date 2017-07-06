@@ -24,7 +24,8 @@ final class ImageFiles extends TestCase {
 		Assert::exception(
 			function() {
 				(new Storage\ImageFiles(
-					new Storage\FakeFiles, new Storage\FakePath, 500, 500
+					new Storage\StoredFiles(new Storage\FakePath),
+					new Storage\FakePath, 500, 500
 				))->upload(
 					'fakeName', $this->image, 1900000, UPLOAD_ERR_OK
 				);
@@ -38,7 +39,8 @@ final class ImageFiles extends TestCase {
 		Assert::noError(
 			function() {
 				(new Storage\ImageFiles(
-					new Storage\FakeFiles, new Storage\FakePath, 1000, 1000
+					new Storage\StoredFiles(new Storage\FakePath),
+					new Storage\FakePath, 1000, 1000
 				))->upload(
 					'fakeName', $this->image, 1900000, UPLOAD_ERR_OK
 				);
@@ -50,7 +52,8 @@ final class ImageFiles extends TestCase {
 		Assert::exception(
 			function() {
 				(new Storage\ImageFiles(
-					new Storage\FakeFiles, new Storage\FakePath, 500, 500
+					new Storage\StoredFiles(new Storage\FakePath),
+					new Storage\FakePath, 1000, 1000
 				))->upload(
 					'fakeName', 'invalidImage', 1900000, UPLOAD_ERR_OK
 				);
