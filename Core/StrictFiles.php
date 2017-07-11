@@ -10,7 +10,9 @@ final class StrictFiles implements Files {
 	private $path;
 	private $extensions;
 
-	public function __construct(Files $origin, Path $path, array $extensions) {
+	public function __construct(
+		Files $origin, Path $path, Extensions $extensions
+	) {
 		$this->origin = $origin;
 		$this->path = $path;
 		$this->extensions = $extensions;
@@ -21,7 +23,7 @@ final class StrictFiles implements Files {
 	): void {
 		$path = $this->path->location($name);
 		if (!$this->valid($path, $tmp, $size, $error))
-			throw new FileUploadException(
+			throw new \UnexpectedValueException(
 				'Given file already exists, exceeds maximum size, 
 				has prohibit extension or cannot be uploaded'
 			);
@@ -31,7 +33,7 @@ final class StrictFiles implements Files {
 
 	public function delete(string $name): void {
 		if (!file_exists($this->path->location($name)))
-			throw new FileDeletionException(
+			throw new \UnexpectedValueException(
 				'Given file does not exist and cannot be deleted'
 			);
 		$this->origin->delete($name);
@@ -43,7 +45,7 @@ final class StrictFiles implements Files {
 		return $this->uploaded($error)
 			&& !file_exists($path)
 			&& !$this->exceeding($size)
-			&& $this->allowed($tmp);
+			&& $this->extensions->allowed($tmp);
 	}
 
 	private function uploaded(int $error): bool {
@@ -52,14 +54,6 @@ final class StrictFiles implements Files {
 
 	private function exceeding(int $size): bool {
 		return $size > self::MAXIMUM_SIZE;
-	}
-
-	private function allowed(string $tmp): bool {
-		return in_array(
-			finfo_file(finfo_open(FILEINFO_MIME_TYPE), $tmp),
-			$this->extensions,
-			true
-		);
 	}
 
 	private function permit(string $path): void {

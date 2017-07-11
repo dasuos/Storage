@@ -4,40 +4,50 @@ namespace Dasuos\Tests\TestCase;
 
 final class PngImage {
 
-	private const PATH = __DIR__ . '/../temp/image.png';
+	private const NAME = 'image.png';
 	private const TEXT = 'Image for testing purpose';
 
+	private $directory;
 	private $width;
 	private $height;
 
-	public function __construct(int $width, int $height) {
+	public function __construct(string $directory, int $width, int $height) {
+		$this->directory = $directory;
 		$this->width = $width;
 		$this->height = $height;
 	}
 
 	public function path(): string {
 		$this->create(imagecreate($this->width, $this->height));
-		return self::PATH;
+		return $this->location();
+	}
+
+	public function delete() {
+		unlink($this->location());
 	}
 
 	private function create($image) {
 		$this->withBackground($image);
 		$this->withText($image, $this->withColor($image));
-		imagepng($image, self::PATH);
+		imagepng($image, $this->location());
 		imagedestroy($image);
 	}
 
 	private function withBackground($image) {
-		return imagecolorallocate($image, 0xFF, 0xCC, 0xDD);
+		return imagecolorallocate($image, 0x00, 0x00, 0x99);
 	}
 
 	private function withColor($image) {
-		return imagecolorallocate($image, 133, 14, 91);
+		return imagecolorallocate($image, 0xff, 0xff, 0xff);
 	}
 
 	private function withText($image, $color) {
 		return imagestring(
 			$image, 5, 300, 300, self::TEXT, $color
 		);
+	}
+
+	private function location() {
+		return $this->directory . DIRECTORY_SEPARATOR . self::NAME;
 	}
 }

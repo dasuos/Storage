@@ -6,7 +6,7 @@ declare(strict_types = 1);
  */
 namespace Dasuos\Tests\Integration;
 
-use Tester\{TestCase, Assert, FileMock};
+use Tester\{TestCase, Assert, FileMock, Environment};
 use Dasuos\{Tests, Storage, Tests\TestCase\PngImage};
 
 require __DIR__ . '/../bootstrap.php';
@@ -20,7 +20,10 @@ final class StrictFiles extends TestCase {
 
 	public function setup() {
 		parent::setup();
-		$this->image = (new PngImage(800, 600))->path();
+		Environment::lock('StrictFiles', __DIR__ . '/../temp');
+		$this->image = (new PngImage(
+			__DIR__ . '/../temp/StrictFiles',800, 600
+		))->path();
 	}
 
 	public function testUnsuccessfulUpload() {
@@ -29,14 +32,16 @@ final class StrictFiles extends TestCase {
 				(new Storage\StrictFiles(
 					new Storage\StoredFiles(new Storage\FakePath),
 					new Storage\FakePath,
-					['image/gif', 'image/png', 'image/jpeg']
+					new Storage\FileExtensions(
+						['image/gif', 'image/png', 'image/jpeg']
+					)
 				))->upload(
 					'fakeName',
 					'fakeTmp',
 					self::VALID_SIZE,
 					UPLOAD_ERR_CANT_WRITE
 				);
-			}, Storage\FileUploadException::class
+			}, \UnexpectedValueException::class
 		);
 	}
 
@@ -47,11 +52,13 @@ final class StrictFiles extends TestCase {
 				(new Storage\StrictFiles(
 					new Storage\StoredFiles(new Storage\FakePath),
 					new Storage\FakePath,
-					['image/gif', 'image/png', 'image/jpeg']
+					new Storage\FileExtensions(
+						['image/gif', 'image/png', 'image/jpeg']
+					)
 				))->upload(
 					$mock, $mock, self::VALID_SIZE, UPLOAD_ERR_OK
 				);
-			}, Storage\FileUploadException::class
+			}, \UnexpectedValueException::class
 		);
 	}
 
@@ -61,11 +68,13 @@ final class StrictFiles extends TestCase {
 				(new Storage\StrictFiles(
 					new Storage\StoredFiles(new Storage\FakePath),
 					new Storage\FakePath,
-					['image/gif', 'image/png', 'image/jpeg']
+					new Storage\FileExtensions(
+						['image/gif', 'image/png', 'image/jpeg']
+					)
 				))->upload(
 					'fakeName', 'fakeTmp', self::EXCEEDING_SIZE, UPLOAD_ERR_OK
 				);
-			}, Storage\FileUploadException::class
+			}, \UnexpectedValueException::class
 		);
 	}
 
@@ -75,11 +84,13 @@ final class StrictFiles extends TestCase {
 				(new Storage\StrictFiles(
 					new Storage\StoredFiles(new Storage\FakePath),
 					new Storage\FakePath,
-					['image/jpeg', 'image/gif']
+					new Storage\FileExtensions(
+						['image/gif', 'image/jpeg']
+					)
 				))->upload(
 					'fakeName', $this->image, self::VALID_SIZE, UPLOAD_ERR_OK
 				);
-			}, Storage\FileUploadException::class
+			}, \UnexpectedValueException::class
 		);
 	}
 
@@ -89,7 +100,9 @@ final class StrictFiles extends TestCase {
 				(new Storage\StrictFiles(
 					new Storage\StoredFiles(new Storage\FakePath),
 					new Storage\FakePath,
-					['image/png']
+					new Storage\FileExtensions(
+						['image/png']
+					)
 				))->upload(
 					'fakeName', $this->image, self::VALID_SIZE, UPLOAD_ERR_OK
 				);
@@ -103,15 +116,16 @@ final class StrictFiles extends TestCase {
 				(new Storage\StrictFiles(
 					new Storage\ImageFiles(
 						new Storage\StoredFiles(new Storage\FakePath),
-						new Storage\FakePath,
-						1000, 1000
+						new Storage\InformativeImage
 					),
 					new Storage\FakePath,
-					['image/jpeg']
+					new Storage\FileExtensions(
+						['image/jpeg']
+					)
 				))->upload(
 					'fakeName', $this->image, self::VALID_SIZE, UPLOAD_ERR_OK
 				);
-			}, Storage\FileUploadException::class
+			}, \UnexpectedValueException::class
 		);
 	}
 
@@ -121,11 +135,12 @@ final class StrictFiles extends TestCase {
 				(new Storage\StrictFiles(
 					new Storage\ImageFiles(
 						new Storage\StoredFiles(new Storage\FakePath),
-						new Storage\FakePath,
-						1000, 1000
+						new Storage\InformativeImage
 					),
 					new Storage\FakePath,
-					['image/png']
+					new Storage\FileExtensions(
+						['image/png']
+					)
 				))->upload(
 					'fakeName', $this->image, self::VALID_SIZE, UPLOAD_ERR_OK
 				);
@@ -139,9 +154,11 @@ final class StrictFiles extends TestCase {
 				(new Storage\StrictFiles(
 					new Storage\StoredFiles(new Storage\FakePath),
 					new Storage\FakePath,
-					['image/jpeg', 'image/gif']
+					new Storage\FileExtensions(
+						['image/gif', 'image/png', 'image/jpeg']
+					)
 				))->delete('invalid/path/to/file');
-			}, Storage\FileDeletionException::class
+			}, \UnexpectedValueException::class
 		);
 	}
 }
