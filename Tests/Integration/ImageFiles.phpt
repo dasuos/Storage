@@ -24,8 +24,9 @@ final class ImageFiles extends TestCase {
 	public function testUploadedImageWithExceedingDimension() {
 		Assert::exception(
 			function() {
+				$path = new Storage\FilePath('fake/directory');
 				(new Storage\ImageFiles(
-					new Storage\StoredFiles(new Storage\FakePath),
+					new Storage\StoredFiles($path),
 					new Storage\InformativeImage
 				))->upload(
 					'fakeName',
@@ -42,8 +43,9 @@ final class ImageFiles extends TestCase {
 	public function testUploadedImageWithValidDimension() {
 		Assert::noError(
 			function() {
+				$path = new Storage\FilePath('fake/directory');
 				(new Storage\ImageFiles(
-					new Storage\StoredFiles(new Storage\FakePath),
+					new Storage\StoredFiles($path),
 					new Storage\InformativeImage
 				))->upload(
 					'fakeName',
@@ -58,8 +60,9 @@ final class ImageFiles extends TestCase {
 	public function testInvalidUploadedImage() {
 		Assert::exception(
 			function() {
+				$path = new Storage\FilePath('fake/directory');
 				(new Storage\ImageFiles(
-					new Storage\StoredFiles(new Storage\FakePath),
+					new Storage\StoredFiles($path),
 					new Storage\InformativeImage
 				))->upload(
 					'fakeName', 'invalidImage', 1900000, UPLOAD_ERR_OK
@@ -73,8 +76,9 @@ final class ImageFiles extends TestCase {
 	public function testInvalidPngImageToRotate() {
 		Assert::noError(
 			function() {
+				$path = new Storage\FilePath('fake/directory');
 				(new Storage\ImageFiles(
-					new Storage\StoredFiles(new Storage\FakePath),
+					new Storage\StoredFiles($path),
 					new Storage\RotatedImage(
 						new Storage\InformativeImage
 					)
