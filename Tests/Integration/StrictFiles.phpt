@@ -41,7 +41,8 @@ final class StrictFiles extends TestCase {
 					self::VALID_SIZE,
 					UPLOAD_ERR_CANT_WRITE
 				);
-			}, \UnexpectedValueException::class
+			},
+			\UnexpectedValueException::class
 		);
 	}
 

@@ -19,7 +19,7 @@ final class RotatedImage implements Image {
 	}
 
 	private function rotate(string $path, array $exif): void {
-		$image = imagecreatefromjpeg($path);
+		$image = @imagecreatefromjpeg($path);
 		if ($image && $exif && isset($exif['Orientation'])) {
 			imagerotate(
 				$image,
