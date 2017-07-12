@@ -6,7 +6,7 @@ declare(strict_types = 1);
 */
 namespace Dasuos\Tests\Integration;
 
-use Tester\{TestCase, Assert, FileMock};
+use Tester\{TestCase, Assert};
 use Dasuos\{Tests, Storage};
 
 require __DIR__ . '/../bootstrap.php';
@@ -14,11 +14,28 @@ require __DIR__ . '/../bootstrap.php';
 final class StoredFiles extends TestCase {
 
 	public function testDeletedFileInDirectory() {
-		$mock = FileMock::create('data', 'txt');
-		(new Storage\StoredFiles(
-			new Storage\FakePath
-		))->delete($mock);
-		Assert::false(file_exists($mock));
+		Assert::noError(
+			function() {
+				$path = (new Tests\TestCase\PngImage(
+					__DIR__ . '/../temp/StoredFiles', 800, 600
+				))->path();
+				(new Storage\StoredFiles(
+					new Storage\FakePath
+				))->delete($path);
+			}
+		);
+	}
+
+	public function testDeletingNonexistentFile() {
+		Assert::exception(
+			function() {
+				$path = new Storage\FilePath('fake/directory');
+				(new Storage\StoredFiles($path))
+					->delete('invalid/path/to/file');
+			},
+			\UnexpectedValueException::class,
+			'Given file does not exist and cannot be deleted'
+		);
 	}
 }
 

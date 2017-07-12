@@ -41,7 +41,7 @@ final class ImageFiles extends TestCase {
 	}
 
 	public function testUploadedImageWithValidDimension() {
-		Assert::noError(
+		Assert::exception(
 			function() {
 				$path = new Storage\FilePath('fake/directory');
 				(new Storage\ImageFiles(
@@ -53,7 +53,9 @@ final class ImageFiles extends TestCase {
 					1900000,
 					UPLOAD_ERR_OK
 				);
-			}
+			},
+			\UnexpectedValueException::class,
+			'File must be uploaded via HTTP POST'
 		);
 	}
 
@@ -74,7 +76,7 @@ final class ImageFiles extends TestCase {
 	}
 
 	public function testInvalidPngImageToRotate() {
-		Assert::noError(
+		Assert::exception(
 			function() {
 				$path = new Storage\FilePath('fake/directory');
 				(new Storage\ImageFiles(
@@ -88,7 +90,9 @@ final class ImageFiles extends TestCase {
 					1900000,
 					UPLOAD_ERR_OK
 				);
-			}
+			},
+			\UnexpectedValueException::class,
+			'File must be uploaded via HTTP POST'
 		);
 	}
 

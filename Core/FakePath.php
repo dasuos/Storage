@@ -4,7 +4,7 @@ namespace Dasuos\Storage;
 
 final class FakePath implements Path {
 
-	public function location(string $mock): string {
-		return $mock;
+	public function location(string $path): string {
+		return $path;
 	}
 }

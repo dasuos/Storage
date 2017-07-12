@@ -32,10 +32,6 @@ final class StrictFiles implements Files {
 	}
 
 	public function delete(string $name): void {
-		if (!file_exists($this->path->location($name)))
-			throw new \UnexpectedValueException(
-				'Given file does not exist and cannot be deleted'
-			);
 		$this->origin->delete($name);
 	}
 

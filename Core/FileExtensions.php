@@ -12,7 +12,9 @@ final class FileExtensions implements Extensions {
 
 	public function allowed(string $path): bool {
 		return in_array(
-			finfo_file(finfo_open(FILEINFO_MIME_TYPE), $path), $this->list, true
+			finfo_file(finfo_open(FILEINFO_MIME_TYPE), $path),
+			$this->list,
+			true
 		);
 	}
 }

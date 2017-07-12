@@ -13,10 +13,18 @@ final class StoredFiles implements Files {
 	public function upload(
 		string $name, string $tmp, int $size, int $error
 	): void {
+		if (!is_uploaded_file($tmp))
+			throw new \UnexpectedValueException(
+				'File must be uploaded via HTTP POST'
+			);
 		move_uploaded_file($tmp, $this->path->location($name));
 	}
 
 	public function delete(string $name): void {
+		if (!file_exists($this->path->location($name)))
+			throw new \UnexpectedValueException(
+				'Given file does not exist and cannot be deleted'
+			);
 		unlink($this->path->location($name));
 	}
 }
