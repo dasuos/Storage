@@ -48,8 +48,8 @@ final class RotatedImageFiles implements Files {
 		return $image;
 	}
 
-	private function flip($image, int $orientation) {
-		return in_array($orientation, self::EXIF_FLIP_FLAGS) ?
-			imageflip($image, IMG_FLIP_HORIZONTAL) : $image;
+	private function flip($image, int $orientation): void {
+		if (in_array($orientation, self::EXIF_FLIP_FLAGS))
+			imageflip($image, IMG_FLIP_HORIZONTAL);
 	}
 }
