@@ -25,7 +25,7 @@ final class InformativeImage implements Image {
 	}
 
 	private function exif(string $path): array {
-		$exif = $exif = @exif_read_data($path);
+		$exif = @exif_read_data($path);
 		return $exif ? $exif : [];
 	}
 }

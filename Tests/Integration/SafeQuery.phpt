@@ -66,6 +66,18 @@ final class SafeQuery extends TestCase {
 		);
 	}
 
+	public function testFetchingSingleColumn() {
+		$this->database->exec(
+			"INSERT INTO test_table (id, test_value) VALUES (1, 'foo')"
+		);
+		Assert::equal(
+			'foo',
+			(new Storage\SafeQuery(
+				$this->database
+			))->column('SELECT test_value FROM test_table WHERE id = 1')
+		);
+	}
+
 	public function testFetchingWithPositionPlaceholder() {
 		$this->database->exec(
 			"INSERT INTO test_table (id, test_value) VALUES (1, 'foo')"
@@ -97,6 +109,53 @@ final class SafeQuery extends TestCase {
 			(new Storage\SafeQuery(
 				$this->database
 			))->rows('SELECT * FROM test_table WHERE id = :id', ['id' => 1])
+		);
+	}
+
+	public function testPerformingQueryWithoutPlaceholders() {
+		$query = new Storage\SafeQuery($this->database);
+		$query->perform(
+			"INSERT INTO test_table (id, test_value) VALUES (1, 'foo')"
+		);
+		Assert::equal(
+			[
+				['id' => 1, 'test_value' => 'foo',],
+			],
+			(new Storage\SafeQuery(
+				$this->database
+			))->rows('SELECT * FROM test_table WHERE id = 1')
+		);
+	}
+
+	public function testPerformingQueryWithNamedPlaceholder() {
+		$query = new Storage\SafeQuery($this->database);
+		$query->perform(
+			"INSERT INTO test_table (id, test_value) VALUES (1, :test_value)",
+			['test_value' => 'foo']
+		);
+		Assert::equal(
+			[
+				['id' => 1, 'test_value' => 'foo',],
+			],
+			(new Storage\SafeQuery(
+				$this->database
+			))->rows('SELECT * FROM test_table WHERE id = 1')
+		);
+	}
+
+	public function testPerformingQueryWithPositionPlaceholder() {
+		$query = new Storage\SafeQuery($this->database);
+		$query->perform(
+			"INSERT INTO test_table (id, test_value) VALUES (1, ?)",
+			['foo']
+		);
+		Assert::equal(
+			[
+				['id' => 1, 'test_value' => 'foo',],
+			],
+			(new Storage\SafeQuery(
+				$this->database
+			))->rows('SELECT * FROM test_table WHERE id = 1')
 		);
 	}
 
