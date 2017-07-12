@@ -126,7 +126,7 @@ final class StrictFiles extends TestCase {
 			function() {
 				$path = new Storage\FilePath('fake/directory');
 				(new Storage\StrictFiles(
-					new Storage\ImageFiles(
+					new Storage\ExceedingImageFiles(
 						new Storage\StoredFiles($path),
 						new Storage\InformativeImage
 					),
@@ -144,7 +144,7 @@ final class StrictFiles extends TestCase {
 			function() {
 				$path = new Storage\FilePath('fake/directory');
 				(new Storage\StrictFiles(
-					new Storage\ImageFiles(
+					new Storage\ExceedingImageFiles(
 						new Storage\StoredFiles($path),
 						new Storage\InformativeImage
 					),

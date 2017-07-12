@@ -2,10 +2,10 @@
 declare(strict_types = 1);
 namespace Dasuos\Storage;
 
-final class ImageFiles implements Files {
+final class ExceedingImageFiles implements Files {
 
-	private const MAXIMUM_WIDTH = 2000;
-	private const MAXIMUM_HEIGHT = 2000;
+	private const MAXIMUM_WIDTH = 5000;
+	private const MAXIMUM_HEIGHT = 5000;
 
 	private $origin;
 	private $image;

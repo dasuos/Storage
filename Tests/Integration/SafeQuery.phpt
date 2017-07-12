@@ -121,9 +121,7 @@ final class SafeQuery extends TestCase {
 			[
 				['id' => 1, 'test_value' => 'foo',],
 			],
-			(new Storage\SafeQuery(
-				$this->database
-			))->rows('SELECT * FROM test_table WHERE id = 1')
+			$query->rows('SELECT * FROM test_table WHERE id = 1')
 		);
 	}
 
@@ -137,9 +135,7 @@ final class SafeQuery extends TestCase {
 			[
 				['id' => 1, 'test_value' => 'foo',],
 			],
-			(new Storage\SafeQuery(
-				$this->database
-			))->rows('SELECT * FROM test_table WHERE id = 1')
+			$query->rows('SELECT * FROM test_table WHERE id = 1')
 		);
 	}
 
@@ -153,9 +149,7 @@ final class SafeQuery extends TestCase {
 			[
 				['id' => 1, 'test_value' => 'foo',],
 			],
-			(new Storage\SafeQuery(
-				$this->database
-			))->rows('SELECT * FROM test_table WHERE id = 1')
+			$query->rows('SELECT * FROM test_table WHERE id = 1')
 		);
 	}
 

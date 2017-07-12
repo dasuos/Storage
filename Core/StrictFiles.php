@@ -4,7 +4,7 @@ namespace Dasuos\Storage;
 
 final class StrictFiles implements Files {
 
-	private const MAXIMUM_SIZE = 2000000;
+	private const MAXIMUM_SIZE = 6000000;
 
 	private $origin;
 	private $path;

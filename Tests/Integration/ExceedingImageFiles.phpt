@@ -11,7 +11,7 @@ use Dasuos\{Tests, Storage, Tests\TestCase\PngImage};
 
 require __DIR__ . '/../bootstrap.php';
 
-final class ImageFiles extends TestCase {
+final class ExceedingImageFiles extends TestCase {
 
 	private $directory;
 
@@ -25,12 +25,12 @@ final class ImageFiles extends TestCase {
 		Assert::exception(
 			function() {
 				$path = new Storage\FilePath('fake/directory');
-				(new Storage\ImageFiles(
+				(new Storage\ExceedingImageFiles(
 					new Storage\StoredFiles($path),
 					new Storage\InformativeImage
 				))->upload(
 					'fakeName',
-					(new PngImage($this->directory, 2500, 2500))->path(),
+					(new PngImage($this->directory, 5500, 5500))->path(),
 					1900000,
 					UPLOAD_ERR_OK
 				);
@@ -44,7 +44,7 @@ final class ImageFiles extends TestCase {
 		Assert::exception(
 			function() {
 				$path = new Storage\FilePath('fake/directory');
-				(new Storage\ImageFiles(
+				(new Storage\ExceedingImageFiles(
 					new Storage\StoredFiles($path),
 					new Storage\InformativeImage
 				))->upload(
@@ -63,7 +63,7 @@ final class ImageFiles extends TestCase {
 		Assert::exception(
 			function() {
 				$path = new Storage\FilePath('fake/directory');
-				(new Storage\ImageFiles(
+				(new Storage\ExceedingImageFiles(
 					new Storage\StoredFiles($path),
 					new Storage\InformativeImage
 				))->upload(
@@ -79,11 +79,13 @@ final class ImageFiles extends TestCase {
 		Assert::exception(
 			function() {
 				$path = new Storage\FilePath('fake/directory');
-				(new Storage\ImageFiles(
-					new Storage\StoredFiles($path),
-					new Storage\RotatedImage(
-						new Storage\InformativeImage
-					)
+				$image = new Storage\InformativeImage;
+
+				(new Storage\RotatedImageFiles(
+					new Storage\ExceedingImageFiles(
+						new Storage\StoredFiles($path),
+						$image
+					), $path, $image
 				))->upload(
 					'fakeName',
 					(new PngImage($this->directory, 800, 600))->path(),
@@ -98,4 +100,4 @@ final class ImageFiles extends TestCase {
 
 }
 
-(new ImageFiles())->run();
+(new ExceedingImageFiles())->run();
