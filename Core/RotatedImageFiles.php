@@ -4,17 +4,10 @@ namespace Dasuos\Storage;
 
 final class RotatedImageFiles implements Files {
 
-	private const NO_FLAG = 0;
 	private const EXIF_FLIP_FLAGS = [7, 5, 4,];
 	private const EXIF_ORIENTATION_ANGLES = [
-		8 => 90,
-		7 => 90,
-		6 => 270,
-		5 => 270,
-		4 => 180,
-		3 => 180,
+		8 => 90, 7 => 90, 6 => 270, 5 => 270, 4 => 180, 3 => 180,
 	];
-
 
 	private $origin;
 	private $path;
@@ -48,8 +41,11 @@ final class RotatedImageFiles implements Files {
 	}
 
 	private function rotate($image, int $orientation) {
-		$angle = self::EXIF_ORIENTATION_ANGLES[$orientation] ?? self::NO_FLAG;
-		return $angle ? imagerotate($image, $angle, 0) : $image;
+		if (isset(self::EXIF_ORIENTATION_ANGLES[$orientation]))
+			return imagerotate(
+				$image, self::EXIF_ORIENTATION_ANGLES[$orientation], 0
+			);
+		return $image;
 	}
 
 	private function flip($image, int $orientation) {
