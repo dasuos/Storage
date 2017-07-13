@@ -4,15 +4,18 @@ namespace Dasuos\Storage;
 
 final class ExceedingImageFiles implements Files {
 
-	private const MAXIMUM_WIDTH = 5000;
-	private const MAXIMUM_HEIGHT = 5000;
-
 	private $origin;
 	private $image;
+	private $width;
+	private $height;
 
-	public function __construct(Files $origin, Image $image) {
+	public function __construct(
+		Files $origin, Image $image, int $width, int $height
+	) {
 		$this->origin = $origin;
 		$this->image = $image;
+		$this->width = $width;
+		$this->height = $height;
 	}
 
 	public function upload(
@@ -31,7 +34,6 @@ final class ExceedingImageFiles implements Files {
 	}
 
 	private function exceeding(int $width, int $height): bool {
-		return ($width > self::MAXIMUM_WIDTH) ||
-			($height > self::MAXIMUM_HEIGHT);
+		return ($width > $this->width) || ($height > $this->height);
 	}
 }

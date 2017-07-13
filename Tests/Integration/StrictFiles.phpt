@@ -128,7 +128,8 @@ final class StrictFiles extends TestCase {
 				(new Storage\StrictFiles(
 					new Storage\ExceedingImageFiles(
 						new Storage\StoredFiles($path),
-						new Storage\InformativeImage
+						new Storage\InformativeImage,
+						2000, 2000
 					),
 					$path,
 					new Storage\FileExtensions(['image/jpeg'])
@@ -146,7 +147,8 @@ final class StrictFiles extends TestCase {
 				(new Storage\StrictFiles(
 					new Storage\ExceedingImageFiles(
 						new Storage\StoredFiles($path),
-						new Storage\InformativeImage
+						new Storage\InformativeImage,
+						2000, 2000
 					),
 					$path,
 					new Storage\FileExtensions(['image/png'])

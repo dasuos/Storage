@@ -27,10 +27,11 @@ final class ExceedingImageFiles extends TestCase {
 				$path = new Storage\FilePath('fake/directory');
 				(new Storage\ExceedingImageFiles(
 					new Storage\StoredFiles($path),
-					new Storage\InformativeImage
+					new Storage\InformativeImage,
+					800, 600
 				))->upload(
 					'fakeName',
-					(new PngImage($this->directory, 5500, 5500))->path(),
+					(new PngImage($this->directory, 2000, 2000))->path(),
 					1900000,
 					UPLOAD_ERR_OK
 				);
@@ -46,7 +47,8 @@ final class ExceedingImageFiles extends TestCase {
 				$path = new Storage\FilePath('fake/directory');
 				(new Storage\ExceedingImageFiles(
 					new Storage\StoredFiles($path),
-					new Storage\InformativeImage
+					new Storage\InformativeImage,
+					2000, 2000
 				))->upload(
 					'fakeName',
 					(new PngImage($this->directory, 800, 600))->path(),
@@ -65,7 +67,8 @@ final class ExceedingImageFiles extends TestCase {
 				$path = new Storage\FilePath('fake/directory');
 				(new Storage\ExceedingImageFiles(
 					new Storage\StoredFiles($path),
-					new Storage\InformativeImage
+					new Storage\InformativeImage,
+					800, 600
 				))->upload(
 					'fakeName', 'invalidImage', 1900000, UPLOAD_ERR_OK
 				);
@@ -84,7 +87,7 @@ final class ExceedingImageFiles extends TestCase {
 				(new Storage\RotatedImageFiles(
 					new Storage\ExceedingImageFiles(
 						new Storage\StoredFiles($path),
-						$image
+						$image, 2000, 2000
 					), $path, $image
 				))->upload(
 					'fakeName',
