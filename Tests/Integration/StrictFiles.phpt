@@ -20,9 +20,9 @@ final class StrictFiles extends TestCase {
 
 	public function setup() {
 		parent::setup();
-		Environment::lock('StrictFiles', __DIR__ . '/../temp');
+		Environment::lock('StrictFiles', __DIR__ . '/../Temp');
 		$this->image = (new PngImage(
-			__DIR__ . '/../temp/StrictFiles',800, 600
+			__DIR__ . '/../Temp/StrictFiles',800, 600
 		))->path();
 	}
 
@@ -126,7 +126,7 @@ final class StrictFiles extends TestCase {
 			function() {
 				$path = new Storage\FilePath('fake/directory');
 				(new Storage\StrictFiles(
-					new Storage\ExceedingImageFiles(
+					new Storage\ExceedingImages(
 						new Storage\StoredFiles($path),
 						new Storage\InformativeImage,
 						2000, 2000
@@ -145,7 +145,7 @@ final class StrictFiles extends TestCase {
 			function() {
 				$path = new Storage\FilePath('fake/directory');
 				(new Storage\StrictFiles(
-					new Storage\ExceedingImageFiles(
+					new Storage\ExceedingImages(
 						new Storage\StoredFiles($path),
 						new Storage\InformativeImage,
 						2000, 2000
@@ -157,7 +157,7 @@ final class StrictFiles extends TestCase {
 				);
 			},
 			\UnexpectedValueException::class,
-			'File must be uploaded via HTTP POST'
+			'Directory path is invalid'
 		);
 	}
 }

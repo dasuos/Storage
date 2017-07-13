@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 namespace Dasuos\Storage;
 
-final class ExceedingImageFiles implements Files {
+final class ExceedingImages implements Files {
 
 	private $origin;
 	private $image;

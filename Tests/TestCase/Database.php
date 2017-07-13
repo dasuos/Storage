@@ -12,7 +12,7 @@ trait Database {
 	protected $database;
 
 	public function setup() {
-		Environment::lock('Database', __DIR__ . '/../temp');
+		Environment::lock('Database', __DIR__ . '/../Temp');
 		$credentials = parse_ini_file(
 			__DIR__ . '/../TestCase/database.local.ini'
 		);

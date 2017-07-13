@@ -34,7 +34,7 @@ final class StoredFiles extends TestCase {
 					->delete('invalid/path/to/file');
 			},
 			\UnexpectedValueException::class,
-			'Given file does not exist and cannot be deleted'
+			'Directory path is invalid'
 		);
 	}
 }

@@ -2,9 +2,9 @@
 declare(strict_types = 1);
 namespace Dasuos\Storage;
 
-final class RotatedImageFiles implements Files {
+final class RotatedImages implements Files {
 
-	private const EXIF_FLIP_FLAGS = [7, 5, 4,];
+	private const EXIF_FLIP_FLAGS = [7, 5, 4, 2,];
 	private const EXIF_ORIENTATION_ANGLES = [
 		8 => 90, 7 => 90, 6 => 270, 5 => 270, 4 => 180, 3 => 180,
 	];

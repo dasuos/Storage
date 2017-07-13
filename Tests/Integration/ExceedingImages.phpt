@@ -11,21 +11,21 @@ use Dasuos\{Tests, Storage, Tests\TestCase\PngImage};
 
 require __DIR__ . '/../bootstrap.php';
 
-final class ExceedingImageFiles extends TestCase {
+final class ExceedingImages extends TestCase {
 
 	private $directory;
 
 	public function setup() {
 		parent::setup();
-		Environment::lock('ImageFiles', __DIR__ . '/../temp');
-		$this->directory = __DIR__ . '/../temp/ImageFiles';
+		Environment::lock('ExceedingImages', __DIR__ . '/../Temp');
+		$this->directory = __DIR__ . '/../Temp/ExceedingImages';
 	}
 
 	public function testUploadedImageWithExceedingDimension() {
 		Assert::exception(
 			function() {
 				$path = new Storage\FilePath('fake/directory');
-				(new Storage\ExceedingImageFiles(
+				(new Storage\ExceedingImages(
 					new Storage\StoredFiles($path),
 					new Storage\InformativeImage,
 					800, 600
@@ -45,7 +45,7 @@ final class ExceedingImageFiles extends TestCase {
 		Assert::exception(
 			function() {
 				$path = new Storage\FilePath('fake/directory');
-				(new Storage\ExceedingImageFiles(
+				(new Storage\ExceedingImages(
 					new Storage\StoredFiles($path),
 					new Storage\InformativeImage,
 					2000, 2000
@@ -65,7 +65,7 @@ final class ExceedingImageFiles extends TestCase {
 		Assert::exception(
 			function() {
 				$path = new Storage\FilePath('fake/directory');
-				(new Storage\ExceedingImageFiles(
+				(new Storage\ExceedingImages(
 					new Storage\StoredFiles($path),
 					new Storage\InformativeImage,
 					800, 600
@@ -84,8 +84,8 @@ final class ExceedingImageFiles extends TestCase {
 				$path = new Storage\FilePath('fake/directory');
 				$image = new Storage\InformativeImage;
 
-				(new Storage\RotatedImageFiles(
-					new Storage\ExceedingImageFiles(
+				(new Storage\RotatedImages(
+					new Storage\ExceedingImages(
 						new Storage\StoredFiles($path),
 						$image, 2000, 2000
 					), $path, $image
@@ -103,4 +103,4 @@ final class ExceedingImageFiles extends TestCase {
 
 }
 
-(new ExceedingImageFiles())->run();
+(new ExceedingImages())->run();
