@@ -6,18 +6,28 @@ declare(strict_types = 1);
 */
 namespace Dasuos\Tests\Integration;
 
-use Tester\{TestCase, Assert};
-use Dasuos\{Tests, Storage};
+use Tester\{TestCase, Assert, Environment};
+use Dasuos\{Tests, Storage, Tests\TestCase\PngImage};
 
 require __DIR__ . '/../bootstrap.php';
 
 final class UploadedFiles extends TestCase {
 
+	private $file;
+
+	public function setup() {
+		parent::setup();
+		Environment::lock('UploadedFiles', __DIR__ . '/../Temp');
+		$this->file = (new PngImage(
+			__DIR__ . '/../Temp/UploadedFiles', 800, 600
+		))->path();
+	}
+
 	public function testDeletedFileInDirectory() {
 		Assert::noError(
 			function() {
 				$path = (new Tests\TestCase\PngImage(
-					__DIR__ . '/../temp/StoredFiles', 800, 600
+					__DIR__ . '/../Temp/UploadedFiles', 800, 600
 				))->path();
 				(new Storage\UploadedFiles(
 					new Storage\FakePath
@@ -34,7 +44,24 @@ final class UploadedFiles extends TestCase {
 					->delete('invalid/path/to/file');
 			},
 			\UnexpectedValueException::class,
-			'Directory path is invalid'
+			'File path is invalid'
+		);
+	}
+
+	public function testSavingFileWithoutHttpPostMechanism() {
+		Assert::exception(
+			function() {
+				$path = new Storage\FilePath(dirname($this->file));
+				(new Storage\UploadedFiles($path))
+					->save(
+						basename($this->file),
+						$this->file,
+						filesize($this->file),
+						UPLOAD_ERR_OK
+					);
+			},
+			\UnexpectedValueException::class,
+			'File must be uploaded via HTTP POST upload mechanism'
 		);
 	}
 }

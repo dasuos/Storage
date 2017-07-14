@@ -15,7 +15,7 @@ final class UploadedFiles implements Files {
 	): void {
 		if (!is_uploaded_file($tmp))
 			throw new \UnexpectedValueException(
-				'File must be uploaded via HTTP POST'
+				'File must be uploaded via HTTP POST upload mechanism'
 			);
 		move_uploaded_file($tmp, $this->path->location($name));
 	}

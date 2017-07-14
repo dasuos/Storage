@@ -14,7 +14,7 @@ require __DIR__ . '/../bootstrap.php';
 final class StrictFiles extends TestCase {
 
 	private const VALID_SIZE = 1900000;
-	private const EXCEEDING_SIZE = 3000000;
+	private const EXCEEDING_SIZE = 7000000;
 
 	private $image;
 
@@ -29,9 +29,9 @@ final class StrictFiles extends TestCase {
 	public function testUnsuccessfulUpload() {
 		Assert::exception(
 			function() {
-				$path = new Storage\FilePath('fake/directory');
+				$path = new Storage\FakePath;
 				(new Storage\StrictFiles(
-					new Storage\UploadedFiles($path),
+					new Storage\FakeFiles,
 					$path,
 					new Storage\FileExtensions(
 						['image/gif', 'image/png', 'image/jpeg']
@@ -50,11 +50,9 @@ final class StrictFiles extends TestCase {
 	public function testExistingFileInUpload() {
 		Assert::exception(
 			function() {
-				$path = new Storage\FilePath(__DIR__ . '/../temp/StrictFiles');
-				var_dump(basename($this->image));
 				(new Storage\StrictFiles(
-					new Storage\UploadedFiles($path),
-					$path,
+					new Storage\FakeFiles,
+					new Storage\FilePath(dirname($this->image)),
 					new Storage\FileExtensions(
 						['image/gif', 'image/png', 'image/jpeg']
 					)
@@ -72,9 +70,9 @@ final class StrictFiles extends TestCase {
 	public function testExceedingSizeInUpload() {
 		Assert::exception(
 			function() {
-				$path = new Storage\FilePath('fake/directory');
+				$path = new Storage\FakePath;
 				(new Storage\StrictFiles(
-					new Storage\UploadedFiles($path),
+					new Storage\FakeFiles,
 					$path,
 					new Storage\FileExtensions(
 						['image/gif', 'image/png', 'image/jpeg']
@@ -92,9 +90,9 @@ final class StrictFiles extends TestCase {
 	public function testFileWithProhibitExtensionInUpload() {
 		Assert::exception(
 			function() {
-				$path = new Storage\FilePath('fake/directory');
+				$path = new Storage\FakePath;
 				(new Storage\StrictFiles(
-					new Storage\UploadedFiles($path),
+					new Storage\FakeFiles,
 					$path,
 					new Storage\FileExtensions(['image/gif', 'image/jpeg'])
 				))->save(
@@ -105,59 +103,17 @@ final class StrictFiles extends TestCase {
 	}
 
 	public function testFileWithValidExtensionInUpload() {
-		Assert::exception(
+		Assert::noError(
 			function() {
-				$path = new Storage\FilePath(__DIR__);
+				$path = new Storage\FakePath;
 				(new Storage\StrictFiles(
-					new Storage\UploadedFiles($path),
+					new Storage\FakeFiles,
 					$path,
 					new Storage\FileExtensions(['image/png'])
 				))->save(
 					'fakeName', $this->image, self::VALID_SIZE, UPLOAD_ERR_OK
 				);
-			},
-			\UnexpectedValueException::class,
-			'File must be uploaded via HTTP POST'
-		);
-	}
-
-	public function testImageWithInvalidExtensionInUpload() {
-		Assert::exception(
-			function() {
-				$path = new Storage\FilePath('fake/directory');
-				(new Storage\StrictFiles(
-					new Storage\ExceedingImages(
-						new Storage\UploadedFiles($path),
-						new Storage\InformativeImage,
-						2000, 2000
-					),
-					$path,
-					new Storage\FileExtensions(['image/jpeg'])
-				))->save(
-					'fakeName', $this->image, self::VALID_SIZE, UPLOAD_ERR_OK
-				);
-			}, \UnexpectedValueException::class
-		);
-	}
-
-	public function testImageWithValidExtensionInUpload() {
-		Assert::exception(
-			function() {
-				$path = new Storage\FilePath('fake/directory');
-				(new Storage\StrictFiles(
-					new Storage\ExceedingImages(
-						new Storage\UploadedFiles($path),
-						new Storage\InformativeImage,
-						2000, 2000
-					),
-					$path,
-					new Storage\FileExtensions(['image/png'])
-				))->save(
-					'fakeName', $this->image, self::VALID_SIZE, UPLOAD_ERR_OK
-				);
-			},
-			\UnexpectedValueException::class,
-			'Directory path is invalid'
+			}
 		);
 	}
 }

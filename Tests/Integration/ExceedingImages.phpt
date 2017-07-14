@@ -57,7 +57,7 @@ final class ExceedingImages extends TestCase {
 				);
 			},
 			\UnexpectedValueException::class,
-			'File must be uploaded via HTTP POST'
+			'File must be uploaded via HTTP POST upload mechanism'
 		);
 	}
 
@@ -79,14 +79,14 @@ final class ExceedingImages extends TestCase {
 	}
 
 	public function testInvalidPngImageToRotate() {
-		Assert::exception(
+		Assert::noError(
 			function() {
-				$path = new Storage\FilePath('fake/directory');
+				$path = new Storage\FakePath;
 				$image = new Storage\InformativeImage;
 
 				(new Storage\RotatedImages(
 					new Storage\ExceedingImages(
-						new Storage\UploadedFiles($path),
+						new Storage\FakeFiles,
 						$image, 2000, 2000
 					), $path, $image
 				))->save(
@@ -95,9 +95,7 @@ final class ExceedingImages extends TestCase {
 					1900000,
 					UPLOAD_ERR_OK
 				);
-			},
-			\UnexpectedValueException::class,
-			'File must be uploaded via HTTP POST'
+			}
 		);
 	}
 
