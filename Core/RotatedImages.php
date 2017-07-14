@@ -4,9 +4,14 @@ namespace Dasuos\Storage;
 
 final class RotatedImages implements Files {
 
-	private const EXIF_FLIP_FLAGS = [7, 5, 4, 2,];
+	private const EXIF_FLIP_FLAGS = [7, 5, 4, 2];
 	private const EXIF_ORIENTATION_ANGLES = [
-		8 => 90, 7 => 90, 6 => 270, 5 => 270, 4 => 180, 3 => 180,
+		8 => 90,
+		7 => 90,
+		6 => 270,
+		5 => 270,
+		4 => 180,
+		3 => 180,
 	];
 
 	private $origin;
@@ -25,7 +30,7 @@ final class RotatedImages implements Files {
 		$this->origin->save($name, $tmp, $size, $error);
 		$this->modify(
 			$this->path->location($name),
-			$this->image->properties($tmp)['Exif']
+			$this->image->properties($tmp)['exif']
 		);
 	}
 

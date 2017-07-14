@@ -4,18 +4,18 @@ namespace Dasuos\Storage;
 
 final class StrictFiles implements Files {
 
-	private const MAXIMUM_SIZE = 6000000;
-
 	private $origin;
 	private $path;
 	private $extensions;
+	private $size;
 
 	public function __construct(
-		Files $origin, Path $path, Extensions $extensions
+		Files $origin, Path $path, Extensions $extensions, int $size
 	) {
 		$this->origin = $origin;
 		$this->path = $path;
 		$this->extensions = $extensions;
+		$this->size = $size;
 	}
 
 	public function save(
@@ -49,7 +49,7 @@ final class StrictFiles implements Files {
 	}
 
 	private function exceeding(int $size): bool {
-		return $size > self::MAXIMUM_SIZE;
+		return $size > $this->size;
 	}
 
 	private function permit(string $path): void {

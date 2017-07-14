@@ -35,7 +35,7 @@ final class StrictFiles extends TestCase {
 					$path,
 					new Storage\FileExtensions(
 						['image/gif', 'image/png', 'image/jpeg']
-					)
+					), 6000000
 				))->save(
 					'fakeName',
 					'fakeTmp',
@@ -55,7 +55,7 @@ final class StrictFiles extends TestCase {
 					new Storage\FilePath(dirname($this->image)),
 					new Storage\FileExtensions(
 						['image/gif', 'image/png', 'image/jpeg']
-					)
+					), 6000000
 				))->save(
 					basename($this->image),
 					$this->image,
@@ -76,7 +76,7 @@ final class StrictFiles extends TestCase {
 					$path,
 					new Storage\FileExtensions(
 						['image/gif', 'image/png', 'image/jpeg']
-					)
+					), 6000000
 				))->save(
 					'fakeName',
 					$this->image,
@@ -94,7 +94,8 @@ final class StrictFiles extends TestCase {
 				(new Storage\StrictFiles(
 					new Storage\FakeFiles,
 					$path,
-					new Storage\FileExtensions(['image/gif', 'image/jpeg'])
+					new Storage\FileExtensions(['image/gif', 'image/jpeg']),
+					6000000
 				))->save(
 					'fakeName', $this->image, self::VALID_SIZE, UPLOAD_ERR_OK
 				);
@@ -109,7 +110,8 @@ final class StrictFiles extends TestCase {
 				(new Storage\StrictFiles(
 					new Storage\FakeFiles,
 					$path,
-					new Storage\FileExtensions(['image/png'])
+					new Storage\FileExtensions(['image/png']),
+					6000000
 				))->save(
 					'fakeName', $this->image, self::VALID_SIZE, UPLOAD_ERR_OK
 				);

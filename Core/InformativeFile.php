@@ -18,9 +18,9 @@ final class InformativeFile implements File {
 
 	public function properties(): array {
 		return [
-			'Content' => file_get_contents($this->path()),
-			'Size' => filesize($this->path()),
-			'Extension' => $this->extension($this->path())
+			'content' => file_get_contents($this->path()),
+			'size' => filesize($this->path()),
+			'extension' => $this->extension($this->path())
 		];
 	}
 

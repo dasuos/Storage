@@ -19,14 +19,11 @@ final class CopiedFiles {
 			throw new \UnexpectedValueException(
 				'One or more directory paths are not valid'
 			);
-		array_map(
-			function($file) {
-				copy(
-					$this->path($this->from, $file),
-					$this->path($this->to, $file)
-				);
-			}, $this->all($this->from)
-		);
+		foreach ($this->all($this->from) as $file)
+			copy(
+				$this->path($this->from, $file),
+				$this->path($this->to, $file)
+			);
 	}
 
 	private function path(string $directory, string $file) {

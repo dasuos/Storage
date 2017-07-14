@@ -10,9 +10,9 @@ final class InformativeImage implements Image {
 	public function properties(string $path): array {
 		$size = $this->size($path);
 		return [
-			'Width' => $size[self::WIDTH],
-			'Height' => $size[self::HEIGHT],
-			'Exif'=> $this->exif($path)
+			'width' => $size[self::WIDTH],
+			'height' => $size[self::HEIGHT],
+			'exif'=> $this->exif($path)
 		];
 	}
 

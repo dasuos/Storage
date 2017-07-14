@@ -22,7 +22,7 @@ final class ExceedingImages implements Files {
 		string $name, string $tmp, int $size, int $error
 	): void {
 		$properties = $this->image->properties($tmp);
-		if ($this->exceeding($properties['Width'], $properties['Height']))
+		if ($this->exceeding($properties['width'], $properties['height']))
 			throw new \UnexpectedValueException(
 				'Image file exceeds maximum dimensions'
 			);
