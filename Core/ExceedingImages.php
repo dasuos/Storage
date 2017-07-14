@@ -18,7 +18,7 @@ final class ExceedingImages implements Files {
 		$this->height = $height;
 	}
 
-	public function upload(
+	public function save(
 		string $name, string $tmp, int $size, int $error
 	): void {
 		$properties = $this->image->properties($tmp);
@@ -26,7 +26,7 @@ final class ExceedingImages implements Files {
 			throw new \UnexpectedValueException(
 				'Image file exceeds maximum dimensions'
 			);
-		$this->origin->upload($name, $tmp, $size, $error);
+		$this->origin->save($name, $tmp, $size, $error);
 	}
 
 	public function delete(string $name): void {

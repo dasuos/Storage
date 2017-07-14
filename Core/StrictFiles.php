@@ -18,7 +18,7 @@ final class StrictFiles implements Files {
 		$this->extensions = $extensions;
 	}
 
-	public function upload(
+	public function save(
 		string $name, string $tmp, int $size, int $error
 	): void {
 		$path = $this->path->location($name);
@@ -27,7 +27,7 @@ final class StrictFiles implements Files {
 				'Given file already exists, exceeds maximum size, 
 				has prohibit extension or cannot be uploaded'
 			);
-		$this->origin->upload($name, $tmp, $size, $error);
+		$this->origin->save($name, $tmp, $size, $error);
 		$this->permit($path);
 	}
 

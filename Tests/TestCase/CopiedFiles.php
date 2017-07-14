@@ -35,8 +35,7 @@ final class CopiedFiles {
 
 	private function all(string $directory): array {
 		return array_map(
-			'basename',
-			glob($directory . DIRECTORY_SEPARATOR . self::ALL)
+			'basename', glob($directory . DIRECTORY_SEPARATOR . self::ALL)
 		);
 	}
 }

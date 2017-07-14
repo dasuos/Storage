@@ -33,7 +33,7 @@ final class RotatedImages extends TestCase {
 			new Storage\FakeFiles,
 			new Storage\FilePath(dirname($path)),
 			new Storage\InformativeImage
-		))->upload(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
+		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
 		Assert::same(
 			file_get_contents($path),
@@ -48,7 +48,7 @@ final class RotatedImages extends TestCase {
 			new Storage\FakeFiles,
 			new Storage\FilePath(dirname($path)),
 			new Storage\InformativeImage
-		))->upload(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
+		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
 		Assert::same(
 			file_get_contents($path),
@@ -65,7 +65,7 @@ final class RotatedImages extends TestCase {
 			new Storage\FakeFiles,
 			new Storage\FilePath(dirname($path)),
 			new Storage\InformativeImage
-		))->upload(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
+		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
 		Assert::same(
 			file_get_contents($path),
@@ -80,7 +80,7 @@ final class RotatedImages extends TestCase {
 			new Storage\FakeFiles,
 			new Storage\FilePath(dirname($path)),
 			new Storage\InformativeImage
-		))->upload(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
+		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
 		Assert::same(
 			file_get_contents($path),
@@ -97,7 +97,7 @@ final class RotatedImages extends TestCase {
 			new Storage\FakeFiles,
 			new Storage\FilePath(dirname($path)),
 			new Storage\InformativeImage
-		))->upload(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
+		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
 		Assert::same(
 			file_get_contents($path),
@@ -114,7 +114,7 @@ final class RotatedImages extends TestCase {
 			new Storage\FakeFiles,
 			new Storage\FilePath(dirname($path)),
 			new Storage\InformativeImage
-		))->upload(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
+		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
 		Assert::same(
 			file_get_contents($path),
@@ -131,7 +131,7 @@ final class RotatedImages extends TestCase {
 			new Storage\FakeFiles,
 			new Storage\FilePath(dirname($path)),
 			new Storage\InformativeImage
-		))->upload(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
+		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
 		Assert::same(
 			file_get_contents($path),
@@ -146,7 +146,7 @@ final class RotatedImages extends TestCase {
 			new Storage\FakeFiles,
 			new Storage\FilePath(dirname($path)),
 			new Storage\InformativeImage
-		))->upload(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
+		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
 		Assert::same(
 			file_get_contents($path),
@@ -155,7 +155,6 @@ final class RotatedImages extends TestCase {
 			)
 		);
 	}
-
 }
 
 (new RotatedImages())->run();

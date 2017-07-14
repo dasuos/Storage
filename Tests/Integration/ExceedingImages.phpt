@@ -26,10 +26,10 @@ final class ExceedingImages extends TestCase {
 			function() {
 				$path = new Storage\FilePath('fake/directory');
 				(new Storage\ExceedingImages(
-					new Storage\StoredFiles($path),
+					new Storage\UploadedFiles($path),
 					new Storage\InformativeImage,
 					800, 600
-				))->upload(
+				))->save(
 					'fakeName',
 					(new PngImage($this->directory, 2000, 2000))->path(),
 					1900000,
@@ -46,10 +46,10 @@ final class ExceedingImages extends TestCase {
 			function() {
 				$path = new Storage\FilePath('fake/directory');
 				(new Storage\ExceedingImages(
-					new Storage\StoredFiles($path),
+					new Storage\UploadedFiles($path),
 					new Storage\InformativeImage,
 					2000, 2000
-				))->upload(
+				))->save(
 					'fakeName',
 					(new PngImage($this->directory, 800, 600))->path(),
 					1900000,
@@ -66,10 +66,10 @@ final class ExceedingImages extends TestCase {
 			function() {
 				$path = new Storage\FilePath('fake/directory');
 				(new Storage\ExceedingImages(
-					new Storage\StoredFiles($path),
+					new Storage\UploadedFiles($path),
 					new Storage\InformativeImage,
 					800, 600
-				))->upload(
+				))->save(
 					'fakeName', 'invalidImage', 1900000, UPLOAD_ERR_OK
 				);
 			},
@@ -86,10 +86,10 @@ final class ExceedingImages extends TestCase {
 
 				(new Storage\RotatedImages(
 					new Storage\ExceedingImages(
-						new Storage\StoredFiles($path),
+						new Storage\UploadedFiles($path),
 						$image, 2000, 2000
 					), $path, $image
-				))->upload(
+				))->save(
 					'fakeName',
 					(new PngImage($this->directory, 800, 600))->path(),
 					1900000,

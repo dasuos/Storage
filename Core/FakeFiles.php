@@ -4,8 +4,8 @@ namespace Dasuos\Storage;
 
 final class FakeFiles implements Files {
 
-	public function upload(
-		string $name, string $tmp, int $size, int $error
+	public function save(
+		string $name, string $path, int $size, int $error
 	): void {
 		//for testing purpose
 	}

@@ -31,12 +31,12 @@ final class StrictFiles extends TestCase {
 			function() {
 				$path = new Storage\FilePath('fake/directory');
 				(new Storage\StrictFiles(
-					new Storage\StoredFiles($path),
+					new Storage\UploadedFiles($path),
 					$path,
 					new Storage\FileExtensions(
 						['image/gif', 'image/png', 'image/jpeg']
 					)
-				))->upload(
+				))->save(
 					'fakeName',
 					'fakeTmp',
 					self::VALID_SIZE,
@@ -53,12 +53,12 @@ final class StrictFiles extends TestCase {
 				$path = new Storage\FilePath(__DIR__ . '/../temp/StrictFiles');
 				var_dump(basename($this->image));
 				(new Storage\StrictFiles(
-					new Storage\StoredFiles($path),
+					new Storage\UploadedFiles($path),
 					$path,
 					new Storage\FileExtensions(
 						['image/gif', 'image/png', 'image/jpeg']
 					)
-				))->upload(
+				))->save(
 					basename($this->image),
 					$this->image,
 					self::VALID_SIZE,
@@ -74,12 +74,12 @@ final class StrictFiles extends TestCase {
 			function() {
 				$path = new Storage\FilePath('fake/directory');
 				(new Storage\StrictFiles(
-					new Storage\StoredFiles($path),
+					new Storage\UploadedFiles($path),
 					$path,
 					new Storage\FileExtensions(
 						['image/gif', 'image/png', 'image/jpeg']
 					)
-				))->upload(
+				))->save(
 					'fakeName',
 					$this->image,
 					self::EXCEEDING_SIZE,
@@ -94,10 +94,10 @@ final class StrictFiles extends TestCase {
 			function() {
 				$path = new Storage\FilePath('fake/directory');
 				(new Storage\StrictFiles(
-					new Storage\StoredFiles($path),
+					new Storage\UploadedFiles($path),
 					$path,
 					new Storage\FileExtensions(['image/gif', 'image/jpeg'])
-				))->upload(
+				))->save(
 					'fakeName', $this->image, self::VALID_SIZE, UPLOAD_ERR_OK
 				);
 			}, \UnexpectedValueException::class
@@ -109,10 +109,10 @@ final class StrictFiles extends TestCase {
 			function() {
 				$path = new Storage\FilePath(__DIR__);
 				(new Storage\StrictFiles(
-					new Storage\StoredFiles($path),
+					new Storage\UploadedFiles($path),
 					$path,
 					new Storage\FileExtensions(['image/png'])
-				))->upload(
+				))->save(
 					'fakeName', $this->image, self::VALID_SIZE, UPLOAD_ERR_OK
 				);
 			},
@@ -127,13 +127,13 @@ final class StrictFiles extends TestCase {
 				$path = new Storage\FilePath('fake/directory');
 				(new Storage\StrictFiles(
 					new Storage\ExceedingImages(
-						new Storage\StoredFiles($path),
+						new Storage\UploadedFiles($path),
 						new Storage\InformativeImage,
 						2000, 2000
 					),
 					$path,
 					new Storage\FileExtensions(['image/jpeg'])
-				))->upload(
+				))->save(
 					'fakeName', $this->image, self::VALID_SIZE, UPLOAD_ERR_OK
 				);
 			}, \UnexpectedValueException::class
@@ -146,13 +146,13 @@ final class StrictFiles extends TestCase {
 				$path = new Storage\FilePath('fake/directory');
 				(new Storage\StrictFiles(
 					new Storage\ExceedingImages(
-						new Storage\StoredFiles($path),
+						new Storage\UploadedFiles($path),
 						new Storage\InformativeImage,
 						2000, 2000
 					),
 					$path,
 					new Storage\FileExtensions(['image/png'])
-				))->upload(
+				))->save(
 					'fakeName', $this->image, self::VALID_SIZE, UPLOAD_ERR_OK
 				);
 			},

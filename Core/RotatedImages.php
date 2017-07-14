@@ -19,11 +19,11 @@ final class RotatedImages implements Files {
 		$this->image = $image;
 	}
 
-	public function upload(
+	public function save(
 		string $name, string $tmp, int $size, int $error
 	): void {
 		$properties = $this->image->properties($tmp);
-		$this->origin->upload($name, $tmp, $size, $error);
+		$this->origin->save($name, $tmp, $size, $error);
 		$this->modify($this->path->location($name), $properties['Exif']);
 	}
 
