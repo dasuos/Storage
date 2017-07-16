@@ -17,7 +17,7 @@ final class OversizedFiles implements Files {
 	private $origin;
 	private $limit;
 
-	public function __construct(Files $origin, $limit) {
+	public function __construct(Files $origin, string $limit) {
 		$this->origin = $origin;
 		$this->limit = $limit;
 	}
@@ -25,7 +25,7 @@ final class OversizedFiles implements Files {
 	public function save(
 		string $name, string $tmp, int $size, int $error
 	): void {
-		if ($this->oversized($size))
+		if ($this->oversized($size, $this->limit))
 			throw new \UnexpectedValueException(
 				'Given file exceeds maximum allowed size'
 			);
@@ -36,28 +36,26 @@ final class OversizedFiles implements Files {
 		$this->origin->delete($name);
 	}
 
-	private function oversized(int $size): bool {
-		return $size > $this->size();
+	private function oversized(int $size, string $limit): bool {
+		return $size > $this->size($limit);
 	}
 
-	public function size(): int {
-		if ($this->inBytes($this->limit))
-			return $this->conversion($this->limit);
-		if (is_int($this->limit))
-			return $this->limit;
+	private function size(string $limit): int {
+		if ($this->inBytes($limit))
+			return $this->conversion($limit);
 		throw new \UnexpectedValueException(
-			'Expected integer or string value in byte format'
+			'Expected string value in byte format'
 		);
 	}
 
-	private function inBytes($limit): bool {
+	private function inBytes(string $limit): bool {
 		return is_string($limit) &&
 			preg_match(self::BYTE_PATTERN, $limit);
 	}
 
 	public function conversion(string $limit): int {
-		return (int) ($this->number($limit) *
-			self::BYTE_SIZES[$this->multiple($limit)]);
+		return ($this->number($limit) *
+			(int) self::BYTE_SIZES[$this->multiple($limit)]);
 	}
 
 	private function number(string $limit): int {

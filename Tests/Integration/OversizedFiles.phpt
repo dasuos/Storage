@@ -13,34 +13,6 @@ require __DIR__ . '/../bootstrap.php';
 
 final class OversizedFiles extends TestCase {
 
-	public function testIntegerAllowedSize() {
-		Assert::noError(
-			function() {
-				$path = new Storage\FakePath;
-				(new Storage\OversizedFiles(
-					new Storage\FakeFiles($path), 2000000
-				))->save(
-					'fakeName', 'fakeTmp', 1600000, UPLOAD_ERR_OK
-				);
-			}
-		);
-	}
-
-	public function testIntegerExceedingSize() {
-		Assert::exception(
-			function() {
-				$path = new Storage\FakePath;
-				(new Storage\OversizedFiles(
-					new Storage\FakeFiles($path), 2000000
-				))->save(
-					'fakeName', 'fakeTmp', 3000000, UPLOAD_ERR_OK
-				);
-			},
-			\UnexpectedValueException::class,
-			'Given file exceeds maximum allowed size'
-		);
-	}
-
 	public function testByteFormatAllowedSize() {
 		Assert::noError(
 			function() {
@@ -192,7 +164,7 @@ final class OversizedFiles extends TestCase {
 				);
 			},
 			\UnexpectedValueException::class,
-			'Expected integer or string value in byte format'
+			'Expected string value in byte format'
 		);
 	}
 
@@ -207,7 +179,7 @@ final class OversizedFiles extends TestCase {
 				);
 			},
 			\UnexpectedValueException::class,
-			'Expected integer or string value in byte format'
+			'Expected string value in byte format'
 		);
 	}
 
@@ -222,7 +194,7 @@ final class OversizedFiles extends TestCase {
 				);
 			},
 			\UnexpectedValueException::class,
-			'Expected integer or string value in byte format'
+			'Expected string value in byte format'
 		);
 	}
 }
