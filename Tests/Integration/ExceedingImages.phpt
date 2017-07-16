@@ -24,9 +24,8 @@ final class ExceedingImages extends TestCase {
 	public function testUploadedImageWithExceedingDimension() {
 		Assert::exception(
 			function() {
-				$path = new Storage\FilePath('fake/directory');
 				(new Storage\ExceedingImages(
-					new Storage\UploadedFiles($path),
+					new Storage\FakeFiles,
 					new Storage\InformativeImage,
 					800, 600
 				))->save(
@@ -42,11 +41,10 @@ final class ExceedingImages extends TestCase {
 	}
 
 	public function testUploadedImageWithValidDimension() {
-		Assert::exception(
+		Assert::noError(
 			function() {
-				$path = new Storage\FilePath('fake/directory');
 				(new Storage\ExceedingImages(
-					new Storage\UploadedFiles($path),
+					new Storage\FakeFiles,
 					new Storage\InformativeImage,
 					2000, 2000
 				))->save(
@@ -55,9 +53,7 @@ final class ExceedingImages extends TestCase {
 					1900000,
 					UPLOAD_ERR_OK
 				);
-			},
-			\UnexpectedValueException::class,
-			'Given file cannot be uploaded'
+			}
 		);
 	}
 

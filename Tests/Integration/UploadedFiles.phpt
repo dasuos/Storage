@@ -44,21 +44,21 @@ final class UploadedFiles extends TestCase {
 					->delete('invalid/path/to/file');
 			},
 			\UnexpectedValueException::class,
-			'File path is invalid'
+			'Given file does not exist and cannot be deleted'
 		);
 	}
 
 	public function testSavingFileWithoutHttpPostMechanism() {
 		Assert::exception(
 			function() {
-				$path = new Storage\FilePath(dirname($this->file));
-				(new Storage\UploadedFiles($path))
-					->save(
-						basename($this->file),
-						$this->file,
-						filesize($this->file),
-						UPLOAD_ERR_OK
-					);
+				(new Storage\UploadedFiles(
+					new Storage\FilePath(dirname($this->file))
+				))->save(
+					basename($this->file),
+					$this->file,
+					filesize($this->file),
+					UPLOAD_ERR_OK
+				);
 			},
 			\UnexpectedValueException::class,
 			'Given file cannot be uploaded'

@@ -13,11 +13,13 @@ final class UploadedFiles implements Files {
 	public function save(
 		string $name, string $tmp, int $size, int $error
 	): void {
-		if (!$this->uploaded($error) || !is_uploaded_file($tmp))
+		$path = $this->path->location($name);
+		if (!$this->uploaded($tmp, $path, $error))
 			throw new \UnexpectedValueException(
 				'Given file cannot be uploaded'
 			);
-		move_uploaded_file($tmp, $this->path->location($name));
+		move_uploaded_file($tmp, $path);
+		$this->permit($path);
 	}
 
 	public function delete(string $name): void {
@@ -28,7 +30,12 @@ final class UploadedFiles implements Files {
 		unlink($this->path->location($name));
 	}
 
-	private function uploaded(int $error): bool {
-		return $error === UPLOAD_ERR_OK;
+	private function uploaded(string$tmp, string $path, int $error): bool {
+		return !file_exists($path) && is_uploaded_file($tmp) &&
+			$error === UPLOAD_ERR_OK;
+	}
+
+	private function permit(string $path): void {
+		@chmod($path, 0666);
 	}
 }
