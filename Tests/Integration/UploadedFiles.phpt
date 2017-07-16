@@ -61,7 +61,7 @@ final class UploadedFiles extends TestCase {
 					);
 			},
 			\UnexpectedValueException::class,
-			'File must be uploaded via HTTP POST upload mechanism'
+			'Given file cannot be uploaded'
 		);
 	}
 }

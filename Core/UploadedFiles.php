@@ -13,9 +13,9 @@ final class UploadedFiles implements Files {
 	public function save(
 		string $name, string $tmp, int $size, int $error
 	): void {
-		if (!is_uploaded_file($tmp))
+		if (!$this->uploaded($error) || !is_uploaded_file($tmp))
 			throw new \UnexpectedValueException(
-				'File must be uploaded via HTTP POST upload mechanism'
+				'Given file cannot be uploaded'
 			);
 		move_uploaded_file($tmp, $this->path->location($name));
 	}
@@ -26,5 +26,9 @@ final class UploadedFiles implements Files {
 				'Given file does not exist and cannot be deleted'
 			);
 		unlink($this->path->location($name));
+	}
+
+	private function uploaded(int $error): bool {
+		return $error === UPLOAD_ERR_OK;
 	}
 }
