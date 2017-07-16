@@ -27,11 +27,9 @@ final class RotatedImages implements Files {
 	public function save(
 		string $name, string $tmp, int $size, int $error
 	): void {
+		$exif = $this->image->properties($tmp)['exif'];
 		$this->origin->save($name, $tmp, $size, $error);
-		$this->modify(
-			$this->path->location($name),
-			$this->image->properties($tmp)['exif']
-		);
+		$this->modify($this->path->location($name), $exif);
 	}
 
 	public function delete(string $name): void {
