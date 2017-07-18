@@ -11,7 +11,7 @@ use Dasuos\{Tests, Storage, Tests\TestCase\PngImage};
 
 require __DIR__ . '/../bootstrap.php';
 
-final class ExceedingImages extends TestCase {
+final class MeasuredImages extends TestCase {
 
 	private $directory;
 
@@ -24,7 +24,7 @@ final class ExceedingImages extends TestCase {
 	public function testUploadedImageWithExceedingDimension() {
 		Assert::exception(
 			function() {
-				(new Storage\ExceedingImages(
+				(new Storage\MeasuredImages(
 					new Storage\FakeFiles,
 					new Storage\InformativeImage,
 					800, 600
@@ -43,7 +43,7 @@ final class ExceedingImages extends TestCase {
 	public function testUploadedImageWithValidDimension() {
 		Assert::noError(
 			function() {
-				(new Storage\ExceedingImages(
+				(new Storage\MeasuredImages(
 					new Storage\FakeFiles,
 					new Storage\InformativeImage,
 					2000, 2000
@@ -61,7 +61,7 @@ final class ExceedingImages extends TestCase {
 		Assert::exception(
 			function() {
 				$path = new Storage\FilePath('fake/directory');
-				(new Storage\ExceedingImages(
+				(new Storage\MeasuredImages(
 					new Storage\UploadedFiles($path),
 					new Storage\InformativeImage,
 					800, 600
@@ -81,7 +81,7 @@ final class ExceedingImages extends TestCase {
 				$image = new Storage\InformativeImage;
 
 				(new Storage\RotatedImages(
-					new Storage\ExceedingImages(
+					new Storage\MeasuredImages(
 						new Storage\FakeFiles,
 						$image, 2000, 2000
 					), $image, $path
@@ -97,4 +97,4 @@ final class ExceedingImages extends TestCase {
 
 }
 
-(new ExceedingImages())->run();
+(new MeasuredImages())->run();

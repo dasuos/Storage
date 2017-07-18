@@ -17,7 +17,8 @@ final class InformativeImage implements Image {
 	}
 
 	private function size(string $path): array {
-		if (!is_array($size = @getimagesize($path)))
+		$size = @getimagesize($path);
+		if (!is_array($size))
 			throw new \UnexpectedValueException(
 				'Image file is unreadable or does not have supporting format'
 			);

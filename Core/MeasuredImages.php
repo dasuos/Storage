@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 namespace Dasuos\Storage;
 
-final class ExceedingImages implements Files {
+final class MeasuredImages implements Files {
 
 	private $origin;
 	private $image;
@@ -34,6 +34,6 @@ final class ExceedingImages implements Files {
 	}
 
 	private function exceeding(int $width, int $height): bool {
-		return ($width > $this->width) || ($height > $this->height);
+		return $width > $this->width || $height > $this->height;
 	}
 }
