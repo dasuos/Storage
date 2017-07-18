@@ -84,7 +84,7 @@ final class ExceedingImages extends TestCase {
 					new Storage\ExceedingImages(
 						new Storage\FakeFiles,
 						$image, 2000, 2000
-					), $path, $image
+					), $image, $path
 				))->save(
 					'fakeName',
 					(new PngImage($this->directory, 800, 600))->path(),

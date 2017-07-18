@@ -31,8 +31,8 @@ final class RotatedImages extends TestCase {
 
 		(new Storage\RotatedImages(
 			new Storage\FakeFiles,
-			new Storage\FilePath(dirname($path)),
-			new Storage\InformativeImage
+			new Storage\InformativeImage,
+			new Storage\FilePath(dirname($path))
 		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
 		Assert::same(
@@ -46,8 +46,8 @@ final class RotatedImages extends TestCase {
 
 		(new Storage\RotatedImages(
 			new Storage\FakeFiles,
-			new Storage\FilePath(dirname($path)),
-			new Storage\InformativeImage
+			new Storage\InformativeImage,
+			new Storage\FilePath(dirname($path))
 		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
 		Assert::same(
@@ -63,8 +63,8 @@ final class RotatedImages extends TestCase {
 
 		(new Storage\RotatedImages(
 			new Storage\FakeFiles,
-			new Storage\FilePath(dirname($path)),
-			new Storage\InformativeImage
+			new Storage\InformativeImage,
+			new Storage\FilePath(dirname($path))
 		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
 		Assert::same(
@@ -78,8 +78,8 @@ final class RotatedImages extends TestCase {
 
 		(new Storage\RotatedImages(
 			new Storage\FakeFiles,
-			new Storage\FilePath(dirname($path)),
-			new Storage\InformativeImage
+			new Storage\InformativeImage,
+			new Storage\FilePath(dirname($path))
 		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
 		Assert::same(
@@ -95,8 +95,8 @@ final class RotatedImages extends TestCase {
 
 		(new Storage\RotatedImages(
 			new Storage\FakeFiles,
-			new Storage\FilePath(dirname($path)),
-			new Storage\InformativeImage
+			new Storage\InformativeImage,
+			new Storage\FilePath(dirname($path))
 		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
 		Assert::same(
@@ -112,8 +112,8 @@ final class RotatedImages extends TestCase {
 
 		(new Storage\RotatedImages(
 			new Storage\FakeFiles,
-			new Storage\FilePath(dirname($path)),
-			new Storage\InformativeImage
+			new Storage\InformativeImage,
+			new Storage\FilePath(dirname($path))
 		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
 		Assert::same(
@@ -129,8 +129,8 @@ final class RotatedImages extends TestCase {
 
 		(new Storage\RotatedImages(
 			new Storage\FakeFiles,
-			new Storage\FilePath(dirname($path)),
-			new Storage\InformativeImage
+			new Storage\InformativeImage,
+			new Storage\FilePath(dirname($path))
 		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
 		Assert::same(
@@ -144,8 +144,8 @@ final class RotatedImages extends TestCase {
 
 		(new Storage\RotatedImages(
 			new Storage\FakeFiles,
-			new Storage\FilePath(dirname($path)),
-			new Storage\InformativeImage
+			new Storage\InformativeImage,
+			new Storage\FilePath(dirname($path))
 		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
 		Assert::same(

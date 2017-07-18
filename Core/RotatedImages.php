@@ -18,10 +18,10 @@ final class RotatedImages implements Files {
 	private $path;
 	private $image;
 
-	public function __construct(Files $origin, Path $path, Image $image) {
+	public function __construct(Files $origin, Image $image, Path $path) {
 		$this->origin = $origin;
-		$this->path = $path;
 		$this->image = $image;
+		$this->path = $path;
 	}
 
 	public function save(

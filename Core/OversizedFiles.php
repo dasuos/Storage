@@ -4,8 +4,7 @@ namespace Dasuos\Storage;
 
 final class OversizedFiles implements Files {
 
-	private const BYTE_PATTERN = '/^\d+(k|M|G|T)?B$/';
-	private const BYTE_MULTIPLE_PATTERN = '/(k|M|G|T)?B/';
+	private const BYTE_PATTERN = '(k|M|G|T)?B';
 	private const BYTE_SIZES = [
 		'B' => 1,
 		'kB' => 1e3,
@@ -49,8 +48,7 @@ final class OversizedFiles implements Files {
 	}
 
 	private function inBytes(string $limit): bool {
-		return is_string($limit) &&
-			preg_match(self::BYTE_PATTERN, $limit);
+		return (bool) preg_match('~^\d+' . self::BYTE_PATTERN . '$~', $limit);
 	}
 
 	public function conversion(string $limit): int {
@@ -59,11 +57,11 @@ final class OversizedFiles implements Files {
 	}
 
 	private function number(string $limit): int {
-		return (int) preg_replace(self::BYTE_MULTIPLE_PATTERN, '', $limit);
+		return (int) preg_replace('~' . self::BYTE_PATTERN . '~', '', $limit);
 	}
 
 	private function multiple(string $limit): string {
-		preg_match(self::BYTE_MULTIPLE_PATTERN, $limit, $match);
+		preg_match('~' . self::BYTE_PATTERN . '~', $limit, $match);
 		return $match[0];
 	}
 }
