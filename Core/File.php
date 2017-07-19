@@ -4,5 +4,6 @@ namespace Dasuos\Storage;
 
 interface File {
 	public function path(): string;
+	public function content(): string;
 	public function properties(): array;
 }

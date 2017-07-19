@@ -16,15 +16,16 @@ final class InformativeFile implements File {
 		return $this->path->location($this->name);
 	}
 
-	public function properties(): array {
-		return [
-			'content' => file_get_contents($this->path()),
-			'size' => filesize($this->path()),
-			'extension' => $this->extension($this->path())
-		];
+	public function content(): string {
+		return file_get_contents($this->path());
 	}
 
-	private function extension(string $path) {
-		return finfo_file(finfo_open(FILEINFO_MIME_TYPE), $path);
+	public function properties(): array {
+		return [
+			'size' => filesize($this->path()),
+			'extension' => finfo_file(
+				finfo_open(FILEINFO_MIME_TYPE), $this->path()
+			)
+		];
 	}
 }
