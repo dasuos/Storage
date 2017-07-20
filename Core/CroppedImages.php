@@ -31,7 +31,7 @@ final class CroppedImages implements Files {
 
 	private function crop($path) {
 		$image = imagecreatefromjpeg($path);
-		$thumbnail = $this->thumbnail();
+		$thumbnail = imagecreatetruecolor($this->width, $this->height);
 
 		$originWidth = imagesx($image);
 		$originHeight = imagesy($image);
@@ -42,7 +42,6 @@ final class CroppedImages implements Files {
 		$height = $this->height(
 			$originWidth, $originHeight
 		);
-
 		imagecopyresampled(
 			$thumbnail, $image,
 			$this->centeredHorizontal($height),
@@ -55,28 +54,17 @@ final class CroppedImages implements Files {
 	}
 
 	private function height(int $width, int $height): int {
-		$wider = $this->widerThanOrigin($width, $height);
-		return $wider ? $this->height :
-			$this->integer($height / ($width / $this->width));
+		return $this->widerThanOrigin($width, $height) ?
+			$this->integer($height / ($width / $this->width)) : $this->height;
 	}
 
 	private function width(int $width, int $height): int {
-		$wider = $this->widerThanOrigin($width, $height);
-		return $wider ? $this->integer($width / ($height / $this->height)) :
-			$this->width;
+		return $this->widerThanOrigin($width, $height) ?
+			$this->width : $this->integer($width / ($height / $this->height));
 	}
 
 	private function widerThanOrigin(int $width, int $height): bool {
-		return $this->aspect($width, $height) >=
-			$this->aspect($this->width, $this->height);
-	}
-
-	private function aspect(int $width, int $height): float {
-		return $width / $height;
-	}
-
-	private function thumbnail() {
-		return imagecreatetruecolor($this->width, $this->height);
+		return $width / $height < $this->width /$this->height;
 	}
 
 	private function centeredHorizontal(int $width): int {
