@@ -25,23 +25,24 @@ final class RotatedImages extends TestCase {
 			__DIR__ . '/../TestCase/RotatedImages/Unedited', $this->temporary
 		))->copy();
 	}
-
-	public function testDownRotatedImageModification() {
-		$path = $this->temporary . '/down.jpg';
-
-		(new Storage\RotatedImages(
-			new Storage\FakeFiles,
-			new Storage\FilePath(dirname($path))
-		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
-
-		Assert::same(
-			file_get_contents($path),
-			file_get_contents($this->rotated . '/down.jpg')
-		);
+	public function loopImageModification() {
+		return [
+			['/down.jpg'],
+			['/down-mirrored.jpg'],
+			['/left.jpg'],
+			['/left-mirrored.jpg'],
+			['/right.jpg'],
+			['/right-mirrored.jpg'],
+			['/up.jpg'],
+			['/up-mirrored.jpg'],
+		];
 	}
 
-	public function testDownMirroredRotatedImageModification() {
-		$path = $this->temporary . '/down-mirrored.jpg';
+	/**
+	 * @dataProvider loopImageModification
+	 */
+	public function testImageModification($file) {
+		$path = $this->temporary . $file;
 
 		(new Storage\RotatedImages(
 			new Storage\FakeFiles,
@@ -50,101 +51,7 @@ final class RotatedImages extends TestCase {
 
 		Assert::same(
 			file_get_contents($path),
-			file_get_contents(
-				$this->rotated . '/down-mirrored.jpg'
-			)
-		);
-	}
-
-	public function testLeftRotatedImageModification() {
-		$path = $this->temporary . '/left.jpg';
-
-		(new Storage\RotatedImages(
-			new Storage\FakeFiles,
-			new Storage\FilePath(dirname($path))
-		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
-
-		Assert::same(
-			file_get_contents($path),
-			file_get_contents($this->rotated . '/left.jpg')
-		);
-	}
-
-	public function testLeftMirroredRotatedImageModification() {
-		$path = $this->temporary . '/left-mirrored.jpg';
-
-		(new Storage\RotatedImages(
-			new Storage\FakeFiles,
-			new Storage\FilePath(dirname($path))
-		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
-
-		Assert::same(
-			file_get_contents($path),
-			file_get_contents(
-				$this->rotated . '/left-mirrored.jpg'
-			)
-		);
-	}
-
-	public function testRightRotatedImageModification() {
-		$path = $this->temporary . '/right.jpg';
-
-		(new Storage\RotatedImages(
-			new Storage\FakeFiles,
-			new Storage\FilePath(dirname($path))
-		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
-
-		Assert::same(
-			file_get_contents($path),
-			file_get_contents(
-				$this->rotated . '/right.jpg'
-			)
-		);
-	}
-
-	public function testRightMirroredRotatedImageModification() {
-		$path = $this->temporary . '/right-mirrored.jpg';
-
-		(new Storage\RotatedImages(
-			new Storage\FakeFiles,
-			new Storage\FilePath(dirname($path))
-		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
-
-		Assert::same(
-			file_get_contents($path),
-			file_get_contents(
-				$this->rotated . '/right-mirrored.jpg'
-			)
-		);
-	}
-
-	public function testUpRotatedImageModification() {
-		$path = $this->temporary . '/up.jpg';
-
-		(new Storage\RotatedImages(
-			new Storage\FakeFiles,
-			new Storage\FilePath(dirname($path))
-		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
-
-		Assert::same(
-			file_get_contents($path),
-			file_get_contents($this->rotated . '/up.jpg')
-		);
-	}
-
-	public function testUpMirroredRotatedImageModification() {
-		$path = $this->temporary . '/up-mirrored.jpg';
-
-		(new Storage\RotatedImages(
-			new Storage\FakeFiles,
-			new Storage\FilePath(dirname($path))
-		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
-
-		Assert::same(
-			file_get_contents($path),
-			file_get_contents(
-				$this->rotated . '/up-mirrored.jpg'
-			)
+			file_get_contents($this->rotated . $file)
 		);
 	}
 }
