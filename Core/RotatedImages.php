@@ -16,18 +16,16 @@ final class RotatedImages implements Files {
 
 	private $origin;
 	private $path;
-	private $image;
 
-	public function __construct(Files $origin, Image $image, Path $path) {
+	public function __construct(Files $origin, Path $path) {
 		$this->origin = $origin;
-		$this->image = $image;
 		$this->path = $path;
 	}
 
 	public function save(
 		string $name, string $tmp, int $size, int $error
 	): void {
-		$exif = $this->image->properties($tmp)['exif'];
+		$exif = (new InformativeImage)->properties($tmp)['exif'];
 		$this->origin->save($name, $tmp, $size, $error);
 		$this->modify($this->path->location($name), $exif);
 	}

@@ -10,10 +10,9 @@ final class MeasuredImages implements Files {
 	private $height;
 
 	public function __construct(
-		Files $origin, Image $image, int $width, int $height
+		Files $origin, int $width, int $height
 	) {
 		$this->origin = $origin;
-		$this->image = $image;
 		$this->width = $width;
 		$this->height = $height;
 	}
@@ -21,10 +20,10 @@ final class MeasuredImages implements Files {
 	public function save(
 		string $name, string $tmp, int $size, int $error
 	): void {
-		$properties = $this->image->properties($tmp);
+		$properties = (new InformativeImage)->properties($tmp);
 		if ($this->exceeding($properties['width'], $properties['height']))
 			throw new \UnexpectedValueException(
-				'Image file exceeds maximum dimensions'
+				'Image exceeds maximum dimensions'
 			);
 		$this->origin->save($name, $tmp, $size, $error);
 	}

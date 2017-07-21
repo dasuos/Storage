@@ -23,7 +23,7 @@ final class InformativeFile implements File {
 	public function properties(): array {
 		return [
 			'size' => filesize($this->path()),
-			'extension' => finfo_file(
+			'mime' => finfo_file(
 				finfo_open(FILEINFO_MIME_TYPE), $this->path()
 			)
 		];

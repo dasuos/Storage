@@ -31,7 +31,6 @@ final class RotatedImages extends TestCase {
 
 		(new Storage\RotatedImages(
 			new Storage\FakeFiles,
-			new Storage\InformativeImage,
 			new Storage\FilePath(dirname($path))
 		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
@@ -46,7 +45,6 @@ final class RotatedImages extends TestCase {
 
 		(new Storage\RotatedImages(
 			new Storage\FakeFiles,
-			new Storage\InformativeImage,
 			new Storage\FilePath(dirname($path))
 		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
@@ -63,7 +61,6 @@ final class RotatedImages extends TestCase {
 
 		(new Storage\RotatedImages(
 			new Storage\FakeFiles,
-			new Storage\InformativeImage,
 			new Storage\FilePath(dirname($path))
 		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
@@ -78,7 +75,6 @@ final class RotatedImages extends TestCase {
 
 		(new Storage\RotatedImages(
 			new Storage\FakeFiles,
-			new Storage\InformativeImage,
 			new Storage\FilePath(dirname($path))
 		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
@@ -95,7 +91,6 @@ final class RotatedImages extends TestCase {
 
 		(new Storage\RotatedImages(
 			new Storage\FakeFiles,
-			new Storage\InformativeImage,
 			new Storage\FilePath(dirname($path))
 		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
@@ -112,7 +107,6 @@ final class RotatedImages extends TestCase {
 
 		(new Storage\RotatedImages(
 			new Storage\FakeFiles,
-			new Storage\InformativeImage,
 			new Storage\FilePath(dirname($path))
 		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
@@ -129,7 +123,6 @@ final class RotatedImages extends TestCase {
 
 		(new Storage\RotatedImages(
 			new Storage\FakeFiles,
-			new Storage\InformativeImage,
 			new Storage\FilePath(dirname($path))
 		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
@@ -144,7 +137,6 @@ final class RotatedImages extends TestCase {
 
 		(new Storage\RotatedImages(
 			new Storage\FakeFiles,
-			new Storage\InformativeImage,
 			new Storage\FilePath(dirname($path))
 		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 

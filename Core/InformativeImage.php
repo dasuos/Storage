@@ -9,10 +9,11 @@ final class InformativeImage implements Image {
 
 	public function properties(string $path): array {
 		$size = $this->size($path);
+		$exif = $this->exif($path);
 		return [
 			'width' => $size[self::WIDTH],
 			'height' => $size[self::HEIGHT],
-			'exif'=> $this->exif($path)
+			'exif'=> $exif
 		];
 	}
 
@@ -20,7 +21,7 @@ final class InformativeImage implements Image {
 		$size = @getimagesize($path);
 		if (!is_array($size))
 			throw new \UnexpectedValueException(
-				'Image file is unreadable or does not have supporting format'
+				'Image is unreadable or does not have supporting format'
 			);
 		return $size;
 	}

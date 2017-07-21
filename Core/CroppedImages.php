@@ -4,6 +4,12 @@ namespace Dasuos\Storage;
 
 final class CroppedImages implements Files {
 
+	private const VALID_TYPES = [
+		'image/jpeg' => 'jpeg',
+		'image/png' => 'png',
+		'image/gif' => 'gif'
+	];
+
 	private $origin;
 	private $path;
 	private $width;
@@ -21,62 +27,77 @@ final class CroppedImages implements Files {
 	public function save(
 		string $name, string $path, int $size, int $error
 	): void {
+		$properties = (new InformativeImage)->properties($path);
+		if (!$this->valid($path, $properties['width'], $properties['height']))
+			throw new \UnexpectedValueException(
+				'Image does not have valid format or size'
+			);
 		$this->origin->save($name, $path, $size, $error);
-		$this->crop($this->path->location($name));
+		$this->crop(
+			$this->path->location($name),
+			$properties['width'],
+			$properties['height']
+		);
 	}
 
 	public function delete(string $name): void {
 		$this->origin->delete($name);
 	}
 
-	private function crop($path) {
-		$image = imagecreatefromjpeg($path);
+	private function crop($path, $originWidth, $originHeight) {
 		$thumbnail = imagecreatetruecolor($this->width, $this->height);
-
-		$originWidth = imagesx($image);
-		$originHeight = imagesy($image);
-
-		$width = $this->width(
-			$originWidth, $originHeight
-		);
-		$height = $this->height(
-			$originWidth, $originHeight
-		);
+		$width = $this->width($originWidth, $originHeight);
+		$height = $this->height($originWidth, $originHeight);
 		imagecopyresampled(
-			$thumbnail, $image,
+			$thumbnail, $this->identifier($path),
 			$this->centeredHorizontal($height),
 			$this->centeredVertical($width),
 			0, 0,
 			$width, $height,
 			$originWidth, $originHeight
 		);
-		imagejpeg($thumbnail, $path);
+		$this->store($thumbnail, $path);
+	}
+
+	private function valid(string $path, int $width, int $height) {
+		return array_key_exists($this->mime($path), self::VALID_TYPES)
+			&& $this->width <= $width && $this->height <= $height;
 	}
 
 	private function height(int $width, int $height): int {
 		return $this->widerThanOrigin($width, $height) ?
-			$this->integer($height / ($width / $this->width)) : $this->height;
+			(int) round($height / ($width / $this->width)) : $this->height;
 	}
 
 	private function width(int $width, int $height): int {
-		return $this->widerThanOrigin($width, $height) ?
-			$this->width : $this->integer($width / ($height / $this->height));
+		return $this->widerThanOrigin($width, $height) ? $this->width :
+			(int) round($width / ($height / $this->height));
 	}
 
 	private function widerThanOrigin(int $width, int $height): bool {
-		return $width / $height < $this->width /$this->height;
+		return $width / $height < $this->width / $this->height;
 	}
 
 	private function centeredHorizontal(int $width): int {
-		return $this->integer((0 - ($width - $this->width) / 2));
+		return (int) round((0 - ($width - $this->width) / 2));
 	}
 
 	private function centeredVertical(int $height): int {
-		return $this->integer((0 - ($height - $this->height) / 2));
+		return (int) round((0 - ($height - $this->height) / 2));
 	}
 
-	private function integer($number) {
-		return (int) round($number);
+	private function identifier(string $path) {
+		$function = 'imagecreatefrom'. self::VALID_TYPES[$this->mime($path)];
+		return $function($path);
+	}
+
+	private function store($thumbnail, $path) {
+		$function = 'image'. self::VALID_TYPES[$this->mime($path)];
+		return $function($thumbnail, $path);
+	}
+
+	private function mime(string $path): string {
+		return finfo_file(finfo_open(FILEINFO_MIME_TYPE), $path);
 	}
 }
 

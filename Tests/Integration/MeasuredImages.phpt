@@ -25,9 +25,7 @@ final class MeasuredImages extends TestCase {
 		Assert::exception(
 			function() {
 				(new Storage\MeasuredImages(
-					new Storage\FakeFiles,
-					new Storage\InformativeImage,
-					800, 600
+					new Storage\FakeFiles, 800, 600
 				))->save(
 					'fakeName',
 					(new PngImage($this->directory, 2000, 2000))->path(),
@@ -36,7 +34,7 @@ final class MeasuredImages extends TestCase {
 				);
 			},
 			\UnexpectedValueException::class,
-			'Image file exceeds maximum dimensions'
+			'Image exceeds maximum dimensions'
 		);
 	}
 
@@ -44,9 +42,7 @@ final class MeasuredImages extends TestCase {
 		Assert::noError(
 			function() {
 				(new Storage\MeasuredImages(
-					new Storage\FakeFiles,
-					new Storage\InformativeImage,
-					2000, 2000
+					new Storage\FakeFiles, 2000, 2000
 				))->save(
 					'fakeName',
 					(new PngImage($this->directory, 800, 600))->path(),
@@ -62,15 +58,13 @@ final class MeasuredImages extends TestCase {
 			function() {
 				$path = new Storage\FilePath('fake/directory');
 				(new Storage\MeasuredImages(
-					new Storage\UploadedFiles($path),
-					new Storage\InformativeImage,
-					800, 600
+					new Storage\UploadedFiles($path), 800, 600
 				))->save(
 					'fakeName', 'invalidImage', 1900000, UPLOAD_ERR_OK
 				);
 			},
 			\UnexpectedValueException::class,
-			'Image file is unreadable or does not have supporting format'
+			'Image is unreadable or does not have supporting format'
 		);
 	}
 
@@ -78,13 +72,11 @@ final class MeasuredImages extends TestCase {
 		Assert::noError(
 			function() {
 				$path = new Storage\FakePath;
-				$image = new Storage\InformativeImage;
 
 				(new Storage\RotatedImages(
 					new Storage\MeasuredImages(
-						new Storage\FakeFiles,
-						$image, 2000, 2000
-					), $image, $path
+						new Storage\FakeFiles, 2000, 2000
+					), $path
 				))->save(
 					'fakeName',
 					(new PngImage($this->directory, 800, 600))->path(),
