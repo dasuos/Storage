@@ -44,14 +44,14 @@ final class CroppedImages implements Files {
 		$this->origin->delete($name);
 	}
 
-	private function crop($path, $originWidth, $originHeight) {
+	private function crop($path, $originWidth, $originHeight): void {
 		$thumbnail = imagecreatetruecolor($this->width, $this->height);
 		$width = $this->width($originWidth, $originHeight);
 		$height = $this->height($originWidth, $originHeight);
 		imagecopyresampled(
 			$thumbnail, $this->identifier($path),
-			$this->centeredHorizontal($height),
-			$this->centeredVertical($width),
+			$this->centeredCoordinate($width, $this->width),
+			$this->centeredCoordinate($height, $this->height),
 			0, 0,
 			$width, $height,
 			$originWidth, $originHeight
@@ -59,7 +59,7 @@ final class CroppedImages implements Files {
 		$this->store($thumbnail, $path);
 	}
 
-	private function valid(string $path, int $width, int $height) {
+	private function valid(string $path, int $width, int $height): bool {
 		return array_key_exists($this->mime($path), self::VALID_TYPES)
 			&& $this->width <= $width && $this->height <= $height;
 	}
@@ -78,22 +78,20 @@ final class CroppedImages implements Files {
 		return $width / $height < $this->width / $this->height;
 	}
 
-	private function centeredHorizontal(int $width): int {
-		return (int) round((0 - ($width - $this->width) / 2));
+	private function centeredCoordinate(int $minuend, int $subtrahend): int {
+		return (int) round((0 - ($minuend - $subtrahend) / 2));
 	}
-
-	private function centeredVertical(int $height): int {
-		return (int) round((0 - ($height - $this->height) / 2));
-	}
-
+	/**
+	 * @return mixed
+	 */
 	private function identifier(string $path) {
 		$function = 'imagecreatefrom'. self::VALID_TYPES[$this->mime($path)];
 		return $function($path);
 	}
 
-	private function store($thumbnail, $path) {
+	private function store($thumbnail, string $path): void {
 		$function = 'image'. self::VALID_TYPES[$this->mime($path)];
-		return $function($thumbnail, $path);
+		$function($thumbnail, $path);
 	}
 
 	private function mime(string $path): string {
