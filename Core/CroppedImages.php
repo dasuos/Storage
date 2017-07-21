@@ -7,7 +7,7 @@ final class CroppedImages implements Files {
 	private const VALID_TYPES = [
 		'image/jpeg' => 'jpeg',
 		'image/png' => 'png',
-		'image/gif' => 'gif'
+		'image/gif' => 'gif',
 	];
 
 	private $origin;
