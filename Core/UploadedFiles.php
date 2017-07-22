@@ -30,7 +30,7 @@ final class UploadedFiles implements Files {
 		unlink($this->path->location($name));
 	}
 
-	private function uploaded(string$tmp, string $path, int $error): bool {
+	private function uploaded(string $tmp, string $path, int $error): bool {
 		return !file_exists($path) && is_uploaded_file($tmp) &&
 			$error === UPLOAD_ERR_OK;
 	}
