@@ -39,7 +39,7 @@ final class RotatedImages implements Files {
 		if ($image && isset($exif['Orientation'])) {
 			$image = $this->rotate($image, $exif['Orientation']);
 			$this->flip($image, $exif['Orientation']);
-			imagejpeg($image, $path);
+			imagejpeg($image, $path, 100);
 		}
 	}
 

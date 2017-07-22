@@ -28,13 +28,16 @@ final class CroppedImages implements Files {
 		string $name, string $path, int $size, int $error
 	): void {
 		$properties = (new InformativeImage)->properties($path);
-		if (!$this->valid($path, $properties['width'], $properties['height']))
+		if (!$this->valid(
+			$properties['mime'], $properties['width'], $properties['height']
+		))
 			throw new \UnexpectedValueException(
 				'Image does not have valid format or size'
 			);
 		$this->origin->save($name, $path, $size, $error);
 		$this->crop(
 			$this->path->location($name),
+			$properties['mime'],
 			$properties['width'],
 			$properties['height']
 		);
@@ -44,23 +47,25 @@ final class CroppedImages implements Files {
 		$this->origin->delete($name);
 	}
 
-	private function crop($path, $originWidth, $originHeight): void {
-		$thumbnail = imagecreatetruecolor($this->width, $this->height);
+	private function crop(
+		string $path, string $mime, int $originWidth, int $originHeight
+	): void {
+		$thumbnail = $this->thumbnail($mime);
 		$width = $this->width($originWidth, $originHeight);
 		$height = $this->height($originWidth, $originHeight);
 		imagecopyresampled(
-			$thumbnail, $this->identifier($path),
+			$thumbnail, $this->identifier($path, $mime),
 			$this->centeredCoordinate($width, $this->width),
 			$this->centeredCoordinate($height, $this->height),
 			0, 0,
 			$width, $height,
 			$originWidth, $originHeight
 		);
-		$this->store($thumbnail, $path);
+		$this->store($thumbnail, $path, $mime);
 	}
 
-	private function valid(string $path, int $width, int $height): bool {
-		return array_key_exists($this->mime($path), self::VALID_TYPES)
+	private function valid(string $mime, int $width, int $height): bool {
+		return array_key_exists($mime, self::VALID_TYPES)
 			&& $this->width <= $width && $this->height <= $height;
 	}
 
@@ -81,21 +86,42 @@ final class CroppedImages implements Files {
 	private function centeredCoordinate(int $minuend, int $subtrahend): int {
 		return (int) round((0 - ($minuend - $subtrahend) / 2));
 	}
+
 	/**
 	 * @return mixed
 	 */
-	private function identifier(string $path) {
-		$function = 'imagecreatefrom'. self::VALID_TYPES[$this->mime($path)];
-		return $function($path);
+
+	private function thumbnail(string $mime) {
+		$thumbnail = imagecreatetruecolor($this->width, $this->height);
+		if ($mime === 'image/png')
+			$this->transparentize($thumbnail);
+		return $thumbnail;
 	}
 
-	private function store($thumbnail, string $path): void {
-		$function = 'image'. self::VALID_TYPES[$this->mime($path)];
-		$function($thumbnail, $path);
+	private function transparentize($thumbnail): void {
+		imagealphablending($thumbnail, false);
+		imagefilledrectangle(
+			$thumbnail,
+			0, 0, $this->width, $this->height,
+			imagecolorallocatealpha($thumbnail, 0, 0, 0, 127)
+		);
+		imagesavealpha($thumbnail, true);
 	}
 
-	private function mime(string $path): string {
-		return finfo_file(finfo_open(FILEINFO_MIME_TYPE), $path);
+	/**
+	 * @return mixed
+	 */
+
+	private function identifier(string $path, string $mime) {
+		$function = 'imagecreatefrom'. self::VALID_TYPES[$mime];
+		$image = $function($path);
+		imagesavealpha($image, true);
+		return $image;
+	}
+
+	private function store($thumbnail, string $path, string $mime): void {
+		$function = 'image'. self::VALID_TYPES[$mime];
+		$function($thumbnail, $path, $mime === 'image/png' ? 9 : 100);
 	}
 }
 

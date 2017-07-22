@@ -13,6 +13,9 @@ final class InformativeImage implements Image {
 		return [
 			'width' => $size[self::WIDTH],
 			'height' => $size[self::HEIGHT],
+			'mime' => finfo_file(
+				finfo_open(FILEINFO_MIME_TYPE), $path
+			),
 			'exif'=> $exif
 		];
 	}
