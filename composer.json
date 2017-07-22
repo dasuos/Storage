@@ -1,11 +1,33 @@
 {
-  "autoload": {
-    "psr-4": {"Dasuos\\Storage\\": "Core/"}
+  "name": "dasuos/storage",
+  "description": "Library for simple database, upload management and image modification",
+  "type": "library",
+  "homepage": "https://github.com/Dasuos/Storage",
+  "keywords": [
+    "storage",
+    "file",
+    "upload",
+    "image",
+    "cropping"
+  ],
+  "authors": [
+    {
+      "name": "Daniel Krnak",
+      "email": "dasuos256@gmail.com",
+      "homepage": "https://www.github.com/Dasuos",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.1"
   },
   "require-dev": {
     "nette/tester": "^1.7"
   },
   "autoload-dev": {
     "psr-4": {"Dasuos\\Tests\\": "Tests/"}
+  },
+  "autoload": {
+    "psr-4": {"Dasuos\\Storage\\": "Core/"}
   }
 }
