@@ -114,9 +114,7 @@ final class CroppedImages implements Files {
 
 	private function identifier(string $path, string $mime) {
 		$function = 'imagecreatefrom'. self::VALID_TYPES[$mime];
-		$image = $function($path);
-		imagesavealpha($image, true);
-		return $image;
+		return $function($path);
 	}
 
 	private function store($thumbnail, string $path, string $mime): void {
