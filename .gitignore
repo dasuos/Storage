@@ -1,6 +1,5 @@
 vendor
 example.php
-ImgAreaSelect
 database.local.ini
 composer.lock
-Tests/temp/*
+Tests/Temp/*
