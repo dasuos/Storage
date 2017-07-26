@@ -13,27 +13,68 @@ require __DIR__ . '/../bootstrap.php';
 
 final class OversizedFiles extends TestCase {
 
-	public function testSavingFileWithAllowedByteSize() {
+	public function allowedSizes() {
+		return [
+			['2B', 1],
+			['2kB', 100],
+			['2MB', 1600000],
+			['2GB', 1600000000],
+			['2TB', 1600000000000],
+		];
+	}
+
+	public function exceedingSizes() {
+		return [
+			['2B', 3],
+			['2kB', 2001],
+			['2MB', 2000001],
+			['2GB', 3000000000],
+			['2TB', 2000000000001],
+		];
+	}
+
+	public function unexpectedSizeFormats() {
+		return [
+			['2PB', 1600000],
+			['2 B', 1600000],
+			['Nonsense123', 1600000],
+		];
+	}
+
+
+	/**
+	 * @dataProvider allowedSizes
+	 */
+
+	public function testSavingFileWithAllowedSize(
+		string $allowedSize, int $size
+	) {
 		Assert::noError(
-			function() {
+			function() use ($allowedSize, $size) {
 				$path = new Storage\FakePath;
 				(new Storage\OversizedFiles(
-					new Storage\FakeFiles($path), '2B'
+					new Storage\FakeFiles($path), $allowedSize
 				))->save(
-					'fakeName', 'fakeTmp', 1, UPLOAD_ERR_OK
+					'fakeName', 'fakeTmp', $size, UPLOAD_ERR_OK
 				);
 			}
 		);
 	}
 
-	public function testSavingFileWithExceedingByteSize() {
+	/**
+	 * @dataProvider exceedingSizes
+	 */
+
+	public function testSavingFileWithExceedingSize(
+		string $allowedSize, int $exceedingSize
+	) {
 		Assert::exception(
-			function() {
+			function() use ($allowedSize, $exceedingSize) {
 				$path = new Storage\FakePath;
 				(new Storage\OversizedFiles(
-					new Storage\FakeFiles($path), '2B'
+					new Storage\FakeFiles($path), $allowedSize
 				))->save(
-					'fakeName', 'fakeTmp', 3, UPLOAD_ERR_OK
+					'fakeName', 'fakeTmp', $exceedingSize, UPLOAD_ERR_OK
 				);
 			},
 			\UnexpectedValueException::class,
@@ -41,156 +82,20 @@ final class OversizedFiles extends TestCase {
 		);
 	}
 
-	public function testSavingFileWithAllowedKiloByteSize() {
-		Assert::noError(
-			function() {
-				$path = new Storage\FakePath;
-				(new Storage\OversizedFiles(
-					new Storage\FakeFiles($path), '2kB'
-				))->save(
-					'fakeName', 'fakeTmp', 100, UPLOAD_ERR_OK
-				);
-			}
-		);
-	}
+	/**
+	 * @dataProvider unexpectedSizeFormats
+	 */
 
-	public function testSavingFileWithExceedingKiloByteSize() {
+	public function testSavingFileWithUnexpectedSizeFormat(
+		string $unexpectedSize, int $size
+	) {
 		Assert::exception(
-			function() {
+			function() use ($unexpectedSize, $size) {
 				$path = new Storage\FakePath;
 				(new Storage\OversizedFiles(
-					new Storage\FakeFiles($path), '2kB'
+					new Storage\FakeFiles($path), $unexpectedSize
 				))->save(
-					'fakeName', 'fakeTmp', 2001, UPLOAD_ERR_OK
-				);
-			},
-			\UnexpectedValueException::class,
-			'Given file exceeds maximum allowed size'
-		);
-	}
-
-	public function testSavingFileWithAllowedMegaByteSize() {
-		Assert::noError(
-			function() {
-				$path = new Storage\FakePath;
-				(new Storage\OversizedFiles(
-					new Storage\FakeFiles($path), '2MB'
-				))->save(
-					'fakeName', 'fakeTmp', 1600000, UPLOAD_ERR_OK
-				);
-			}
-		);
-	}
-
-	public function testSavingFileWithExceedingMegaByteSize() {
-		Assert::exception(
-			function() {
-				$path = new Storage\FakePath;
-				(new Storage\OversizedFiles(
-					new Storage\FakeFiles($path), '2MB'
-				))->save(
-					'fakeName', 'fakeTmp', 2000001, UPLOAD_ERR_OK
-				);
-			},
-			\UnexpectedValueException::class,
-			'Given file exceeds maximum allowed size'
-		);
-	}
-
-	public function testSavingFileWithAllowedGigaByteSize() {
-		Assert::noError(
-			function() {
-				$path = new Storage\FakePath;
-				(new Storage\OversizedFiles(
-					new Storage\FakeFiles($path), '2GB'
-				))->save(
-					'fakeName', 'fakeTmp', 1600000000, UPLOAD_ERR_OK
-				);
-			}
-		);
-	}
-
-	public function testSavingFileWithExceedingGigaByteSize() {
-		Assert::exception(
-			function() {
-				$path = new Storage\FakePath;
-				(new Storage\OversizedFiles(
-					new Storage\FakeFiles($path), '2GB'
-				))->save(
-					'fakeName', 'fakeTmp', 3000000000, UPLOAD_ERR_OK
-				);
-			},
-			\UnexpectedValueException::class,
-			'Given file exceeds maximum allowed size'
-		);
-	}
-
-	public function testSavingFileWithAllowedTeraByteSize() {
-		Assert::noError(
-			function() {
-				$path = new Storage\FakePath;
-				(new Storage\OversizedFiles(
-					new Storage\FakeFiles($path), '2TB'
-				))->save(
-					'fakeName', 'fakeTmp', 1600000000000, UPLOAD_ERR_OK
-				);
-			}
-		);
-	}
-
-	public function testSavingFileWithExceedingTeraByteSize() {
-		Assert::exception(
-			function() {
-				$path = new Storage\FakePath;
-				(new Storage\OversizedFiles(
-					new Storage\FakeFiles($path), '2TB'
-				))->save(
-					'fakeName', 'fakeTmp', 2000000000001, UPLOAD_ERR_OK
-				);
-			},
-			\UnexpectedValueException::class,
-			'Given file exceeds maximum allowed size'
-		);
-	}
-
-	public function testSavingFileWithUndeclaredByteSize() {
-		Assert::exception(
-			function() {
-				$path = new Storage\FakePath;
-				(new Storage\OversizedFiles(
-					new Storage\FakeFiles($path), '2PB'
-				))->save(
-					'fakeName', 'fakeTmp', 1600000, UPLOAD_ERR_OK
-				);
-			},
-			\UnexpectedValueException::class,
-			'Expected string value in byte format'
-		);
-	}
-
-	public function testSavingFileWithByteSizeWithSpace() {
-		Assert::exception(
-			function() {
-				$path = new Storage\FakePath;
-				(new Storage\OversizedFiles(
-					new Storage\FakeFiles($path), '2 B'
-				))->save(
-					'fakeName', 'fakeTmp', 1600000, UPLOAD_ERR_OK
-				);
-			},
-			\UnexpectedValueException::class,
-			'Expected string value in byte format'
-		);
-	}
-
-	public function testSavingFileWithRandomStringInsteadByteSize() {
-		Assert::exception(
-			function() {
-				$path = new Storage\FakePath;
-				(new Storage\OversizedFiles(
-					new Storage\FakeFiles($path), 'Nonsense123'
-				))->save(
-					'fakeName', 'fakeTmp', 1600000, UPLOAD_ERR_OK
+					'fakeName', 'fakeTmp', $size, UPLOAD_ERR_OK
 				);
 			},
 			\UnexpectedValueException::class,
