@@ -25,7 +25,7 @@ final class RotatedImages extends TestCase {
 			__DIR__ . '/../TestCase/RotatedImages/Unedited', $this->temporary
 		))->copy();
 	}
-	public function loopImageModification() {
+	public function images() {
 		return [
 			['/down.jpg'],
 			['/down-mirrored.jpg'],
@@ -39,9 +39,10 @@ final class RotatedImages extends TestCase {
 	}
 
 	/**
-	 * @dataProvider loopImageModification
+	 * @dataProvider images
 	 */
-	public function testImageModification($file) {
+
+	public function testSavingImageModification($file) {
 		$path = $this->temporary . $file;
 
 		(new Storage\RotatedImages(

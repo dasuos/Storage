@@ -21,7 +21,7 @@ final class MeasuredImages extends TestCase {
 		$this->directory = __DIR__ . '/../Temp/ExceedingImages';
 	}
 
-	public function testUploadedImageWithExceedingDimension() {
+	public function testSavingImageWithExceedingDimension() {
 		Assert::exception(
 			function() {
 				(new Storage\MeasuredImages(
@@ -38,7 +38,7 @@ final class MeasuredImages extends TestCase {
 		);
 	}
 
-	public function testUploadedImageWithValidDimension() {
+	public function testSavingImageWithValidDimension() {
 		Assert::noError(
 			function() {
 				(new Storage\MeasuredImages(
@@ -53,7 +53,7 @@ final class MeasuredImages extends TestCase {
 		);
 	}
 
-	public function testInvalidUploadedImage() {
+	public function testSavingInvalidUploadedImage() {
 		Assert::exception(
 			function() {
 				$path = new Storage\FilePath('fake/directory');
@@ -68,7 +68,7 @@ final class MeasuredImages extends TestCase {
 		);
 	}
 
-	public function testInvalidPngImageToRotate() {
+	public function testSavingInvalidPngImageToRotate() {
 		Assert::noError(
 			function() {
 				$path = new Storage\FakePath;

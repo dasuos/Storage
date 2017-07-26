@@ -23,7 +23,7 @@ final class IdentifiedFiles extends TestCase {
 		))->path();
 	}
 
-	public function testFileWithProhibitFormat() {
+	public function testSavingFileWithProhibitFormat() {
 		Assert::exception(
 			function() {
 				(new Storage\IdentifiedFiles(
@@ -41,7 +41,7 @@ final class IdentifiedFiles extends TestCase {
 		);
 	}
 
-	public function testFileWithValidFormat() {
+	public function testSavingFileWithValidFormat() {
 		Assert::noError(
 			function() {
 				(new Storage\IdentifiedFiles(

@@ -13,7 +13,7 @@ require __DIR__ . '/../bootstrap.php';
 
 final class OversizedFiles extends TestCase {
 
-	public function testByteFormatAllowedSize() {
+	public function testSavingFileWithAllowedByteSize() {
 		Assert::noError(
 			function() {
 				$path = new Storage\FakePath;
@@ -26,7 +26,7 @@ final class OversizedFiles extends TestCase {
 		);
 	}
 
-	public function testByteFormatExceedingSize() {
+	public function testSavingFileWithExceedingByteSize() {
 		Assert::exception(
 			function() {
 				$path = new Storage\FakePath;
@@ -41,7 +41,7 @@ final class OversizedFiles extends TestCase {
 		);
 	}
 
-	public function testKiloByteFormatAllowedSize() {
+	public function testSavingFileWithAllowedKiloByteSize() {
 		Assert::noError(
 			function() {
 				$path = new Storage\FakePath;
@@ -54,7 +54,7 @@ final class OversizedFiles extends TestCase {
 		);
 	}
 
-	public function testKiloByteFormatExceedingSize() {
+	public function testSavingFileWithExceedingKiloByteSize() {
 		Assert::exception(
 			function() {
 				$path = new Storage\FakePath;
@@ -69,7 +69,7 @@ final class OversizedFiles extends TestCase {
 		);
 	}
 
-	public function testMegaByteFormatAllowedSize() {
+	public function testSavingFileWithAllowedMegaByteSize() {
 		Assert::noError(
 			function() {
 				$path = new Storage\FakePath;
@@ -82,7 +82,7 @@ final class OversizedFiles extends TestCase {
 		);
 	}
 
-	public function testMegaByteFormatExceedingSize() {
+	public function testSavingFileWithExceedingMegaByteSize() {
 		Assert::exception(
 			function() {
 				$path = new Storage\FakePath;
@@ -97,7 +97,7 @@ final class OversizedFiles extends TestCase {
 		);
 	}
 
-	public function testGigaByteFormatAllowedSize() {
+	public function testSavingFileWithAllowedGigaByteSize() {
 		Assert::noError(
 			function() {
 				$path = new Storage\FakePath;
@@ -110,7 +110,7 @@ final class OversizedFiles extends TestCase {
 		);
 	}
 
-	public function testGigaByteFormatExceedingSize() {
+	public function testSavingFileWithExceedingGigaByteSize() {
 		Assert::exception(
 			function() {
 				$path = new Storage\FakePath;
@@ -125,7 +125,7 @@ final class OversizedFiles extends TestCase {
 		);
 	}
 
-	public function testTeraByteFormatAllowedSize() {
+	public function testSavingFileWithAllowedTeraByteSize() {
 		Assert::noError(
 			function() {
 				$path = new Storage\FakePath;
@@ -138,7 +138,7 @@ final class OversizedFiles extends TestCase {
 		);
 	}
 
-	public function testTeraByteFormatExceedingSize() {
+	public function testSavingFileWithExceedingTeraByteSize() {
 		Assert::exception(
 			function() {
 				$path = new Storage\FakePath;
@@ -153,7 +153,7 @@ final class OversizedFiles extends TestCase {
 		);
 	}
 
-	public function testUndeclaredByteFormatAllowedSize() {
+	public function testSavingFileWithUndeclaredByteSize() {
 		Assert::exception(
 			function() {
 				$path = new Storage\FakePath;
@@ -168,7 +168,7 @@ final class OversizedFiles extends TestCase {
 		);
 	}
 
-	public function testByteFormatWithSpace() {
+	public function testSavingFileWithByteSizeWithSpace() {
 		Assert::exception(
 			function() {
 				$path = new Storage\FakePath;
@@ -183,7 +183,7 @@ final class OversizedFiles extends TestCase {
 		);
 	}
 
-	public function testRandomStringInsteadByteFormat() {
+	public function testSavingFileWithRandomStringInsteadByteSize() {
 		Assert::exception(
 			function() {
 				$path = new Storage\FakePath;

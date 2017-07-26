@@ -23,7 +23,7 @@ final class UploadedFiles extends TestCase {
 		))->path();
 	}
 
-	public function testDeletedFileInDirectory() {
+	public function testDeletingFileInDirectory() {
 		Assert::noError(
 			function() {
 				$path = (new Tests\TestCase\PngImage(
