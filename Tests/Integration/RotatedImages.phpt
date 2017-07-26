@@ -44,7 +44,7 @@ final class RotatedImages extends TestCase {
 	 * @dataProvider images
 	 */
 
-	public function testSavingImageModification($file) {
+	public function testSavingImageModification(string $file) {
 		$path = self::TEMPORARY_IMAGE_DIRECTORY . $file;
 
 		(new Storage\RotatedImages(
