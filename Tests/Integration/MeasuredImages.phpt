@@ -69,27 +69,6 @@ final class MeasuredImages extends TestCase {
 			'Image is unreadable or does not have supporting format'
 		);
 	}
-
-	public function testSavingInvalidPngImageToRotate() {
-		Assert::noError(
-			function() {
-				$path = new Storage\FakePath;
-
-				(new Storage\RotatedImages(
-					new Storage\MeasuredImages(
-						new Storage\FakeFiles, 2000, 2000
-					), $path
-				))->save(
-					'fakeName',
-					(new PngImage(self::TEMPORARY_IMAGE_DIRECTORY, 800, 600))
-						->path(),
-					1900000,
-					UPLOAD_ERR_OK
-				);
-			}
-		);
-	}
-
 }
 
 (new MeasuredImages())->run();
