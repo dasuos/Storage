@@ -13,12 +13,12 @@ require __DIR__ . '/../bootstrap.php';
 
 final class MeasuredImages extends TestCase {
 
-	private $directory;
+	private const TEMPORARY_IMAGE_DIRECTORY = __DIR__ .
+		'/../Temp/ExceedingImages';
 
 	public function setup() {
 		parent::setup();
 		Environment::lock('ExceedingImages', __DIR__ . '/../Temp');
-		$this->directory = __DIR__ . '/../Temp/ExceedingImages';
 	}
 
 	public function testSavingImageWithExceedingDimension() {
@@ -28,7 +28,8 @@ final class MeasuredImages extends TestCase {
 					new Storage\FakeFiles, 800, 600
 				))->save(
 					'fakeName',
-					(new PngImage($this->directory, 2000, 2000))->path(),
+					(new PngImage(self::TEMPORARY_IMAGE_DIRECTORY, 2000, 2000))
+						->path(),
 					1900000,
 					UPLOAD_ERR_OK
 				);
@@ -45,7 +46,8 @@ final class MeasuredImages extends TestCase {
 					new Storage\FakeFiles, 2000, 2000
 				))->save(
 					'fakeName',
-					(new PngImage($this->directory, 800, 600))->path(),
+					(new PngImage(self::TEMPORARY_IMAGE_DIRECTORY, 800, 600))
+						->path(),
 					1900000,
 					UPLOAD_ERR_OK
 				);
@@ -79,7 +81,8 @@ final class MeasuredImages extends TestCase {
 					), $path
 				))->save(
 					'fakeName',
-					(new PngImage($this->directory, 800, 600))->path(),
+					(new PngImage(self::TEMPORARY_IMAGE_DIRECTORY, 800, 600))
+						->path(),
 					1900000,
 					UPLOAD_ERR_OK
 				);

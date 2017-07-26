@@ -13,16 +13,17 @@ require __DIR__ . '/../bootstrap.php';
 
 final class CroppedImages extends TestCase {
 
-	private const CROPPED_IMAGE_PATH = __DIR__ .
+	private const CROPPED_IMAGE_DIRECTORY = __DIR__ .
 		'/../TestCase/CroppedImages/Edited';
-	private const TEMPORARY_IMAGE_PATH = __DIR__ . '/../Temp/CroppedImages';
+	private const TEMPORARY_IMAGE_DIRECTORY = __DIR__ .
+		'/../Temp/CroppedImages';
 
 	public function setup() {
 		parent::setup();
 		Environment::lock('CroppedImages', __DIR__ . '/../Temp');
 		(new CopiedFiles(
 			__DIR__ . '/../TestCase/CroppedImages/Unedited',
-			self::TEMPORARY_IMAGE_PATH
+			self::TEMPORARY_IMAGE_DIRECTORY
 		))->copy();
 	}
 
@@ -44,7 +45,7 @@ final class CroppedImages extends TestCase {
 	public function testCroppingImage(
 		string $image, string $croppedImage, int $width, int $height
 	) {
-		$path = self::TEMPORARY_IMAGE_PATH . $image;
+		$path = self::TEMPORARY_IMAGE_DIRECTORY . $image;
 
 		(new Storage\CroppedImages(
 			new Storage\FakeFiles,
@@ -54,20 +55,22 @@ final class CroppedImages extends TestCase {
 
 		Assert::same(
 			file_get_contents($path),
-			file_get_contents(self::CROPPED_IMAGE_PATH . $croppedImage)
+			file_get_contents(self::CROPPED_IMAGE_DIRECTORY . $croppedImage)
 		);
 	}
 
 	public function testCroppingExceedingThumbnail() {
 		Assert::exception(
 			function() {
-				$path = self::TEMPORARY_IMAGE_PATH . '/my_face.jpg';
+				$path = self::TEMPORARY_IMAGE_DIRECTORY . '/my_face.jpg';
 
 				(new Storage\CroppedImages(
 					new Storage\FakeFiles,
 					new Storage\FilePath(dirname($path)),
 					3000, 3000
-				))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
+				))->save(
+					basename($path), $path, filesize($path), UPLOAD_ERR_OK
+				);
 			},
 			\UnexpectedValueException::class,
 			'Image does not have valid format or size'
@@ -77,13 +80,15 @@ final class CroppedImages extends TestCase {
 	public function testCroppingProhibitFile() {
 		Assert::exception(
 			function() {
-				$path = self::TEMPORARY_IMAGE_PATH . '/php_icon.svg';
+				$path = self::TEMPORARY_IMAGE_DIRECTORY . '/php_icon.svg';
 
 				(new Storage\CroppedImages(
 					new Storage\FakeFiles,
 					new Storage\FilePath(dirname($path)),
 					100, 100
-				))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
+				))->save(
+					basename($path), $path, filesize($path), UPLOAD_ERR_OK
+				);
 			},
 			\UnexpectedValueException::class,
 			'Image is unreadable or does not have supporting format'

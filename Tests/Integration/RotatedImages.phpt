@@ -13,18 +13,20 @@ require __DIR__ . '/../bootstrap.php';
 
 final class RotatedImages extends TestCase {
 
-	private $rotated;
-	private $temporary;
+	private const ROTATED_IMAGE_DIRECTORY = __DIR__ .
+		'/../TestCase/RotatedImages/Edited';
+	private const TEMPORARY_IMAGE_DIRECTORY = __DIR__ .
+		'/../Temp/RotatedImages';
 
 	public function setup() {
 		parent::setup();
 		Environment::lock('RotatedImages', __DIR__ . '/../Temp');
-		$this->temporary = __DIR__ . '/../Temp/RotatedImages';
-		$this->rotated = __DIR__ . '/../TestCase/RotatedImages/Edited';
 		(new CopiedFiles(
-			__DIR__ . '/../TestCase/RotatedImages/Unedited', $this->temporary
+			__DIR__ . '/../TestCase/RotatedImages/Unedited',
+			self::TEMPORARY_IMAGE_DIRECTORY
 		))->copy();
 	}
+
 	public function images() {
 		return [
 			['/down.jpg'],
@@ -43,7 +45,7 @@ final class RotatedImages extends TestCase {
 	 */
 
 	public function testSavingImageModification($file) {
-		$path = $this->temporary . $file;
+		$path = self::TEMPORARY_IMAGE_DIRECTORY . $file;
 
 		(new Storage\RotatedImages(
 			new Storage\FakeFiles,
@@ -52,7 +54,7 @@ final class RotatedImages extends TestCase {
 
 		Assert::same(
 			file_get_contents($path),
-			file_get_contents($this->rotated . $file)
+			file_get_contents(self::ROTATED_IMAGE_DIRECTORY . $file)
 		);
 	}
 }
