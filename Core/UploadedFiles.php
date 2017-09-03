@@ -11,22 +11,27 @@ final class UploadedFiles implements Files {
 	}
 
 	public function save(
-		string $name, string $tmp, int $size, int $error
+		string $name,
+		string $tmp,
+		int $size,
+		int $error
 	): void {
 		$path = $this->path->location($name);
-		if (!$this->uploaded($tmp, $path, $error))
+		if (!$this->uploaded($tmp, $path, $error)) {
 			throw new \UnexpectedValueException(
 				'Given file cannot be uploaded'
 			);
+		}
 		move_uploaded_file($tmp, $path);
-		$this->permit($path);
+		 $this->permit($path);
 	}
 
 	public function delete(string $name): void {
-		if (!file_exists($this->path->location($name)))
+		if (!file_exists($this->path->location($name))) {
 			throw new \UnexpectedValueException(
 				'Given file does not exist and cannot be deleted'
 			);
+		}
 		unlink($this->path->location($name));
 	}
 

@@ -4,9 +4,13 @@ namespace Dasuos\Storage;
 
 interface Query {
 	public function perform(
-		string $sql, array $placeholders = []
+		string $sql,
+		array $placeholders = []
 	): \PDOStatement;
-	public function row(string$sql, array $placeholders = []): array;
+	public function row(string $sql, array $placeholders = []): array;
 	public function rows(string $sql, array $placeholders = []): array;
+	/**
+	 * @return mixed
+	 */
 	public function column(string $sql, array $placeholders = []);
 }

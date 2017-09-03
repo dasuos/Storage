@@ -16,27 +16,34 @@ final class SafeQuery implements Query {
 		return $this->perform($sql, $placeholders)->fetch();
 	}
 
-	public function rows(string $sql, array $placeholders = []): array {
+	public function rows(string $sql, array $placeholders = []): array
+	{
 		return $this->perform($sql, $placeholders)->fetchAll();
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function column(string $sql, array $placeholders = []) {
 		return $this->perform($sql, $placeholders)->fetchColumn();
 	}
 
 	public function perform(
-		string $sql, array $placeholders = []
+		string $sql,
+		array $placeholders = []
 	): \PDOStatement {
 		try {
-			return $placeholders ? $this->statement($sql, $placeholders) :
-				$this->database->query($sql);
+			return $placeholders
+				? $this->statement($sql, $placeholders)
+				: $this->database->query($sql);
 		} catch (\PDOException $exception) {
 			throw $this->exception($exception);
 		}
 	}
 
 	private function statement(
-		string $sql, array $placeholders
+		string $sql,
+		array $placeholders
 	): \PDOStatement {
 		$statement = $this->database->prepare($sql);
 		$statement->execute($placeholders);
@@ -44,8 +51,8 @@ final class SafeQuery implements Query {
 	}
 
 	private function exception(\Throwable $exception): \Throwable {
-		return $exception->getCode() === self::UNIQUE_CONSTRAINT ?
-			new UniqueConstraintException(
+		return $exception->getCode() === self::UNIQUE_CONSTRAINT
+			? new \Dasuos\Storage\UniqueConstraintException(
 				'Duplicate column value violates unique constraint',
 				(int) self::UNIQUE_CONSTRAINT,
 				$exception

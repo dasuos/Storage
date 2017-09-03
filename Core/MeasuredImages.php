@@ -5,12 +5,13 @@ namespace Dasuos\Storage;
 final class MeasuredImages implements Files {
 
 	private $origin;
-	private $image;
 	private $width;
 	private $height;
 
 	public function __construct(
-		Files $origin, int $width, int $height
+		Files $origin,
+		int $width,
+		int $height
 	) {
 		$this->origin = $origin;
 		$this->width = $width;
@@ -18,7 +19,10 @@ final class MeasuredImages implements Files {
 	}
 
 	public function save(
-		string $name, string $tmp, int $size, int $error
+		string $name,
+		string $tmp,
+		int $size,
+		int $error
 	): void {
 		$properties = (new InformativeImage)->properties($tmp);
 		if ($this->exceeding($properties['width'], $properties['height']))

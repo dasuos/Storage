@@ -23,7 +23,10 @@ final class RotatedImages implements Files {
 	}
 
 	public function save(
-		string $name, string $tmp, int $size, int $error
+		string $name,
+		string $tmp,
+		int $size,
+		int $error
 	): void {
 		$exif = (new InformativeImage)->properties($tmp)['exif'];
 		$this->origin->save($name, $tmp, $size, $error);
@@ -43,10 +46,15 @@ final class RotatedImages implements Files {
 		}
 	}
 
+	/**
+	 * @return mixed
+	 */
 	private function rotate($image, int $orientation) {
 		if (isset(self::EXIF_ORIENTATION_ANGLES[$orientation]))
 			return imagerotate(
-				$image, self::EXIF_ORIENTATION_ANGLES[$orientation], 0
+				$image,
+				self::EXIF_ORIENTATION_ANGLES[$orientation],
+				0
 			);
 		return $image;
 	}

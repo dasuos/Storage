@@ -5,7 +5,10 @@ namespace Dasuos\Storage;
 final class FakeFiles implements Files {
 
 	public function save(
-		string $name, string $path, int $size, int $error
+		string $name,
+		string $path,
+		int $size,
+		int $error
 	): void {
 		//for testing purpose
 	}

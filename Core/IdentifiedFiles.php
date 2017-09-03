@@ -13,7 +13,10 @@ final class IdentifiedFiles implements Files {
 	}
 
 	public function save(
-		string $name, string $tmp, int $size, int $error
+		string $name,
+		string $tmp,
+		int $size,
+		int $error
 	): void {
 		if (!$this->identified($tmp))
 			throw new \UnexpectedValueException(

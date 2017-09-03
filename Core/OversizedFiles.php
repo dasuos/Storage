@@ -22,7 +22,10 @@ final class OversizedFiles implements Files {
 	}
 
 	public function save(
-		string $name, string $tmp, int $size, int $error
+		string $name,
+		string $tmp,
+		int $size,
+		int $error
 	): void {
 		if ($this->oversized($size, $this->limit))
 			throw new \UnexpectedValueException(
@@ -52,8 +55,8 @@ final class OversizedFiles implements Files {
 	}
 
 	public function conversion(string $limit): int {
-		return ($this->number($limit) *
-			(int) self::BYTE_SIZES[$this->multiple($limit)]);
+		return $this->number($limit) *
+			(int) self::BYTE_SIZES[$this->multiple($limit)];
 	}
 
 	private function number(string $limit): int {

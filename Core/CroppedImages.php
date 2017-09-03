@@ -16,7 +16,10 @@ final class CroppedImages implements Files {
 	private $height;
 
 	public function __construct(
-		Files $origin, Path $path, int $width, int $height
+		Files $origin,
+		Path $path,
+		int $width,
+		int $height
 	) {
 		$this->origin = $origin;
 		$this->path = $path;
@@ -25,11 +28,16 @@ final class CroppedImages implements Files {
 	}
 
 	public function save(
-		string $name, string $path, int $size, int $error
+		string $name,
+		string $path,
+		int $size,
+		int $error
 	): void {
 		$properties = (new InformativeImage)->properties($path);
 		if (!$this->valid(
-			$properties['mime'], $properties['width'], $properties['height']
+			$properties['mime'],
+			$properties['width'],
+			$properties['height']
 		))
 			throw new \UnexpectedValueException(
 				'Image does not have valid format or size'
@@ -48,18 +56,25 @@ final class CroppedImages implements Files {
 	}
 
 	private function crop(
-		string $path, string $mime, int $originWidth, int $originHeight
+		string $path,
+		string $mime,
+		int $originWidth,
+		int $originHeight
 	): void {
 		$thumbnail = $this->thumbnail($mime);
 		$width = $this->width($originWidth, $originHeight);
 		$height = $this->height($originWidth, $originHeight);
 		imagecopyresampled(
-			$thumbnail, $this->identifier($path, $mime),
+			$thumbnail,
+			$this->identifier($path, $mime),
 			$this->centeredCoordinate($width, $this->width),
 			$this->centeredCoordinate($height, $this->height),
-			0, 0,
-			$width, $height,
-			$originWidth, $originHeight
+			0,
+			0,
+			$width,
+			$height,
+			$originWidth,
+			$originHeight
 		);
 		$this->store($thumbnail, $path, $mime);
 	}
@@ -90,7 +105,6 @@ final class CroppedImages implements Files {
 	/**
 	 * @return mixed
 	 */
-
 	private function thumbnail(string $mime) {
 		$thumbnail = imagecreatetruecolor($this->width, $this->height);
 		if ($mime === 'image/png')
@@ -102,7 +116,10 @@ final class CroppedImages implements Files {
 		imagealphablending($thumbnail, false);
 		imagefilledrectangle(
 			$thumbnail,
-			0, 0, $this->width, $this->height,
+			0,
+			0,
+			$this->width,
+			$this->height,
 			imagecolorallocatealpha($thumbnail, 0, 0, 0, 127)
 		);
 		imagesavealpha($thumbnail, true);
@@ -111,15 +128,13 @@ final class CroppedImages implements Files {
 	/**
 	 * @return mixed
 	 */
-
 	private function identifier(string $path, string $mime) {
-		$function = 'imagecreatefrom'. self::VALID_TYPES[$mime];
+		$function = 'imagecreatefrom' . self::VALID_TYPES[$mime];
 		return $function($path);
 	}
 
 	private function store($thumbnail, string $path, string $mime): void {
-		$function = 'image'. self::VALID_TYPES[$mime];
+		$function = 'image' . self::VALID_TYPES[$mime];
 		$function($thumbnail, $path, $mime === 'image/png' ? 9 : 100);
 	}
 }
-

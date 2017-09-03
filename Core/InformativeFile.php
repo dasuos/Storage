@@ -24,8 +24,9 @@ final class InformativeFile implements File {
 		return [
 			'size' => filesize($this->path()),
 			'mime' => finfo_file(
-				finfo_open(FILEINFO_MIME_TYPE), $this->path()
-			)
+				finfo_open(FILEINFO_MIME_TYPE),
+				$this->path()
+			),
 		];
 	}
 }
