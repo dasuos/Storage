@@ -38,15 +38,12 @@
 	<rule ref="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint">
 		<exclude-pattern>Tests/Unit</exclude-pattern>
 		<exclude-pattern>Tests/Integration</exclude-pattern>
-		<exclude-pattern>Tests/UI</exclude-pattern>
-		<exclude-pattern>Tests/Functional</exclude-pattern>
-		<exclude-pattern>Tests/Postgres</exclude-pattern>
-		<exclude-pattern>Tests/Pings.phpt</exclude-pattern>
 	</rule>
 
-	<rule ref="Squiz.Strings.DoubleQuoteUsage.ContainsVar">
-		<exclude-pattern>Tests/Functional</exclude-pattern>
-	</rule>
+    <rule ref="PSR1.Files.SideEffects.FoundWithSymbols">
+        <exclude-pattern>Tests/Unit</exclude-pattern>
+        <exclude-pattern>Tests/Integration</exclude-pattern>
+    </rule>
 
 	<rule ref="SlevomatCodingStandard.TypeHints.TypeHintDeclaration">
 		<properties>
@@ -56,7 +53,7 @@
 
 	<rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
 		<properties>
-			<property name="rootNamespaces" type="array" value="Core=>Dasuos\Storage"/>
+			<property name="rootNamespaces" type="array" value="Core=>Dasuos\Storage,Tests=>Dasuos\Storage"/>
 			<property name="extensions" type="array" value="php,phpt"/>
 		</properties>
 	</rule>

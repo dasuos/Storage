@@ -4,12 +4,12 @@ declare(strict_types = 1);
  * @testCase
  * @phpVersion > 7.1
  */
-namespace Dasuos\Tests\Integration;
+namespace Dasuos\Storage\Integration;
 
-use Dasuos\Tests\TestCase\Database;
+use Dasuos\Storage;
+use Dasuos\Storage\TestCase\Database;
 use Tester\Assert;
 use Tester\TestCase;
-use Dasuos\Storage;
 
 require __DIR__ . '/../bootstrap.php';
 
@@ -26,8 +26,8 @@ final class SafeQuery extends TestCase {
 		);
 		Assert::equal(
 			[
-				['id' => 1, 'test_value' => 'foo',],
-				['id' => 2, 'test_value' => 'bar',],
+				['id' => 1, 'test_value' => 'foo'],
+				['id' => 2, 'test_value' => 'bar'],
 			],
 			(new Storage\SafeQuery(
 				$this->database
@@ -39,12 +39,13 @@ final class SafeQuery extends TestCase {
 		$this->database->exec(
 			"INSERT INTO test_table (id, test_value) VALUES (1, 'foo')"
 		);
-		$exception = Assert::exception(function() {
+		$exception = Assert::exception(
+			function() {
 				(new Storage\SafeQuery(
 					$this->database
 				))->rows("INSERT INTO test_table VALUES (2, 'foo')");
 			},
-			Storage\UniqueConstraintException::class,
+			\Dasuos\Storage\UniqueConstraintException::class,
 			'Duplicate column value violates unique constraint',
 			23505
 		);
@@ -59,7 +60,7 @@ final class SafeQuery extends TestCase {
 			"INSERT INTO test_table (id, test_value) VALUES (2, 'bar')"
 		);
 		Assert::equal(
-			['id' => 1, 'test_value' => 'foo',],
+			['id' => 1, 'test_value' => 'foo'],
 			(new Storage\SafeQuery(
 				$this->database
 			))->row('SELECT * FROM test_table')
@@ -87,7 +88,7 @@ final class SafeQuery extends TestCase {
 		);
 		Assert::equal(
 			[
-				['id' => 1, 'test_value' => 'foo',],
+				['id' => 1, 'test_value' => 'foo'],
 			],
 			(new Storage\SafeQuery(
 				$this->database
@@ -104,7 +105,7 @@ final class SafeQuery extends TestCase {
 		);
 		Assert::equal(
 			[
-				['id' => 1, 'test_value' => 'foo',],
+				['id' => 1, 'test_value' => 'foo'],
 			],
 			(new Storage\SafeQuery(
 				$this->database
@@ -119,7 +120,7 @@ final class SafeQuery extends TestCase {
 		);
 		Assert::equal(
 			[
-				['id' => 1, 'test_value' => 'foo',],
+				['id' => 1, 'test_value' => 'foo'],
 			],
 			$query->rows('SELECT * FROM test_table WHERE id = 1')
 		);
@@ -128,12 +129,12 @@ final class SafeQuery extends TestCase {
 	public function testPerformingQueryWithNamedPlaceholder() {
 		$query = new Storage\SafeQuery($this->database);
 		$query->perform(
-			"INSERT INTO test_table (id, test_value) VALUES (1, :test_value)",
+			'INSERT INTO test_table (id, test_value) VALUES (1, :test_value)',
 			['test_value' => 'foo']
 		);
 		Assert::equal(
 			[
-				['id' => 1, 'test_value' => 'foo',],
+				['id' => 1, 'test_value' => 'foo'],
 			],
 			$query->rows('SELECT * FROM test_table WHERE id = 1')
 		);
@@ -142,12 +143,12 @@ final class SafeQuery extends TestCase {
 	public function testPerformingQueryWithPositionPlaceholder() {
 		$query = new Storage\SafeQuery($this->database);
 		$query->perform(
-			"INSERT INTO test_table (id, test_value) VALUES (1, ?)",
+			'INSERT INTO test_table (id, test_value) VALUES (1, ?)',
 			['foo']
 		);
 		Assert::equal(
 			[
-				['id' => 1, 'test_value' => 'foo',],
+				['id' => 1, 'test_value' => 'foo'],
 			],
 			$query->rows('SELECT * FROM test_table WHERE id = 1')
 		);

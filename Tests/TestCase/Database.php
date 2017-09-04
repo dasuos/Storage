@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Dasuos\Tests\TestCase;
+namespace Dasuos\Storage\TestCase;
 
 use Dasuos\Storage;
 use Tester\Environment;
@@ -11,7 +11,7 @@ trait Database {
 	 */
 	protected $database;
 
-	public function setup() {
+	public function setup(): void {
 		Environment::lock('Database', __DIR__ . '/../Temp/Locks');
 		$credentials = parse_ini_file(
 			__DIR__ . '/../TestCase/database.ini'

@@ -4,14 +4,15 @@ declare(strict_types = 1);
  * @testCase
  * @phpVersion > 7.1
  */
-namespace Dasuos\Tests\Integration;
+namespace Dasuos\Storage\Integration;
 
-use Tester\{TestCase, Assert, Environment};
-use Dasuos\{Storage, Tests\TestCase\CopiedFiles};
+use Dasuos\Storage;
+use Tester;
+use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
-final class CroppedImages extends TestCase {
+final class CroppedImages extends Tester\TestCase {
 
 	private const CROPPED_IMAGE_DIRECTORY = __DIR__ .
 		'/../TestCase/CroppedImages/Edited';
@@ -20,8 +21,8 @@ final class CroppedImages extends TestCase {
 
 	public function setup() {
 		parent::setup();
-		Environment::lock('CroppedImages', __DIR__ . '/../Temp/Locks');
-		(new CopiedFiles(
+		Tester\Environment::lock('CroppedImages', __DIR__ . '/../Temp/Locks');
+		(new Storage\TestCase\CopiedFiles(
 			__DIR__ . '/../TestCase/CroppedImages/Unedited',
 			self::TEMPORARY_IMAGE_DIRECTORY
 		))->copy();
@@ -41,35 +42,42 @@ final class CroppedImages extends TestCase {
 	/**
 	 * @dataProvider images
 	 */
-
 	public function testCroppingImage(
-		string $image, string $croppedImage, int $width, int $height
+		string $image,
+		string $croppedImage,
+		int $width,
+		int $height
 	) {
 		$path = self::TEMPORARY_IMAGE_DIRECTORY . $image;
 
 		(new Storage\CroppedImages(
 			new Storage\FakeFiles,
 			new Storage\FilePath(dirname($path)),
-			$width, $height
+			$width,
+			$height
 		))->save(basename($path), $path, filesize($path), UPLOAD_ERR_OK);
 
-		Assert::same(
+		\Tester\Assert::same(
 			file_get_contents($path),
 			file_get_contents(self::CROPPED_IMAGE_DIRECTORY . $croppedImage)
 		);
 	}
 
 	public function testCroppingExceedingThumbnail() {
-		Assert::exception(
+		\Tester\Assert::exception(
 			function() {
 				$path = self::TEMPORARY_IMAGE_DIRECTORY . '/my_face.jpg';
 
 				(new Storage\CroppedImages(
 					new Storage\FakeFiles,
 					new Storage\FilePath(dirname($path)),
-					3000, 3000
+					3000,
+					3000
 				))->save(
-					basename($path), $path, filesize($path), UPLOAD_ERR_OK
+					basename($path),
+					$path,
+					filesize($path),
+					UPLOAD_ERR_OK
 				);
 			},
 			\UnexpectedValueException::class,
@@ -85,9 +93,13 @@ final class CroppedImages extends TestCase {
 				(new Storage\CroppedImages(
 					new Storage\FakeFiles,
 					new Storage\FilePath(dirname($path)),
-					100, 100
+					100,
+					100
 				))->save(
-					basename($path), $path, filesize($path), UPLOAD_ERR_OK
+					basename($path),
+					$path,
+					filesize($path),
+					UPLOAD_ERR_OK
 				);
 			},
 			\UnexpectedValueException::class,

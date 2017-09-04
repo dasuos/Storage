@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Dasuos\Tests\TestCase;
+namespace Dasuos\Storage\TestCase;
 
 final class CopiedFiles {
 
@@ -14,7 +14,7 @@ final class CopiedFiles {
 		$this->to = $to;
 	}
 
-	public function copy() {
+	public function copy(): void {
 		if (!file_exists($this->from) || !file_exists($this->to))
 			throw new \UnexpectedValueException(
 				'One or more directory paths are not valid'
@@ -26,13 +26,14 @@ final class CopiedFiles {
 			);
 	}
 
-	private function path(string $directory, string $file) {
+	private function path(string $directory, string $file): string {
 		return $directory . DIRECTORY_SEPARATOR . $file;
 	}
 
 	private function all(string $directory): array {
 		return array_map(
-			'basename', glob($directory . DIRECTORY_SEPARATOR . self::ALL)
+			'basename',
+			glob($directory . DIRECTORY_SEPARATOR . self::ALL)
 		);
 	}
 }

@@ -4,30 +4,35 @@ declare(strict_types = 1);
 * @testCase
 * @phpVersion > 7.1
 */
-namespace Dasuos\Tests\Integration;
+namespace Dasuos\Storage\Integration;
 
-use Tester\{TestCase, Assert, Environment};
-use Dasuos\{Tests, Storage, Tests\TestCase\PngImage};
+use Dasuos\Storage;
+use Tester;
+use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
-final class UploadedFiles extends TestCase {
+final class UploadedFiles extends Tester\TestCase {
 
 	private $file;
 
 	public function setup() {
 		parent::setup();
-		Environment::lock('UploadedFiles', __DIR__ . '/../Temp/Locks');
-		$this->file = (new PngImage(
-			__DIR__ . '/../Temp/UploadedFiles', 800, 600
+		Tester\Environment::lock('UploadedFiles', __DIR__ . '/../Temp/Locks');
+		$this->file = (new Storage\TestCase\PngImage(
+			__DIR__ . '/../Temp/UploadedFiles',
+			800,
+			600
 		))->path();
 	}
 
 	public function testDeletingFileInDirectory() {
 		Assert::noError(
 			function() {
-				$path = (new Tests\TestCase\PngImage(
-					__DIR__ . '/../Temp/UploadedFiles', 800, 600
+				$path = (new Storage\TestCase\PngImage(
+					__DIR__ . '/../Temp/UploadedFiles',
+					800,
+					600
 				))->path();
 				(new Storage\UploadedFiles(
 					new Storage\FakePath

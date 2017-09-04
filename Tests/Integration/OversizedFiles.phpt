@@ -4,14 +4,15 @@ declare(strict_types = 1);
  * @testCase
  * @phpVersion > 7.1
  */
-namespace Dasuos\Tests\Integration;
+namespace Dasuos\Storage\Integration;
 
-use Tester\{TestCase, Assert};
 use Dasuos\Storage;
+use Tester;
+use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
-final class OversizedFiles extends TestCase {
+final class OversizedFiles extends Tester\TestCase {
 
 	public function allowedSizes() {
 		return [
@@ -46,15 +47,20 @@ final class OversizedFiles extends TestCase {
 	 * @dataProvider allowedSizes
 	 */
 	public function testSavingFileWithAllowedSize(
-		string $allowedSize, int $size
+		string $allowedSize,
+		int $size
 	) {
 		Assert::noError(
 			function() use ($allowedSize, $size) {
 				$path = new Storage\FakePath;
 				(new Storage\OversizedFiles(
-					new Storage\FakeFiles($path), $allowedSize
+					new Storage\FakeFiles($path),
+					$allowedSize
 				))->save(
-					'fakeName', 'fakeTmp', $size, UPLOAD_ERR_OK
+					'fakeName',
+					'fakeTmp',
+					$size,
+					UPLOAD_ERR_OK
 				);
 			}
 		);
@@ -64,15 +70,20 @@ final class OversizedFiles extends TestCase {
 	 * @dataProvider exceedingSizes
 	 */
 	public function testSavingFileWithExceedingSize(
-		string $allowedSize, int $exceedingSize
+		string $allowedSize,
+		int $exceedingSize
 	) {
 		Assert::exception(
 			function() use ($allowedSize, $exceedingSize) {
 				$path = new Storage\FakePath;
 				(new Storage\OversizedFiles(
-					new Storage\FakeFiles($path), $allowedSize
+					new Storage\FakeFiles($path),
+					$allowedSize
 				))->save(
-					'fakeName', 'fakeTmp', $exceedingSize, UPLOAD_ERR_OK
+					'fakeName',
+					'fakeTmp',
+					$exceedingSize,
+					UPLOAD_ERR_OK
 				);
 			},
 			\UnexpectedValueException::class,
@@ -84,15 +95,20 @@ final class OversizedFiles extends TestCase {
 	 * @dataProvider unexpectedSizeFormats
 	 */
 	public function testSavingFileWithUnexpectedSizeFormat(
-		string $unexpectedSize, int $size
+		string $unexpectedSize,
+		int $size
 	) {
 		Assert::exception(
 			function() use ($unexpectedSize, $size) {
 				$path = new Storage\FakePath;
 				(new Storage\OversizedFiles(
-					new Storage\FakeFiles($path), $unexpectedSize
+					new Storage\FakeFiles($path),
+					$unexpectedSize
 				))->save(
-					'fakeName', 'fakeTmp', $size, UPLOAD_ERR_OK
+					'fakeName',
+					'fakeTmp',
+					$size,
+					UPLOAD_ERR_OK
 				);
 			},
 			\UnexpectedValueException::class,

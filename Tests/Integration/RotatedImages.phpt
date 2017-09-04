@@ -4,14 +4,15 @@ declare(strict_types = 1);
  * @testCase
  * @phpVersion > 7.1
  */
-namespace Dasuos\Tests\Integration;
+namespace Dasuos\Storage\Integration;
 
-use Tester\{TestCase, Assert, Environment};
-use Dasuos\{Storage, Tests\TestCase\CopiedFiles};
+use Dasuos\Storage;
+use Tester;
+use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
-final class RotatedImages extends TestCase {
+final class RotatedImages extends Tester\TestCase {
 
 	private const ROTATED_IMAGE_DIRECTORY = __DIR__ .
 		'/../TestCase/RotatedImages/Edited';
@@ -20,8 +21,8 @@ final class RotatedImages extends TestCase {
 
 	public function setup() {
 		parent::setup();
-		Environment::lock('RotatedImages', __DIR__ . '/../Temp/Locks');
-		(new CopiedFiles(
+		Tester\Environment::lock('RotatedImages', __DIR__ . '/../Temp/Locks');
+		(new Storage\TestCase\CopiedFiles(
 			__DIR__ . '/../TestCase/RotatedImages/Unedited',
 			self::TEMPORARY_IMAGE_DIRECTORY
 		))->copy();
@@ -43,7 +44,6 @@ final class RotatedImages extends TestCase {
 	/**
 	 * @dataProvider images
 	 */
-
 	public function testSavingImageModification(string $file) {
 		$path = self::TEMPORARY_IMAGE_DIRECTORY . $file;
 

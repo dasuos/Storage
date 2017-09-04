@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Dasuos\Tests\TestCase;
+namespace Dasuos\Storage\TestCase;
 
 final class PngImage {
 
@@ -22,32 +22,46 @@ final class PngImage {
 		return $this->location();
 	}
 
-	public function delete() {
+	public function delete(): void {
 		unlink($this->location());
 	}
 
-	private function create($image) {
+	private function create($image): void {
 		$this->withBackground($image);
 		$this->withText($image, $this->withColor($image));
 		imagepng($image, $this->location());
 		imagedestroy($image);
 	}
 
+	/**
+	 * @return mixed
+	 */
 	private function withBackground($image) {
 		return imagecolorallocate($image, 0x00, 0x00, 0x99);
 	}
 
+	/**
+	 * @return mixed
+	 */
 	private function withColor($image) {
 		return imagecolorallocate($image, 0xff, 0xff, 0xff);
 	}
 
+	/**
+	 * @return mixed
+	 */
 	private function withText($image, $color) {
 		return imagestring(
-			$image, 5, 300, 300, self::TEXT, $color
+			$image,
+			5,
+			300,
+			300,
+			self::TEXT,
+			$color
 		);
 	}
 
-	private function location() {
+	private function location(): string {
 		return $this->directory . DIRECTORY_SEPARATOR . self::NAME;
 	}
 }

@@ -4,22 +4,25 @@ declare(strict_types = 1);
  * @testCase
  * @phpVersion > 7.1
  */
-namespace Dasuos\Tests\Integration;
+namespace Dasuos\Storage\Integration;
 
-use Tester\{TestCase, Assert, Environment};
-use Dasuos\{Storage, Tests\TestCase\PngImage};
+use Dasuos\Storage;
+use Tester;
+use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
-final class IdentifiedFiles extends TestCase {
+final class IdentifiedFiles extends Tester\TestCase {
 
 	private $file;
 
 	public function setup() {
 		parent::setup();
-		Environment::lock('IdentifiedFiles', __DIR__ . '/../Temp/Locks');
-		$this->file = (new PngImage(
-			__DIR__ . '/../Temp/IdentifiedFiles',800, 600
+		Tester\Environment::lock('IdentifiedFiles', __DIR__ . '/../Temp/Locks');
+		$this->file = (new Storage\TestCase\PngImage(
+			__DIR__ . '/../Temp/IdentifiedFiles',
+			800,
+			600
 		))->path();
 	}
 
