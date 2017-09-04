@@ -7,7 +7,7 @@ declare(strict_types = 1);
 namespace Dasuos\Tests\Integration;
 
 use Tester\{TestCase, Assert, Environment};
-use Dasuos\{Tests, Storage, Tests\TestCase\PngImage};
+use Dasuos\{Storage, Tests\TestCase\PngImage};
 
 require __DIR__ . '/../bootstrap.php';
 
@@ -17,7 +17,7 @@ final class IdentifiedFiles extends TestCase {
 
 	public function setup() {
 		parent::setup();
-		Environment::lock('IdentifiedFiles', __DIR__ . '/../Temp');
+		Environment::lock('IdentifiedFiles', __DIR__ . '/../Temp/Locks');
 		$this->file = (new PngImage(
 			__DIR__ . '/../Temp/IdentifiedFiles',800, 600
 		))->path();

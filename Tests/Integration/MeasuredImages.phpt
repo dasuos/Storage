@@ -7,7 +7,7 @@ declare(strict_types = 1);
 namespace Dasuos\Tests\Integration;
 
 use Tester\{TestCase, Assert, Environment};
-use Dasuos\{Tests, Storage, Tests\TestCase\PngImage};
+use Dasuos\{Storage, Tests\TestCase\PngImage};
 
 require __DIR__ . '/../bootstrap.php';
 
@@ -18,7 +18,7 @@ final class MeasuredImages extends TestCase {
 
 	public function setup() {
 		parent::setup();
-		Environment::lock('ExceedingImages', __DIR__ . '/../Temp');
+		Environment::lock('ExceedingImages', __DIR__ . '/../Temp/Locks');
 	}
 
 	public function testSavingImageWithExceedingDimension() {

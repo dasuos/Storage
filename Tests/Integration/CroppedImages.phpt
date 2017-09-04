@@ -7,7 +7,7 @@ declare(strict_types = 1);
 namespace Dasuos\Tests\Integration;
 
 use Tester\{TestCase, Assert, Environment};
-use Dasuos\{Tests, Storage, Tests\TestCase\CopiedFiles};
+use Dasuos\{Storage, Tests\TestCase\CopiedFiles};
 
 require __DIR__ . '/../bootstrap.php';
 
@@ -20,7 +20,7 @@ final class CroppedImages extends TestCase {
 
 	public function setup() {
 		parent::setup();
-		Environment::lock('CroppedImages', __DIR__ . '/../Temp');
+		Environment::lock('CroppedImages', __DIR__ . '/../Temp/Locks');
 		(new CopiedFiles(
 			__DIR__ . '/../TestCase/CroppedImages/Unedited',
 			self::TEMPORARY_IMAGE_DIRECTORY

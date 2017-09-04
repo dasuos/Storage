@@ -5,3 +5,4 @@ database.local.ini
 composer.lock
 *.expected
 *.actual
+Tests/Temp/Locks

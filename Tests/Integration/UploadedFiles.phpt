@@ -17,7 +17,7 @@ final class UploadedFiles extends TestCase {
 
 	public function setup() {
 		parent::setup();
-		Environment::lock('UploadedFiles', __DIR__ . '/../Temp');
+		Environment::lock('UploadedFiles', __DIR__ . '/../Temp/Locks');
 		$this->file = (new PngImage(
 			__DIR__ . '/../Temp/UploadedFiles', 800, 600
 		))->path();

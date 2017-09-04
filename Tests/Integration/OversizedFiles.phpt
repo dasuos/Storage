@@ -7,7 +7,7 @@ declare(strict_types = 1);
 namespace Dasuos\Tests\Integration;
 
 use Tester\{TestCase, Assert};
-use Dasuos\{Tests, Storage};
+use Dasuos\Storage;
 
 require __DIR__ . '/../bootstrap.php';
 
@@ -45,7 +45,6 @@ final class OversizedFiles extends TestCase {
 	/**
 	 * @dataProvider allowedSizes
 	 */
-
 	public function testSavingFileWithAllowedSize(
 		string $allowedSize, int $size
 	) {
@@ -64,7 +63,6 @@ final class OversizedFiles extends TestCase {
 	/**
 	 * @dataProvider exceedingSizes
 	 */
-
 	public function testSavingFileWithExceedingSize(
 		string $allowedSize, int $exceedingSize
 	) {
@@ -85,7 +83,6 @@ final class OversizedFiles extends TestCase {
 	/**
 	 * @dataProvider unexpectedSizeFormats
 	 */
-
 	public function testSavingFileWithUnexpectedSizeFormat(
 		string $unexpectedSize, int $size
 	) {
