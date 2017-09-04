@@ -14,7 +14,7 @@ trait Database {
 	public function setup() {
 		Environment::lock('Database', __DIR__ . '/../Temp/Locks');
 		$credentials = parse_ini_file(
-			__DIR__ . '/../TestCase/database.local.ini'
+			__DIR__ . '/../TestCase/database.ini'
 		);
 		$this->database = new Storage\DefinedPdo(
 			$credentials['dsn'],
