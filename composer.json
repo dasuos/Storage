@@ -27,6 +27,7 @@
     "phpstan/phpstan": "^0.8.4",
     "slevomat/coding-standard": "^3.3",
     "consistence/coding-standard": "^2.0",
+    "phpmd/phpmd" : "@stable",
     "phing/phing": "^2.16"
   },
   "autoload": {
