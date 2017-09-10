@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project name="Library" default="check">
 
-    <target name="check" depends="lint, phpstan, phpcs, phpcbf, phpmd, tests, cgi-tests"/>
+    <target name="check" depends="lint, phpstan, phpcs, phpcbf, tests, cgi-tests"/>
     <target name="ci" depends="check"/>
 
     <target name="lint">
@@ -46,15 +46,6 @@
             <arg value="-sp"/>
             <arg path="Core"/>
             <arg path="Tests"/>
-        </exec>
-    </target>
-
-    <target name="phpmd">
-        <exec executable="vendor/bin/phpmd" logoutput="true" passthru="true" checkreturn="true">
-            <arg path="Core"/>
-            <arg value="text"/>
-            <arg value="codesize,unusedcode,naming"/>
-            <arg value="--suffixes php,phtml"/>
         </exec>
     </target>
 
