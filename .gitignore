@@ -1,7 +1,2 @@
-.idea
-vendor
-example.php
-database.local.ini
+vendor/
 composer.lock
-*.expected
-*.actual
