@@ -7,7 +7,10 @@ interface Query {
 		string $sql,
 		array $placeholders = []
 	): \PDOStatement;
-	public function row(string $sql, array $placeholders = []): array;
+	/**
+	 * @return mixed
+	 */
+	public function row(string $sql, array $placeholders = []);
 	public function rows(string $sql, array $placeholders = []): array;
 	/**
 	 * @return mixed
