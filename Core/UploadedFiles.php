@@ -23,7 +23,7 @@ final class UploadedFiles implements Files {
 			);
 		}
 		move_uploaded_file($tmp, $path);
-		 $this->permit($path);
+		$this->permit($path);
 	}
 
 	public function delete(string $name): void {
