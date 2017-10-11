@@ -11,6 +11,12 @@ final class FilePath implements Path {
 	}
 
 	public function location(string $file): string {
-		return $this->directory . DIRECTORY_SEPARATOR . basename($file);
+		$location = $this->directory . DIRECTORY_SEPARATOR . basename($file);
+		if (!file_exists($location)) {
+			throw new \UnexpectedValueException(
+				'Given file path does not exist'
+			);
+		}
+		return $location;
 	}
 }

@@ -31,7 +31,7 @@ final class IdentifiedFiles implements Files {
 
 	public function identified(string $tmp): bool {
 		return in_array(
-			finfo_file(finfo_open(FILEINFO_MIME_TYPE), $tmp),
+			(new InformativeFile($tmp))->properties()['mime'],
 			$this->types,
 			true
 		);

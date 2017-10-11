@@ -5,15 +5,17 @@ namespace Dasuos\Storage;
 final class InformativeFile implements File {
 
 	private $path;
-	private $name;
 
-	public function __construct(Path $path, string $name) {
+	public function __construct(string $path) {
 		$this->path = $path;
-		$this->name = $name;
 	}
 
 	public function path(): string {
-		return $this->path->location($this->name);
+		if (!file_exists($this->path))
+			throw new \UnexpectedValueException(
+				'Given file path does not exist'
+			);
+		return $this->path;
 	}
 
 	public function content(): string {

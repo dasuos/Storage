@@ -9,7 +9,6 @@ final class InformativeImage implements Image {
 
 	public function properties(string $path): array {
 		$size = $this->size($path);
-		$exif = $this->exif($path);
 		return [
 			'width' => $size[self::WIDTH],
 			'height' => $size[self::HEIGHT],
@@ -17,7 +16,7 @@ final class InformativeImage implements Image {
 				finfo_open(FILEINFO_MIME_TYPE),
 				$path
 			),
-			'exif' => $exif,
+			'exif' => @exif_read_data($path) ?: [],
 		];
 	}
 
@@ -28,10 +27,5 @@ final class InformativeImage implements Image {
 				'Image is unreadable or does not have supporting format'
 			);
 		return $size;
-	}
-
-	private function exif(string $path): array {
-		$exif = @exif_read_data($path);
-		return $exif ? $exif : [];
 	}
 }

@@ -49,7 +49,7 @@ final class UploadedFiles extends Tester\TestCase {
 					->delete('invalid/path/to/file');
 			},
 			\UnexpectedValueException::class,
-			'Given file does not exist and cannot be deleted'
+			'Given file path does not exist'
 		);
 	}
 

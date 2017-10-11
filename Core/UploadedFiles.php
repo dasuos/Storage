@@ -27,17 +27,13 @@ final class UploadedFiles implements Files {
 	}
 
 	public function delete(string $name): void {
-		if (!file_exists($this->path->location($name))) {
-			throw new \UnexpectedValueException(
-				'Given file does not exist and cannot be deleted'
-			);
-		}
 		unlink($this->path->location($name));
 	}
 
 	private function uploaded(string $tmp, string $path, int $error): bool {
-		return !file_exists($path) && is_uploaded_file($tmp) &&
-			$error === UPLOAD_ERR_OK;
+		return !file_exists($path)
+			&& is_uploaded_file($tmp)
+			&& $error === UPLOAD_ERR_OK;
 	}
 
 	private function permit(string $path): void {
