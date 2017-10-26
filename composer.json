@@ -2,19 +2,20 @@
   "name": "dasuos/storage",
   "description": "Library for simple database, upload management and image modification",
   "type": "library",
-  "homepage": "https://github.com/Dasuos/Storage",
+  "homepage": "https://github.com/dasuos/storage",
   "keywords": [
     "storage",
     "file",
     "upload",
     "image",
-    "cropping"
+    "cropping",
+    "resize"
   ],
   "authors": [
     {
       "name": "Daniel Krnak",
       "email": "dasuos256@gmail.com",
-      "homepage": "https://www.github.com/Dasuos",
+      "homepage": "https://www.github.com/dasuos",
       "role": "Developer"
     }
   ],
