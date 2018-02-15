@@ -23,9 +23,9 @@ final class UploadedFiles implements Files {
 			);
 		}
 		$this->move(
-		    $tmp,
-            $directory . DIRECTORY_SEPARATOR . basename($name)
-        );
+			$tmp,
+			$directory . DIRECTORY_SEPARATOR . basename($name)
+		);
 	}
 
 	public function delete(string $name): void {
