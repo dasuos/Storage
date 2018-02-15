@@ -22,7 +22,10 @@ final class UploadedFiles implements Files {
 				'Given file cannot be uploaded'
 			);
 		}
-		$this->upload($tmp, $directory  . DIRECTORY_SEPARATOR . basename($name));
+		$this->move(
+		    $tmp,
+            $directory . DIRECTORY_SEPARATOR . basename($name)
+        );
 	}
 
 	public function delete(string $name): void {
@@ -35,7 +38,7 @@ final class UploadedFiles implements Files {
 			&& $error === UPLOAD_ERR_OK;
 	}
 
-	private function upload(string $tmp, string $location): void {
+	private function move(string $tmp, string $location): void {
 		move_uploaded_file($tmp, $location);
 		@chmod($location, 0666);
 	}
