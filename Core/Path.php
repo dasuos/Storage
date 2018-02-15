@@ -4,5 +4,5 @@ namespace Dasuos\Storage;
 
 interface Path {
 	public function location(string $file): string;
-    public function directory(): string;
+	public function directory(): string;
 }

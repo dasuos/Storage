@@ -12,19 +12,19 @@ final class FilePath implements Path {
 
 	public function location(string $file): string {
 		$location = $this->directory . DIRECTORY_SEPARATOR . basename($file);
-        $this->validate($location);
+		$this->validate($location);
 		return $location;
 	}
 
 	public function directory(): string {
-        $this->validate($this->directory);
-        return $this->directory;
-    }
+		$this->validate($this->directory);
+		return $this->directory;
+	}
 
-    private function validate(string $path): void {
-        if (!file_exists($path))
-            throw new \UnexpectedValueException(
-                'Given file path does not exist'
-            );
-    }
+	private function validate(string $path): void {
+		if (!file_exists($path))
+			throw new \UnexpectedValueException(
+				'Given file path does not exist'
+			);
+	}
 }
