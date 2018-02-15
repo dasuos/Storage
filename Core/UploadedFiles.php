@@ -33,7 +33,7 @@ final class UploadedFiles implements Files {
 	}
 
 	private function uploaded(string $tmp, string $path, int $error): bool {
-		return !file_exists($path)
+		return file_exists($path)
 			&& is_uploaded_file($tmp)
 			&& $error === UPLOAD_ERR_OK;
 	}
