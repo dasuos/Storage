@@ -16,14 +16,13 @@ final class UploadedFiles implements Files {
 		int $size,
 		int $error
 	): void {
-		$path = $this->path->location($name);
-		if (!$this->uploaded($tmp, $path, $error)) {
+		$directory = $this->path->directory();
+		if (!$this->uploaded($tmp, $directory, $error)) {
 			throw new \UnexpectedValueException(
 				'Given file cannot be uploaded'
 			);
 		}
-		move_uploaded_file($tmp, $path);
-		$this->permit($path);
+		$this->upload($tmp, $directory  . DIRECTORY_SEPARATOR . basename($name));
 	}
 
 	public function delete(string $name): void {
@@ -36,7 +35,8 @@ final class UploadedFiles implements Files {
 			&& $error === UPLOAD_ERR_OK;
 	}
 
-	private function permit(string $path): void {
-		@chmod($path, 0666);
+	private function upload(string $tmp, string $location): void {
+		move_uploaded_file($tmp, $location);
+		@chmod($location, 0666);
 	}
 }
