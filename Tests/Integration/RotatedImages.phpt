@@ -1,9 +1,6 @@
 <?php
 declare(strict_types = 1);
-/**
- * @testCase
- * @phpVersion > 7.1
- */
+
 namespace Dasuos\Storage\Integration;
 
 use Dasuos\Storage;
@@ -12,6 +9,10 @@ use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
+/**
+ * @testCase
+ * @phpVersion > 7.1
+ */
 final class RotatedImages extends Tester\TestCase {
 
 	private const ROTATED_IMAGE_DIRECTORY = __DIR__ .

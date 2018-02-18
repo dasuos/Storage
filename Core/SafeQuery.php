@@ -12,15 +12,12 @@ final class SafeQuery implements Query {
 		$this->database = $database;
 	}
 
-	/**
-	 * @return mixed
-	 */
-	public function row(string $sql, array $placeholders = []) {
-		return $this->perform($sql, $placeholders)->fetch();
+	public function row(string $sql, array $placeholders = []): array {
+		$row = $this->perform($sql, $placeholders)->fetch();
+		return $row ? $row : [];
 	}
 
-	public function rows(string $sql, array $placeholders = []): array
-	{
+	public function rows(string $sql, array $placeholders = []): array {
 		return $this->perform($sql, $placeholders)->fetchAll();
 	}
 
@@ -28,7 +25,8 @@ final class SafeQuery implements Query {
 	 * @return mixed
 	 */
 	public function column(string $sql, array $placeholders = []) {
-		return $this->perform($sql, $placeholders)->fetchColumn();
+		return $this->perform($sql, $placeholders)
+			->fetchColumn();
 	}
 
 	public function perform(

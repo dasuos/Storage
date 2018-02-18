@@ -1,9 +1,6 @@
 <?php
 declare(strict_types = 1);
-/**
- * @testCase
- * @phpVersion > 7.1
- */
+
 namespace Dasuos\Storage\Integration;
 
 use Dasuos\Storage;
@@ -13,6 +10,10 @@ use Tester\TestCase;
 
 require __DIR__ . '/../bootstrap.php';
 
+/**
+ * @testCase
+ * @phpVersion > 7.1
+ */
 final class SafeQuery extends TestCase {
 
 	use Database;
@@ -32,6 +33,15 @@ final class SafeQuery extends TestCase {
 			(new Storage\SafeQuery(
 				$this->database
 			))->rows('SELECT * FROM test_table')
+		);
+	}
+
+	public function testFetchingNonexistentRows() {
+		Assert::equal(
+			[],
+			(new Storage\SafeQuery(
+				$this->database
+			))->rows("SELECT * FROM test_table WHERE test_value = 'nonexistent'")
 		);
 	}
 
@@ -67,7 +77,28 @@ final class SafeQuery extends TestCase {
 		);
 	}
 
-	public function testFetchingSingleColumn() {
+	public function testFetchingNonexistentRow() {
+		Assert::equal(
+			[],
+			(new Storage\SafeQuery(
+				$this->database
+			))->row("SELECT * FROM test_table WHERE test_value = 'nonexistent'")
+		);
+	}
+
+	public function testFetchingSingleValueInRow() {
+		$this->database->exec(
+			"INSERT INTO test_table (id, test_value) VALUES (1, 'foo')"
+		);
+		Assert::equal(
+			['id' => 1],
+			(new Storage\SafeQuery(
+				$this->database
+			))->row("SELECT id FROM test_table WHERE test_value = 'foo'")
+		);
+	}
+
+	public function testFetchingSingleStringColumn() {
 		$this->database->exec(
 			"INSERT INTO test_table (id, test_value) VALUES (1, 'foo')"
 		);
@@ -76,6 +107,18 @@ final class SafeQuery extends TestCase {
 			(new Storage\SafeQuery(
 				$this->database
 			))->column('SELECT test_value FROM test_table WHERE id = 1')
+		);
+	}
+
+	public function testFetchingSingleIntegerColumn() {
+		$this->database->exec(
+			"INSERT INTO test_table (id, test_value) VALUES (1, 'foo')"
+		);
+		Assert::equal(
+			1,
+			(new Storage\SafeQuery(
+				$this->database
+			))->column("SELECT id FROM test_table WHERE test_value = 'foo'")
 		);
 	}
 
