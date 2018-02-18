@@ -18,7 +18,8 @@ final class SafeQuery implements Query {
 	}
 
 	public function rows(string $sql, array $placeholders = []): array {
-		return $this->perform($sql, $placeholders)->fetchAll();
+		$rows = $this->perform($sql, $placeholders)->fetchAll();
+		return $rows ? $rows : [];
 	}
 
 	/**
