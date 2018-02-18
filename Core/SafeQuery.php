@@ -26,8 +26,7 @@ final class SafeQuery implements Query {
 	 * @return mixed
 	 */
 	public function column(string $sql, array $placeholders = []) {
-		return $this->perform($sql, $placeholders)
-			->fetchColumn();
+		return $this->perform($sql, $placeholders)->fetchColumn();
 	}
 
 	public function perform(
