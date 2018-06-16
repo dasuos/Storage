@@ -19,7 +19,7 @@ install:
 
 before_script:
   - psql -c 'CREATE DATABASE test_database;' -U postgres
-  - psql -U postgres test_database < ./Tests/TestCase/schema.sql
+  - psql -U postgres test_database < ./Tests/Config/schema.sql
 
 script:
   - ./vendor/bin/phing ci
