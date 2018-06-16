@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Dasuos\Storage\TestCase;
+namespace Dasuos\Storage\Misc;
 
 final class PngImage {
 

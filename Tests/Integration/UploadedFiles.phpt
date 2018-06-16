@@ -20,7 +20,7 @@ final class UploadedFiles extends Tester\TestCase {
 	public function setup() {
 		parent::setup();
 		Tester\Environment::lock('UploadedFiles', __DIR__ . '/../Temp/Locks');
-		$this->file = (new Storage\TestCase\PngImage(
+		$this->file = (new Storage\Misc\PngImage(
 			__DIR__ . '/../Temp/UploadedFiles',
 			800,
 			600
@@ -30,7 +30,7 @@ final class UploadedFiles extends Tester\TestCase {
 	public function testDeletingFileInDirectory() {
 		Assert::noError(
 			function() {
-				$path = (new Storage\TestCase\PngImage(
+				$path = (new Storage\Misc\PngImage(
 					__DIR__ . '/../Temp/UploadedFiles',
 					800,
 					600
@@ -72,4 +72,4 @@ final class UploadedFiles extends Tester\TestCase {
 	}
 }
 
-(new UploadedFiles())->run();
+(new UploadedFiles)->run();

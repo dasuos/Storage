@@ -32,7 +32,7 @@ final class MeasuredImages extends Tester\TestCase {
 					600
 				))->save(
 					'fakeName',
-					(new Storage\TestCase\PngImage(self::TEMPORARY_IMAGE_DIRECTORY, 2000, 2000))
+					(new Storage\Misc\PngImage(self::TEMPORARY_IMAGE_DIRECTORY, 2000, 2000))
 						->path(),
 					1900000,
 					UPLOAD_ERR_OK
@@ -52,7 +52,7 @@ final class MeasuredImages extends Tester\TestCase {
 					2000
 				))->save(
 					'fakeName',
-					(new Storage\TestCase\PngImage(self::TEMPORARY_IMAGE_DIRECTORY, 800, 600))
+					(new Storage\Misc\PngImage(self::TEMPORARY_IMAGE_DIRECTORY, 800, 600))
 						->path(),
 					1900000,
 					UPLOAD_ERR_OK
@@ -82,4 +82,4 @@ final class MeasuredImages extends Tester\TestCase {
 	}
 }
 
-(new MeasuredImages())->run();
+(new MeasuredImages)->run();

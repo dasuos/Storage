@@ -118,4 +118,4 @@ final class OversizedFiles extends Tester\TestCase {
 	}
 }
 
-(new OversizedFiles())->run();
+(new OversizedFiles)->run();

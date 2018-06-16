@@ -20,7 +20,7 @@ final class IdentifiedFiles extends Tester\TestCase {
 	public function setup() {
 		parent::setup();
 		Tester\Environment::lock('IdentifiedFiles', __DIR__ . '/../Temp/Locks');
-		$this->file = (new Storage\TestCase\PngImage(
+		$this->file = (new Storage\Misc\PngImage(
 			__DIR__ . '/../Temp/IdentifiedFiles',
 			800,
 			600
@@ -62,4 +62,4 @@ final class IdentifiedFiles extends Tester\TestCase {
 	}
 }
 
-(new IdentifiedFiles())->run();
+(new IdentifiedFiles)->run();
