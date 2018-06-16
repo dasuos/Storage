@@ -29,10 +29,10 @@ final class SafeQuery implements Query {
 		return $this->perform($sql, $placeholders)->fetchColumn();
 	}
 
-	public function perform(
-		string $sql,
-		array $placeholders = []
-	): \PDOStatement {
+	/**
+	 * @return mixed
+	 */
+	public function perform(string $sql, array $placeholders = []) {
 		try {
 			return $placeholders
 				? $this->statement($sql, $placeholders)

@@ -72,4 +72,4 @@ final class PdoTransaction extends TestCase {
 	}
 }
 
-(new PdoTransaction())->run();
+(new PdoTransaction)->run();

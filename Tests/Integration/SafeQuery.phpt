@@ -53,7 +53,7 @@ final class SafeQuery extends TestCase {
 			function() {
 				(new Storage\SafeQuery(
 					$this->database
-				))->rows("INSERT INTO test_table VALUES (2, 'foo')");
+				))->perform("INSERT INTO test_table VALUES (2, 'foo')");
 			},
 			\Dasuos\Storage\UniqueConstraintException::class,
 			'Duplicate column value violates unique constraint',
@@ -147,9 +147,7 @@ final class SafeQuery extends TestCase {
 			"INSERT INTO test_table (id, test_value) VALUES (2, 'bar')"
 		);
 		Assert::equal(
-			[
-				['id' => 1, 'test_value' => 'foo'],
-			],
+			[['id' => 1, 'test_value' => 'foo']],
 			(new Storage\SafeQuery(
 				$this->database
 			))->rows('SELECT * FROM test_table WHERE id = :id', ['id' => 1])
@@ -196,7 +194,6 @@ final class SafeQuery extends TestCase {
 			$query->rows('SELECT * FROM test_table WHERE id = 1')
 		);
 	}
-
 }
 
-(new SafeQuery())->run();
+(new SafeQuery)->run();
