@@ -37,7 +37,9 @@ final class FakeQuery implements Query {
 	 * @return mixed
 	 */
 	public function perform(string $sql, array $placeholders = []) {
-		return $this->origin->perform($sql, $placeholders);
+		return $this->selective($sql) ?
+			$this->memory :
+			$this->origin->perform($sql, $placeholders);
 	}
 
 	private function selective(string $sql): bool {

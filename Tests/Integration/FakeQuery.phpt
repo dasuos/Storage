@@ -18,7 +18,7 @@ final class FakeQuery extends TestCase {
 
 	use Database;
 
-	public function testFetchingOneRow() {
+	public function testFetchingFakeRow() {
 		$this->database->exec(
 			"INSERT INTO test_table (id, test_value) VALUES (1, 'foo')"
 		);
@@ -34,7 +34,23 @@ final class FakeQuery extends TestCase {
 		);
 	}
 
-	public function testFakeFetchingAllRows() {
+	public function testFetchingFakeRowWithPlaceholder() {
+		$this->database->exec(
+			"INSERT INTO test_table (id, test_value) VALUES (1, 'foo')"
+		);
+		$this->database->exec(
+			"INSERT INTO test_table (id, test_value) VALUES (2, 'bar')"
+		);
+		Assert::same(
+			['foo', 'bar'],
+			(new Storage\FakeQuery(
+				new Storage\SafeQuery($this->database),
+				['foo', 'bar']
+			))->row('SELECT * FROM test_table WHERE id = ?', [1])
+		);
+	}
+
+	public function testFetchingFakeRows() {
 		$this->database->exec(
 			"INSERT INTO test_table (id, test_value) VALUES (1, 'foo')"
 		);
@@ -50,7 +66,23 @@ final class FakeQuery extends TestCase {
 		);
 	}
 
-	public function testFetchingColumn() {
+	public function testFetchingFakeRowsWithPlaceholder() {
+		$this->database->exec(
+			"INSERT INTO test_table (id, test_value) VALUES (1, 'foo')"
+		);
+		$this->database->exec(
+			"INSERT INTO test_table (id, test_value) VALUES (2, 'bar')"
+		);
+		Assert::same(
+			['foo', 'bar'],
+			(new Storage\FakeQuery(
+				new Storage\SafeQuery($this->database),
+				['foo', 'bar']
+			))->rows('SELECT * FROM test_table WHERE test_value = ?', ['foo'])
+		);
+	}
+
+	public function testFetchingFakeColumn() {
 		$this->database->exec(
 			"INSERT INTO test_table (id, test_value) VALUES (1, 'foo')"
 		);
@@ -60,6 +92,19 @@ final class FakeQuery extends TestCase {
 				new Storage\SafeQuery($this->database),
 				['foo', 'bar']
 			))->column('SELECT test_value FROM test_table WHERE id = 1')
+		);
+	}
+
+	public function testFetchingFakeColumnWithPlaceholder() {
+		$this->database->exec(
+			"INSERT INTO test_table (id, test_value) VALUES (1, 'foo')"
+		);
+		Assert::same(
+			['foo', 'bar'],
+			(new Storage\FakeQuery(
+				new Storage\SafeQuery($this->database),
+				['foo', 'bar']
+			))->column('SELECT test_value FROM test_table WHERE id = ?', [1])
 		);
 	}
 
