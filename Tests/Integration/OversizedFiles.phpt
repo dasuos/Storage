@@ -13,6 +13,7 @@ require __DIR__ . '/../bootstrap.php';
  * @testCase
  * @phpVersion > 7.1
  */
+
 final class OversizedFiles extends Tester\TestCase {
 
 	public function allowedSizes() {

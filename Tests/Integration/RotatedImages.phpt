@@ -13,10 +13,11 @@ require __DIR__ . '/../bootstrap.php';
  * @testCase
  * @phpVersion > 7.1
  */
+
 final class RotatedImages extends Tester\TestCase {
 
 	private const ROTATED_IMAGE_DIRECTORY = __DIR__ .
-	'/../Misc/RotatedImages/Edited';
+	'/../Fixtures/RotatedImages/Edited';
 	private const TEMPORARY_IMAGE_DIRECTORY = __DIR__ .
 		'/../Temp/RotatedImages';
 
@@ -24,7 +25,7 @@ final class RotatedImages extends Tester\TestCase {
 		parent::setup();
 		Tester\Environment::lock('RotatedImages', __DIR__ . '/../Temp/Locks');
 		(new Storage\Misc\CopiedFiles(
-			__DIR__ . '/../Misc/RotatedImages/Unedited',
+			__DIR__ . '/../Fixtures/RotatedImages/Unedited',
 			self::TEMPORARY_IMAGE_DIRECTORY
 		))->copy();
 	}

@@ -21,7 +21,6 @@
             <arg value="-c"/>
             <arg path="phpstan.neon"/>
             <arg path="Core"/>
-            <arg path="Tests"/>
         </exec>
     </target>
 
@@ -33,7 +32,6 @@
             <arg value="--tab-width=4"/>
             <arg value="-sp"/>
             <arg path="Core"/>
-            <arg path="Tests"/>
         </exec>
     </target>
 
@@ -45,7 +43,6 @@
             <arg value="--tab-width=4"/>
             <arg value="-sp"/>
             <arg path="Core"/>
-            <arg path="Tests"/>
         </exec>
     </target>
 

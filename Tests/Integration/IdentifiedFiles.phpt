@@ -13,6 +13,7 @@ require __DIR__ . '/../bootstrap.php';
  * @testCase
  * @phpVersion > 7.1
  */
+
 final class IdentifiedFiles extends Tester\TestCase {
 
 	private $file;

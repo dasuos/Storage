@@ -13,6 +13,7 @@ require __DIR__ . '/../bootstrap.php';
  * @testCase
  * @phpVersion > 7.1
  */
+
 final class MeasuredImages extends Tester\TestCase {
 
 	private const TEMPORARY_IMAGE_DIRECTORY = __DIR__ .
