@@ -55,7 +55,7 @@ final class SafeQuery extends TestCase {
 					$this->database
 				))->perform("INSERT INTO test_table VALUES (2, 'foo')");
 			},
-			\Dasuos\Storage\ConstraintException::class,
+			\Dasuos\Storage\UniqueConstraintException::class,
 			'Duplicate column value violates unique constraint',
 			23505
 		);
