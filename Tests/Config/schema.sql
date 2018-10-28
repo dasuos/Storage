@@ -39,9 +39,9 @@ CREATE FUNCTION restart_sequences() RETURNS void
     AS $$
 DECLARE
     statements CURSOR FOR
-    	SELECT 'ALTER SEQUENCE ' || relname || ' RESTART;' AS query
-      FROM pg_class
-      WHERE relkind = 'S';
+        SELECT 'ALTER SEQUENCE ' || relname || ' RESTART;' AS query
+        FROM pg_class
+        WHERE relkind = 'S';
 BEGIN
     FOR stmt IN statements LOOP
         EXECUTE stmt.query;

@@ -45,7 +45,7 @@ final class SafeQuery extends TestCase {
 		);
 	}
 
-	public function testThrowingCustomExceptionOnUniqueConstraint() {
+	public function testThrowingCustomExceptionOnConstraint() {
 		$this->database->exec(
 			"INSERT INTO test_table (id, test_value) VALUES (1, 'foo')"
 		);
@@ -55,7 +55,7 @@ final class SafeQuery extends TestCase {
 					$this->database
 				))->perform("INSERT INTO test_table VALUES (2, 'foo')");
 			},
-			\Dasuos\Storage\UniqueConstraintException::class,
+			\Dasuos\Storage\ConstraintException::class,
 			'Duplicate column value violates unique constraint',
 			23505
 		);

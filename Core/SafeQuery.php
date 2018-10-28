@@ -4,7 +4,10 @@ namespace Dasuos\Storage;
 
 final class SafeQuery implements Query {
 
-	private const UNIQUE_CONSTRAINT = '23505';
+	private const CONSTRAINT_ERRORS = [
+		'23503' => 'Update or delete violates foreign key constraint',
+		'23505' => 'Duplicate column value violates unique constraint',
+	];
 
 	private $database;
 
@@ -38,7 +41,18 @@ final class SafeQuery implements Query {
 				? $this->statement($sql, $placeholders)
 				: $this->database->query($sql);
 		} catch (\PDOException $exception) {
-			throw $this->exception($exception);
+			$code = (int) $exception->getCode();
+			throw in_array(
+				$code,
+				array_keys(self::CONSTRAINT_ERRORS),
+				true
+			)
+				? new \Dasuos\Storage\ConstraintException(
+					self::CONSTRAINT_ERRORS[$code],
+					$code,
+					$exception
+				)
+				: $exception;
 		}
 	}
 
@@ -49,14 +63,5 @@ final class SafeQuery implements Query {
 		$statement = $this->database->prepare($sql);
 		$statement->execute($placeholders);
 		return $statement;
-	}
-
-	private function exception(\Throwable $exception): \Throwable {
-		return $exception->getCode() === self::UNIQUE_CONSTRAINT
-			? new \Dasuos\Storage\UniqueConstraintException(
-				'Duplicate column value violates unique constraint',
-				(int) self::UNIQUE_CONSTRAINT,
-				$exception
-			) : $exception;
 	}
 }
