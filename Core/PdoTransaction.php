@@ -4,23 +4,23 @@ namespace Dasuos\Storage;
 
 final class PdoTransaction implements Transaction {
 
-	private $pdo;
+	private $database;
 
-	public function __construct(\PDO $pdo) {
-		$this->pdo = $pdo;
+	public function __construct(\PDO $database) {
+		$this->database = $database;
 	}
 
 	/**
 	 * @return mixed
 	 */
 	public function begin(\Closure $closure) {
+		$this->database->exec('START TRANSACTION');
 		try {
-			$this->pdo->beginTransaction();
 			$result = $closure();
-			$this->pdo->commit();
+			$this->database->exec('COMMIT TRANSACTION');
 			return $result;
 		} catch (\Throwable $exception) {
-			$this->pdo->rollBack();
+			$this->database->exec('ROLLBACK TRANSACTION');
 			throw $exception;
 		}
 	}
