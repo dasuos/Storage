@@ -15,7 +15,7 @@ require __DIR__ . '/../bootstrap.php';
  * @phpVersion > 7.1
  */
 
-final class PdoTransaction extends TestCase {
+final class Transaction extends TestCase {
 
 	use Database;
 
@@ -25,7 +25,7 @@ final class PdoTransaction extends TestCase {
 				['id' => 1, 'test_value' => 'foo'],
 				['id' => 2, 'test_value' => 'bar'],
 			],
-			(new Storage\PdoTransaction($this->database))
+			(new Storage\Transaction($this->database))
 				->begin(
 					function() {
 						$this->database->exec(
@@ -47,7 +47,7 @@ final class PdoTransaction extends TestCase {
 	public function testRollingBackQueries() {
 		Assert::exception(
 			function() {
-				(new Storage\PdoTransaction($this->database))
+				(new Storage\Transaction($this->database))
 					->begin(
 						function() {
 							$this->database->exec(
@@ -73,4 +73,4 @@ final class PdoTransaction extends TestCase {
 	}
 }
 
-(new PdoTransaction)->run();
+(new Transaction)->run();
