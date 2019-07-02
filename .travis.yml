@@ -10,6 +10,8 @@ language: php
 
 php:
   - 7.1
+  - 7.2
+  - 7.3
 
 before_install:
   - composer self-update
@@ -22,7 +24,7 @@ before_script:
   - psql -U postgres test_database < ./Tests/Config/schema.sql
 
 script:
-  - ./vendor/bin/phing ci
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then ./vendor/bin/phing ci; else ./vendor/bin/phing all-tests; fi
 
 after_failure:
   - for i in $(find Tests -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done
