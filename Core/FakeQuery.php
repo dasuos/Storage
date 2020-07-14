@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace Dasuos\Storage;
 
 final class FakeQuery implements Query {

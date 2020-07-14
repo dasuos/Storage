@@ -14,6 +14,7 @@ require __DIR__ . '/../bootstrap.php';
  * @testCase
  * @phpVersion > 7.1
  */
+
 final class SafeQuery extends TestCase {
 
 	use Database;

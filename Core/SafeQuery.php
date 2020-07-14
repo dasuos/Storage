@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace Dasuos\Storage;
 
 final class SafeQuery implements Query {
@@ -12,12 +13,12 @@ final class SafeQuery implements Query {
 
 	public function row(string $sql, array $placeholders = []): array {
 		$row = $this->perform($sql, $placeholders)->fetch();
-		return $row ? $row : [];
+		return $row ?: [];
 	}
 
 	public function rows(string $sql, array $placeholders = []): array {
 		$rows = $this->perform($sql, $placeholders)->fetchAll();
-		return $rows ? $rows : [];
+		return $rows ?: [];
 	}
 
 	/**
@@ -42,19 +43,22 @@ final class SafeQuery implements Query {
 
 	private function exception(\Throwable $exception): \Throwable {
 		$code = (int) $exception->getCode();
-		if ($code === 23503)
-			return new \Dasuos\Storage\ForeignKeyConstraintException(
-				'Update or delete violates foreign key constraint',
-				$code,
-				$exception
-			);
-		elseif ($code === 23505)
-			return new \Dasuos\Storage\UniqueConstraintException(
-				'Duplicate column value violates unique constraint',
-				$code,
-				$exception
-			);
-		else return $exception;
+		switch ($code) {
+			case 23503:
+				return new \Dasuos\Storage\ForeignKeyConstraintException(
+					'Update or delete violates foreign key constraint',
+					$code,
+					$exception
+				);
+			case 23505:
+				return new \Dasuos\Storage\UniqueConstraintException(
+					'Duplicate column value violates unique constraint',
+					$code,
+					$exception
+				);
+			default:
+				return $exception;
+		}
 	}
 
 	private function statement(
